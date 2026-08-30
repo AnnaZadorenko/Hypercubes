@@ -1,0 +1,1 @@
+This is an isometric projection of a 5D hypercube. A 5D hypercube has 32 vertices and 80 edges. The projection arranges the five dimensional directions at different angles so the structure can be represented on a two-dimensional screen.

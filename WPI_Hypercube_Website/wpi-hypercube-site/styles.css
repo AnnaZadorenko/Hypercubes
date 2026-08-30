@@ -1,0 +1,995 @@
+:root {
+    --wpi-red: #a6192e;
+    --wpi-dark-red: #741223;
+    --wpi-bright: #c8102e;
+
+    --ink: #1f2430;
+    --muted: #6f7684;
+
+    --line: #e4e7ec;
+    --paper: #ffffff;
+    --background: #f5f6f8;
+
+    --shadow: 0 12px 30px rgba(31, 36, 48, 0.08);
+}
+
+
+/*
+   GLOBAL
+    */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+
+    font-family:
+            Inter,
+            Arial,
+            Helvetica,
+            sans-serif;
+
+    color: var(--ink);
+    background: var(--background);
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.is-hidden {
+    display: none !important;
+}
+
+
+/*
+   SPLASH SCREEN
+    */
+
+.splash {
+    position: fixed;
+    inset: 0;
+
+    display: grid;
+    place-items: center;
+
+    background: #ffffff;
+
+    z-index: 100;
+
+    transition: opacity .45s ease;
+}
+
+.splash.is-leaving {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.splash-logo {
+    width: min(760px, 82vw);
+    height: auto;
+}
+
+.loading-bar {
+    position: absolute;
+    bottom: 15vh;
+
+    width: min(320px, 55vw);
+    height: 5px;
+
+    background: #eceef1;
+
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.loading-bar span {
+    display: block;
+
+    width: 40%;
+    height: 100%;
+
+    background: var(--wpi-red);
+
+    border-radius: inherit;
+
+    animation: load 1.35s ease-in-out infinite;
+}
+
+@keyframes load {
+
+    0% {
+        transform: translateX(-120%);
+    }
+
+    100% {
+        transform: translateX(360%);
+    }
+
+}
+
+
+/*
+   MAIN PAGE LAYOUT
+ */
+
+.app-shell {
+    min-height: 100vh;
+
+    display: grid;
+
+    grid-template-columns:
+    250px 1fr;
+}
+
+
+/*
+   SIDEBAR
+   */
+
+.sidebar {
+    position: sticky;
+    top: 0;
+
+    height: 100vh;
+
+    padding: 24px 18px;
+
+    display: flex;
+    flex-direction: column;
+
+    color: white;
+
+    background:
+            linear-gradient(
+                    180deg,
+                    var(--wpi-dark-red),
+                    #8d1830 55%,
+                    #6c1221
+            );
+}
+
+.brand-block {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+
+    padding: 4px 4px 26px;
+
+    border-bottom:
+            1px solid rgba(255, 255, 255, .14);
+}
+
+/*
+   WPI SIDEBAR LOGO
+   */
+
+.brand-mark {
+    width: 58px;
+    height: 58px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: white;
+
+    overflow: hidden;
+
+    box-shadow:
+            0 6px 18px rgba(0, 0, 0, .18);
+}
+
+
+/*
+  Actual WPI logo image
+*/
+
+.brand-logo {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: contain;
+
+    border-radius: 50%;
+}
+
+.brand-block h1 {
+    margin: 0 0 4px;
+
+    font-size: 1rem;
+}
+
+.brand-block p {
+    margin: 0;
+
+    opacity: .75;
+
+    font-size: .77rem;
+}
+
+.nav {
+    padding-top: 22px;
+}
+
+.nav-label {
+    margin:
+            18px 10px 8px;
+
+    font-size: .68rem;
+    font-weight: 700;
+
+    letter-spacing: .14em;
+
+    opacity: .58;
+}
+
+.nav-item {
+    width: 100%;
+
+    margin-bottom: 4px;
+    padding: 11px 12px;
+
+    border: 0;
+    border-radius: 8px;
+
+    background: transparent;
+
+    color:
+            rgba(255, 255, 255, .84);
+
+    text-align: left;
+
+    transition: .2s ease;
+}
+
+.nav-item:hover,
+.nav-item.active {
+    background:
+            rgba(255, 255, 255, .14);
+
+    color: white;
+
+    transform: translateX(2px);
+}
+
+.sidebar-footer {
+    margin-top: auto;
+
+    padding: 8px;
+
+    font-size: .7rem;
+
+    opacity: .48;
+}
+
+
+/*
+   MAIN CONTENT
+ */
+
+.main-content {
+    min-width: 0;
+}
+
+
+/*
+   TOP BAR
+   */
+
+.topbar {
+    height: 88px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 18px 30px;
+
+    background: white;
+
+    border-bottom:
+            1px solid var(--line);
+}
+
+.topbar h2 {
+    margin: 2px 0 0;
+
+    font-size: 1.45rem;
+}
+
+.eyebrow {
+    margin: 0;
+
+    color: var(--wpi-red);
+
+    font-size: .68rem;
+    font-weight: 800;
+
+    letter-spacing: .12em;
+
+    text-transform: uppercase;
+}
+
+.menu-button {
+    display: none;
+
+    width: 42px;
+    height: 42px;
+
+    border:
+            1px solid var(--line);
+
+    border-radius: 9px;
+
+    background: white;
+}
+
+
+/*
+   WORKSPACE
+ */
+
+.workspace {
+    padding: 24px;
+
+    display: grid;
+
+    grid-template-columns:
+    minmax(0, 1.55fr)
+    minmax(320px, .75fr);
+
+    gap: 22px;
+
+    align-items: start;
+}
+
+
+/* =
+   VISUALIZATION PANEL
+   */
+
+.visual-panel {
+    position: relative;
+
+    /*
+      IMPORTANT FIX:
+
+      Use a real height instead of only min-height.
+
+      This gives the canvas a definite size on wide screens.
+    */
+    height: calc(100vh - 136px);
+
+    min-height: 620px;
+
+    overflow: hidden;
+
+    background: white;
+
+    border:
+            1px solid var(--line);
+
+    border-radius: 14px;
+
+    box-shadow: var(--shadow);
+}
+
+
+/*
+   CANVAS
+    */
+
+#hypercubeCanvas {
+    display: block;
+
+    /*
+      Fill the visualization panel completely.
+    */
+    width: 100%;
+    height: 100%;
+
+    /*
+      The parent now controls the size.
+    */
+    min-height: 0;
+
+    background:
+            radial-gradient(
+                    circle at center,
+                    #ffffff 0%,
+                    #fafbfc 68%,
+                    #f2f3f6 100%
+            );
+}
+
+
+/*
+   CANVAS BADGE
+   */
+
+.canvas-badge {
+    position: absolute;
+
+    left: 18px;
+    bottom: 18px;
+
+    padding: 8px 12px;
+
+    background:
+            rgba(255, 255, 255, .9);
+
+    border:
+            1px solid var(--line);
+
+    border-radius: 999px;
+
+    color: var(--muted);
+
+    font-size: .78rem;
+
+    backdrop-filter: blur(8px);
+}
+
+.canvas-badge span {
+    color: var(--wpi-red);
+
+    font-weight: 900;
+}
+
+
+/*
+   RIGHT COLUMN
+  */
+
+.control-column {
+    display: flex;
+    flex-direction: column;
+
+    gap: 18px;
+}
+
+
+/*
+   CARDS
+    */
+
+.card {
+    padding: 20px;
+
+    background: white;
+
+    border:
+            1px solid var(--line);
+
+    border-radius: 14px;
+
+    box-shadow: var(--shadow);
+}
+
+.card h3 {
+    margin: 4px 0 10px;
+
+    font-size: 1.05rem;
+}
+
+.card p {
+    color: var(--muted);
+
+    line-height: 1.55;
+
+    font-size: .9rem;
+}
+
+.card-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 12px;
+}
+
+
+/*
+   STATUS
+   */
+
+.status-pill {
+    padding: 6px 9px;
+
+    background: #f2f4f7;
+
+    color: var(--muted);
+
+    border-radius: 999px;
+
+    font-size: .72rem;
+    font-weight: 700;
+}
+
+.status-pill.playing {
+    background: #fce8ec;
+
+    color: var(--wpi-red);
+}
+
+
+/*
+   BUTTONS
+    */
+
+.button-row {
+    margin: 18px 0;
+
+    display: grid;
+
+    grid-template-columns:
+    1fr auto;
+
+    gap: 10px;
+}
+
+.primary-button,
+.secondary-button {
+    padding: 11px 16px;
+
+    border-radius: 8px;
+
+    font-weight: 800;
+}
+
+.primary-button {
+    border: 0;
+
+    background: var(--wpi-red);
+
+    color: white;
+}
+
+.primary-button:hover {
+    background: var(--wpi-dark-red);
+}
+
+.secondary-button {
+    border:
+            1px solid var(--line);
+
+    background: white;
+
+    color: var(--ink);
+}
+
+
+/*
+   SPEED SLIDER
+   */
+
+.range-label {
+    margin-top: 12px;
+
+    display: flex;
+    justify-content: space-between;
+
+    color: var(--muted);
+
+    font-size: .82rem;
+}
+
+input[type="range"] {
+    width: 100%;
+
+    margin:
+            10px 0 18px;
+
+    accent-color:
+            var(--wpi-red);
+}
+
+
+/*
+   TOGGLES
+    */
+
+.toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 11px 0;
+
+    border-top:
+            1px solid #f0f1f3;
+
+    font-size: .86rem;
+}
+
+.switch {
+    position: relative;
+
+    display: inline-block;
+
+    width: 38px;
+    height: 22px;
+}
+
+.switch input {
+    width: 0;
+    height: 0;
+
+    opacity: 0;
+}
+
+.slider {
+    position: absolute;
+    inset: 0;
+
+    background: #c8ccd3;
+
+    border-radius: 999px;
+
+    transition: .2s;
+}
+
+.slider:before {
+    content: "";
+
+    position: absolute;
+
+    width: 16px;
+    height: 16px;
+
+    left: 3px;
+    top: 3px;
+
+    background: white;
+
+    border-radius: 50%;
+
+    transition: .2s;
+
+    box-shadow:
+            0 1px 4px rgba(0, 0, 0, .22);
+}
+
+.switch input:checked + .slider {
+    background: var(--wpi-red);
+}
+
+.switch input:checked + .slider:before {
+    transform:
+            translateX(16px);
+}
+
+
+/*
+   STATISTICS
+   */
+
+.stat-grid {
+    margin-top: 18px;
+
+    display: grid;
+
+    grid-template-columns:
+    repeat(3, 1fr);
+
+    gap: 8px;
+}
+
+.stat-grid div {
+    padding: 12px 8px;
+
+    background: #f7f8fa;
+
+    border-radius: 9px;
+
+    text-align: center;
+}
+
+.stat-grid strong {
+    display: block;
+
+    color: var(--wpi-red);
+
+    font-size: 1.1rem;
+}
+
+.stat-grid span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--muted);
+
+    font-size: .68rem;
+}
+
+
+/*
+   DIMENSION TEXT
+    */
+
+/*
+  Keep line breaks from the separate .txt files.
+*/
+
+#infoText {
+    white-space: pre-line;
+}
+
+
+
+
+.custom-dimension {
+    margin-top: 16px;
+
+    padding:
+            14px 10px;
+
+    border-top:
+            1px solid rgba(255, 255, 255, .14);
+}
+
+.custom-dimension label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color:
+            rgba(255, 255, 255, .85);
+
+    font-size: .75rem;
+    font-weight: 700;
+}
+
+.custom-dimension-row {
+    display: flex;
+
+    gap: 8px;
+}
+
+.custom-dimension-row input {
+    width: 72px;
+
+    padding: 9px 8px;
+
+    border: 0;
+
+    border-radius: 7px;
+
+    background: white;
+
+    color: var(--ink);
+}
+
+.custom-build-button {
+    flex: 1;
+
+    padding: 9px 12px;
+
+    border: 0;
+
+    border-radius: 7px;
+
+    background:
+            rgba(255, 255, 255, .15);
+
+    color: white;
+
+    font-weight: 700;
+}
+
+.custom-build-button:hover {
+    background:
+            rgba(255, 255, 255, .25);
+}
+
+.custom-dimension-note {
+    margin:
+            7px 0 0;
+
+    color:
+            rgba(255, 255, 255, .55);
+
+    font-size: .67rem;
+}
+
+
+/*
+   FULLSCREEN BUTTON
+    */
+
+.fullscreen-button {
+    position: absolute;
+
+    top: 16px;
+    right: 16px;
+
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+    place-items: center;
+
+    border:
+            1px solid var(--line);
+
+    border-radius: 9px;
+
+    background:
+            rgba(255, 255, 255, .92);
+
+    color: var(--ink);
+
+    font-size: 1.25rem;
+    font-weight: 700;
+
+    z-index: 10;
+
+    box-shadow:
+            0 4px 12px rgba(31, 36, 48, .08);
+
+    transition:
+            background .2s ease,
+            transform .2s ease;
+}
+
+.fullscreen-button:hover {
+    background: white;
+
+    transform: scale(1.05);
+}
+
+
+/*
+   FULLSCREEN MODE
+   */
+
+.visual-panel:fullscreen {
+    width: 100vw;
+    height: 100vh;
+
+    min-height: 100vh;
+
+    border: 0;
+    border-radius: 0;
+
+    background: white;
+}
+
+.visual-panel:fullscreen #hypercubeCanvas {
+    width: 100%;
+    height: 100%;
+
+    min-height: 0;
+}
+
+.visual-panel:fullscreen .fullscreen-button {
+    top: 22px;
+    right: 22px;
+
+    width: 48px;
+    height: 48px;
+
+    font-size: 1.4rem;
+}
+
+.visual-panel:fullscreen .canvas-badge {
+    left: 24px;
+    bottom: 24px;
+}
+
+
+/*
+   TABLET / SMALL LAPTOP
+   */
+
+@media (max-width: 980px) {
+
+    .app-shell {
+        grid-template-columns:
+      1fr;
+    }
+
+    .sidebar {
+        position: fixed;
+
+        left: -270px;
+
+        width: 250px;
+
+        z-index: 50;
+
+        transition:
+                left .25s ease;
+    }
+
+    .sidebar.open {
+        left: 0;
+    }
+
+    .menu-button {
+        display: inline-grid;
+        place-items: center;
+    }
+
+    .workspace {
+        grid-template-columns:
+      1fr;
+    }
+
+    /*
+      Fixed height for smaller screens.
+    */
+    .visual-panel {
+        height: 620px;
+        min-height: 620px;
+    }
+
+}
+
+
+
+@media (max-width: 600px) {
+
+    .topbar {
+        padding:
+                14px 18px;
+    }
+
+    .workspace {
+        padding: 14px;
+    }
+
+    .card {
+        padding: 16px;
+    }
+
+    /*
+      Smaller canvas area on phones.
+    */
+    .visual-panel {
+        height: 520px;
+        min-height: 520px;
+    }
+
+}
+.is-hidden {
+    display: none !important;
+}
+
+.project-page {
+    padding: 30px;
+}
+
+.project-card {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+#aboutProjectText {
+    line-height: 1.7;
+}
+
+#aboutProjectText p {
+    margin: 0 0 18px;
+}
+
+#aboutProjectText p:last-child {
+    margin-bottom: 0;
+}

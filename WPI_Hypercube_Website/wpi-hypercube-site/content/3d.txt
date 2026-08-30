@@ -1,0 +1,1 @@
+A 3D cube is the familiar three-dimensional version of a hypercube. It has 8 vertices and 12 edges. In this visualization, the cube is shown as a two-dimensional projection and is constructed step by step from its vertices and connecting edges.

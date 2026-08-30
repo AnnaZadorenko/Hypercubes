@@ -1,0 +1,1 @@
+This is an isometric projection of a 6D hypercube. A 6D hypercube has 64 vertices and 192 edges. Six dimensional directions are projected at different angles, allowing the higher-dimensional structure to be displayed in two dimensions.

@@ -1,0 +1,1 @@
+This is a distorted isometric projection of a 5D hypercube. It still represents the same object with 32 vertices and 80 edges, but the projected directions use a different arrangement to produce another two-dimensional view of the hypercube.

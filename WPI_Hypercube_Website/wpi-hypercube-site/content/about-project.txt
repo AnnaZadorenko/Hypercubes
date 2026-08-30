@@ -1,0 +1,7 @@
+The Hypercube Explorer is an interactive website designed to help users visualize hypercubes in different dimensions. It shows how higher-dimensional cubes can be represented through two-dimensional projections and animations.
+
+The project includes visualizations of a 3D cube, a 4D tesseract, and several projections of 5D and 6D hypercubes. Each visualization is built step by step so users can see how the vertices and edges connect to form the complete figure.
+
+Users can control the animation, change its speed, show or hide vertices and the construction path, and view the visualization in fullscreen. Information about each hypercube is also provided, including its number of dimensions, vertices, edges, and the formulas used to calculate them.
+
+The goal of this project is to make higher-dimensional geometry easier to explore and understand through interactive visualization.
