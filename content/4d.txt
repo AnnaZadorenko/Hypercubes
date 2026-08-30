@@ -1,8 +1,8 @@
 A 4D hypercube is called a tesseract.
 
-It can be imagined as two ordinary 3D cubes connected together along a new fourth dimension.
+It can be imagined as two ordinary 3D cubes whose vertices are connected together by edges along the fourth dimension.
 
-It has 16 vertices and 32 edges.
+It has 16 vertices, 32 edges, 24 square faces and 8 3D cubes known as "cells" for its outer boundary.
 
 
 FORMULAS
