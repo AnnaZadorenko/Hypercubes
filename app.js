@@ -84,6 +84,7 @@ const figures = {
         content: "5d-isometric.txt"
     },
 
+
     32: {
         title: "5D Tesseract Projection",
         infoTitle: "5D Tesseract Projection",

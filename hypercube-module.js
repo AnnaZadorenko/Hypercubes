@@ -1977,6 +1977,7 @@ class QBasicHypercubeRenderer {
             this.currentI;
 
 
+
         this.visibleVertexCount =
             n2;
 
