@@ -1,5 +1,7 @@
 # WPI Hypercube Explorer
 
+https://annazadorenko.github.io/Hypercubes/
+
 An interactive website for visualizing hypercubes in three through six dimensions.
 
 The project is based on an original BASIC program created by **Professor P. K. Aravind**. The original program calculates two-dimensional projections of hypercubes and draws their construction step by step. This website recreates those visualizations in a modern web browser using JavaScript and HTML Canvas.
