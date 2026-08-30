@@ -31,7 +31,7 @@ class QBasicHypercubeRenderer {
 
     constructor(canvas) {
 
-        
+
         // CANVAS
 
         this.canvas = canvas;
@@ -187,8 +187,13 @@ class QBasicHypercubeRenderer {
 
 
         this.autoRotate = false;
+        this.rotationAngle = 0;
 
+        this.rotationVertices = [];
 
+        this.rotationEdges = [];
+
+        this.rotationDimension = 0;
 
         // SPEED
 
@@ -360,31 +365,28 @@ class QBasicHypercubeRenderer {
 
 
     // SET EXACT BASIC OPTION
-
-
     setOption(option) {
 
         option =
             Number(option);
 
 
-
-
         const allowed = [
 
             1,
+            101,
 
             2,
+            102,
 
             31,
-
             32,
-
             33,
+            130,
 
             41,
-
-            42
+            42,
+            140
 
         ];
 
@@ -394,7 +396,7 @@ class QBasicHypercubeRenderer {
         ) {
 
             console.warn(
-                "Only QBasic options 1, 2, 31, 32, 33, 41 and 42 exist."
+                "This option does not exist."
             );
 
             return;
@@ -402,7 +404,67 @@ class QBasicHypercubeRenderer {
         }
 
 
-        this.option = option;
+        this.option =
+            option;
+
+
+        this.autoRotate = [
+
+            101,
+            102,
+            130,
+            140
+
+        ].includes(option);
+
+
+        if (
+            this.autoRotate
+        ) {
+
+            if (
+                option === 101
+            ) {
+
+                this.rotationDimension = 3;
+
+            }
+
+            else if (
+                option === 102
+            ) {
+
+                this.rotationDimension = 4;
+
+            }
+
+            else if (
+                option === 130
+            ) {
+
+                this.rotationDimension = 5;
+
+            }
+
+            else if (
+                option === 140
+            ) {
+
+                this.rotationDimension = 6;
+
+            }
+
+
+            this.buildRotationHypercube(
+                this.rotationDimension
+            );
+
+
+            this.reset();
+
+            return;
+
+        }
 
 
         this.buildFigure(
@@ -411,60 +473,6 @@ class QBasicHypercubeRenderer {
 
 
         this.reset();
-
-    }
-
-
-
-
-
-    setDimension(dimension) {
-
-        dimension =
-            Number(dimension);
-
-
-
-
-        if (
-            dimension === 3
-        ) {
-
-            this.setOption(1);
-
-        }
-
-        else if (
-            dimension === 4
-        ) {
-
-            this.setOption(2);
-
-        }
-
-        else if (
-            dimension === 5
-        ) {
-
-            this.setOption(31);
-
-        }
-
-        else if (
-            dimension === 6
-        ) {
-
-            this.setOption(41);
-
-        }
-
-        else {
-
-            console.warn(
-                "This BASIC program contains only dimensions 3 through 6."
-            );
-
-        }
 
     }
 
@@ -481,6 +489,7 @@ class QBasicHypercubeRenderer {
 
 
     // BUILD FIGURE
+
 
     buildFigure(option) {
 
@@ -545,6 +554,7 @@ class QBasicHypercubeRenderer {
 
     // BASIC LABEL 1
     // 3D CUBE
+
 
     build3D() {
 
@@ -699,6 +709,7 @@ class QBasicHypercubeRenderer {
 
     // BASIC LABEL 2
     // 4D TESSERACT
+
 
     build4D() {
 
@@ -864,9 +875,6 @@ class QBasicHypercubeRenderer {
         this.dimension = 4;
 
     }
-
-
-
     // BASIC LABEL 3
     // 5D HYPERCUBE
 
@@ -951,7 +959,7 @@ class QBasicHypercubeRenderer {
 
 
 
-            // OPTION 32
+        // OPTION 32
 
 
         else if (
@@ -998,7 +1006,7 @@ class QBasicHypercubeRenderer {
 
 
 
-            // OPTION 33
+        // OPTION 33
 
 
         else {
@@ -1346,7 +1354,7 @@ class QBasicHypercubeRenderer {
 
 
 
-            // OPTION 42
+        // OPTION 42
 
 
         else {
@@ -1650,6 +1658,17 @@ class QBasicHypercubeRenderer {
         */
 
         if (
+            this.autoRotate
+        ) {
+
+            this.playing = true;
+
+            return;
+
+        }
+
+
+        if (
             this.finished
         ) {
 
@@ -1716,6 +1735,64 @@ class QBasicHypercubeRenderer {
 
 
         this.visibleVertexCount = 1;
+
+
+        this.rotationAngle = 0;
+
+
+        if (
+            this.autoRotate
+        ) {
+
+            this.visibleVertexCount =
+                this.ivert;
+
+            this.completedDimension =
+                this.dimension;
+
+            this.completedLiftEdges = [];
+
+            this.completedCopyEdges = [];
+
+
+            for (
+                let vertex = 0;
+                vertex < this.ivert;
+                vertex++
+            ) {
+
+                for (
+                    let d = 0;
+                    d < this.dimension;
+                    d++
+                ) {
+
+                    const other =
+                        vertex ^
+                        (1 << d);
+
+
+                    if (
+                        vertex < other
+                    ) {
+
+                        this.completedCopyEdges.push(
+                            [
+                                vertex,
+                                other
+                            ]
+                        );
+
+                    }
+
+                }
+
+            }
+
+
+            this.finished = true;
+
+        }
 
     }
 
@@ -2598,8 +2675,6 @@ class QBasicHypercubeRenderer {
 
     }
 
-
-
     // RESIZE
 
     resize() {
@@ -2715,11 +2790,9 @@ class QBasicHypercubeRenderer {
 
 
     // QBasic WINDOW to CANVAS
-
     toCanvas(x, y) {
 
         const rect =
-
             this.canvas
                 .getBoundingClientRect();
 
@@ -2731,10 +2804,6 @@ class QBasicHypercubeRenderer {
         const height =
             rect.height;
 
-
-        /*
-        Keep the entire BASIC WINDOW visible.
-        */
 
         const margin =
             20;
@@ -2801,6 +2870,104 @@ class QBasicHypercubeRenderer {
             2;
 
 
+        return {
+
+            x:
+
+                offsetX +
+                x *
+                scale,
+
+
+            y:
+
+                offsetY +
+                actualHeight -
+                y *
+                scale
+
+        };
+
+    }
+
+    toCanvas(x, y) {
+
+        const rect =
+            this.canvas
+                .getBoundingClientRect();
+
+
+        const width =
+            rect.width;
+
+
+        const height =
+            rect.height;
+
+
+        const margin =
+            20;
+
+
+        const usableWidth =
+
+            Math.max(
+                1,
+                width -
+                margin * 2
+            );
+
+
+        const usableHeight =
+
+            Math.max(
+                1,
+                height -
+                margin * 2
+            );
+
+
+        const scale =
+
+            Math.min(
+
+                usableWidth /
+                this.logicalWidth,
+
+                usableHeight /
+                this.logicalHeight
+
+            );
+
+
+        const actualWidth =
+
+            this.logicalWidth *
+            scale;
+
+
+        const actualHeight =
+
+            this.logicalHeight *
+            scale;
+
+
+        const offsetX =
+
+            (
+                width -
+                actualWidth
+            ) /
+            2;
+
+
+        const offsetY =
+
+            (
+                height -
+                actualHeight
+            ) /
+            2;
 
 
         return {
@@ -2822,9 +2989,6 @@ class QBasicHypercubeRenderer {
         };
 
     }
-
-
-
     // DRAW BASIC LINE
 
     drawLine(
@@ -3195,7 +3359,526 @@ class QBasicHypercubeRenderer {
     }
 
 
+    buildRotationHypercube(dimension) {
 
+        this.rotationDimension = dimension;
+
+        this.dimension = dimension;
+
+        this.imax = dimension;
+
+        this.ivert = 2 ** dimension;
+
+        this.rotationVertices = [];
+
+        this.rotationEdges = [];
+
+
+        for (
+            let i = 0;
+            i < this.ivert;
+            i++
+        ) {
+
+            const vertex = [];
+
+
+            for (
+                let d = 0;
+                d < dimension;
+                d++
+            ) {
+
+                vertex.push(
+                    (i & (1 << d))
+                        ? 1
+                        : -1
+                );
+
+            }
+
+
+            this.rotationVertices.push(
+                vertex
+            );
+
+        }
+
+
+        for (
+            let i = 0;
+            i < this.ivert;
+            i++
+        ) {
+
+            for (
+                let d = 0;
+                d < dimension;
+                d++
+            ) {
+
+                const other =
+                    i ^ (1 << d);
+
+
+                if (
+                    i < other
+                ) {
+
+                    this.rotationEdges.push(
+                        [
+                            i,
+                            other
+                        ]
+                    );
+
+                }
+
+            }
+
+        }
+
+    }
+
+
+    rotatePlane(
+        point,
+        a,
+        b,
+        angle
+    ) {
+
+        const x =
+            point[a];
+
+        const y =
+            point[b];
+
+
+        const cos =
+            Math.cos(angle);
+
+        const sin =
+            Math.sin(angle);
+
+
+        point[a] =
+            x * cos -
+            y * sin;
+
+
+        point[b] =
+            x * sin +
+            y * cos;
+
+    }
+
+
+    getRotatedPoint(vertex) {
+
+        const point =
+            vertex.slice();
+
+
+        const angle =
+            this.rotationAngle;
+
+
+        if (
+            point.length >= 3
+        ) {
+
+            this.rotatePlane(
+                point,
+                0,
+                1,
+                angle * 0.63
+            );
+
+            this.rotatePlane(
+                point,
+                0,
+                2,
+                angle * 0.41
+            );
+
+            this.rotatePlane(
+                point,
+                1,
+                2,
+                angle * 0.27
+            );
+
+        }
+
+
+        if (
+            point.length >= 4
+        ) {
+
+            this.rotatePlane(
+                point,
+                0,
+                3,
+                angle * 0.37
+            );
+
+            this.rotatePlane(
+                point,
+                1,
+                3,
+                angle * 0.29
+            );
+
+            this.rotatePlane(
+                point,
+                2,
+                3,
+                angle * 0.21
+            );
+
+        }
+
+
+        if (
+            point.length >= 5
+        ) {
+
+            this.rotatePlane(
+                point,
+                0,
+                4,
+                angle * 0.31
+            );
+
+            this.rotatePlane(
+                point,
+                1,
+                4,
+                angle * 0.23
+            );
+
+            this.rotatePlane(
+                point,
+                2,
+                4,
+                angle * 0.19
+            );
+
+            this.rotatePlane(
+                point,
+                3,
+                4,
+                angle * 0.17
+            );
+
+        }
+
+
+        if (
+            point.length >= 6
+        ) {
+
+            this.rotatePlane(
+                point,
+                0,
+                5,
+                angle * 0.26
+            );
+
+            this.rotatePlane(
+                point,
+                1,
+                5,
+                angle * 0.20
+            );
+
+            this.rotatePlane(
+                point,
+                2,
+                5,
+                angle * 0.16
+            );
+
+            this.rotatePlane(
+                point,
+                3,
+                5,
+                angle * 0.13
+            );
+
+            this.rotatePlane(
+                point,
+                4,
+                5,
+                angle * 0.11
+            );
+
+        }
+
+
+        return point;
+
+    }
+
+
+    projectRotationPoint(vertex) {
+
+        let point =
+            this.getRotatedPoint(
+                vertex
+            );
+
+
+        while (
+            point.length > 3
+            ) {
+
+            const w =
+                point[
+                point.length - 1
+                    ];
+
+
+            const distance =
+                8;
+
+
+            const scale =
+                distance /
+                (distance - w);
+
+
+            point =
+                point
+                    .slice(
+                        0,
+                        point.length - 1
+                    )
+                    .map(
+                        value =>
+                            value * scale
+                    );
+
+        }
+
+
+        const x =
+            point[0];
+
+        const y =
+            point[1];
+
+        const z =
+            point[2] || 0;
+
+
+        const rect =
+            this.canvas
+                .getBoundingClientRect();
+
+
+        const cameraDistance =
+            12;
+
+
+        const perspective =
+            cameraDistance /
+            (cameraDistance - z);
+
+
+        let size =
+            Math.min(
+                rect.width,
+                rect.height
+            );
+
+
+        if (
+            this.rotationDimension === 3
+        ) {
+
+            size *= 0.22;
+
+        }
+
+        else if (
+            this.rotationDimension === 4
+        ) {
+
+            size *= 0.19;
+
+        }
+
+        else if (
+            this.rotationDimension === 5
+        ) {
+
+            size *= 0.20;
+
+        }
+
+        else {
+
+            size *= 0.16;
+
+        }
+
+
+        return {
+
+            x:
+                rect.width / 2 +
+                x *
+                perspective *
+                size,
+
+            y:
+                rect.height / 2 -
+                y *
+                perspective *
+                size
+
+        };
+
+    }
+
+
+    drawRotationHypercube() {
+
+        const ctx =
+            this.ctx;
+
+
+        const points =
+            this.rotationVertices.map(
+                vertex =>
+                    this.projectRotationPoint(
+                        vertex
+                    )
+            );
+
+
+        if (
+            this.showPath
+        ) {
+
+            for (
+                const [a, b]
+                of this.rotationEdges
+                ) {
+
+                const p1 =
+                    points[a];
+
+                const p2 =
+                    points[b];
+
+
+                ctx.beginPath();
+
+
+                ctx.moveTo(
+                    p1.x,
+                    p1.y
+                );
+
+
+                ctx.lineTo(
+                    p2.x,
+                    p2.y
+                );
+
+
+                ctx.strokeStyle =
+                    "#a6192e";
+
+
+                ctx.lineWidth =
+                    1.7;
+
+
+                ctx.lineCap =
+                    "round";
+
+
+                ctx.stroke();
+
+            }
+
+        }
+
+
+        if (
+            this.showVertices
+        ) {
+
+            for (
+                let i = 0;
+                i < points.length;
+                i++
+            ) {
+
+                const point =
+                    points[i];
+
+
+                let radius =
+                    4;
+
+
+                if (
+                    this.rotationDimension === 5
+                ) {
+
+                    radius = 3.2;
+
+                }
+
+
+                if (
+                    this.rotationDimension === 6
+                ) {
+
+                    radius = 2.7;
+
+                }
+
+
+                ctx.beginPath();
+
+
+                ctx.arc(
+                    point.x,
+                    point.y,
+                    radius,
+                    0,
+                    Math.PI * 2
+                );
+
+
+                ctx.fillStyle =
+                    "#ffffff";
+
+
+                ctx.fill();
+
+
+                ctx.strokeStyle =
+                    "#a6192e";
+
+
+                ctx.lineWidth =
+                    1.5;
+
+
+                ctx.stroke();
+
+            }
+
+        }
+
+    }
     // DRAW
 
     draw() {
@@ -3243,7 +3926,7 @@ class QBasicHypercubeRenderer {
         */
 
         ctx.fillStyle =
-            "#000000";
+            "#ffffff";
 
 
         ctx.fillRect(
@@ -3258,7 +3941,15 @@ class QBasicHypercubeRenderer {
 
         );
 
+        if (
+            this.autoRotate
+        ) {
 
+            this.drawRotationHypercube();
+
+            return;
+
+        }
 
         // DRAW LINES ALREADY CREATED BY EARLIER DIMENSIONS
 
@@ -3273,7 +3964,13 @@ class QBasicHypercubeRenderer {
         // DRAW CURRENT SLOW SUB 60 LINES
 
 
-        this.drawActiveLift();
+        if (
+            !this.autoRotate
+        ) {
+
+            this.drawActiveLift();
+
+        }
 
 
 
@@ -3289,14 +3986,25 @@ class QBasicHypercubeRenderer {
             this.drawVertex(i);
 
         }
+        if (
+            this.autoRotate &&
+            this.playing
+        ) {
 
+            this.rotationAngle +=
 
+                delta *
+                0.0006 *
+                this.speed;
+
+        }
 
         // FINAL BASIC TEXT
 
 
         if (
-            this.finished
+            this.finished &&
+            !this.autoRotate
         ) {
 
             ctx.fillStyle =
@@ -3358,6 +4066,20 @@ class QBasicHypercubeRenderer {
 
         this.lastTime =
             now;
+
+
+        if (
+            this.autoRotate &&
+            this.playing
+        ) {
+
+            this.rotationAngle +=
+
+                delta *
+                0.0005 *
+                this.speed;
+
+        }
 
 
         this.update(
@@ -3438,7 +4160,7 @@ class QBasicHypercubeRenderer {
 
 
         if (
-            this.option === 1
+            this.dimension === 3
         ) {
 
             filename =
@@ -3452,7 +4174,7 @@ class QBasicHypercubeRenderer {
 
 
         else if (
-            this.option === 2
+            this.dimension === 4
         ) {
 
             filename =
@@ -3466,9 +4188,7 @@ class QBasicHypercubeRenderer {
 
 
         else if (
-            this.option === 31 ||
-            this.option === 32 ||
-            this.option === 33
+            this.dimension === 5
         ) {
 
             filename =
@@ -3603,9 +4323,21 @@ class QBasicHypercubeRenderer {
             },
 
             {
+                option: 101,
+                dimension: 3,
+                name: "CUBE (IN 3-D) ROTATE"
+            },
+
+            {
                 option: 2,
                 dimension: 4,
                 name: "TESSERACT OR 4-D CUBE"
+            },
+
+            {
+                option: 102,
+                dimension: 4,
+                name: "TESSERACT OR 4-D CUBE ROTATE"
             },
 
             {
@@ -3615,15 +4347,21 @@ class QBasicHypercubeRenderer {
             },
 
             {
+                option: 131,
+                dimension: 5,
+                name: "5-D HYPERCUBE (ISOMETRIC PROJECTION) ROTATE"
+            },
+
+            {
                 option: 32,
                 dimension: 5,
                 name: "5-D HYPERCUBE (TESSERACT PROJECTION)"
             },
 
             {
-                option: 33,
+                option: 130,
                 dimension: 5,
-                name: "5-D HYPERCUBE (DISTORTED ISOMETRIC PROJECTION)"
+                name: "5-D HYPERCUBE ROTATE"
             },
 
             {
@@ -3633,9 +4371,15 @@ class QBasicHypercubeRenderer {
             },
 
             {
-                option: 42,
+                option: 141,
                 dimension: 6,
-                name: "6-D HYPERCUBE (TESSERACT PROJECTION)"
+                name: "6-D HYPERCUBE (ISOMETRIC PROJECTION) ROTATE"
+            },
+
+            {
+                option: 140,
+                dimension: 6,
+                name: "6-D HYPERCUBE ROTATE"
             }
 
         ];
