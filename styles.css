@@ -14,13 +14,10 @@
 }
 
 
-/*
-   GLOBAL
-    */
-
 * {
     box-sizing: border-box;
 }
+
 
 html,
 body {
@@ -37,23 +34,24 @@ body {
     background: var(--background);
 }
 
+
 button,
 input {
     font: inherit;
 }
 
+
 button {
     cursor: pointer;
 }
+
 
 .is-hidden {
     display: none !important;
 }
 
 
-/*
-   SPLASH SCREEN
-    */
+/* Splash */
 
 .splash {
     position: fixed;
@@ -66,18 +64,21 @@ button {
 
     z-index: 100;
 
-    transition: opacity .45s ease;
+    transition: opacity 0.45s ease;
 }
+
 
 .splash.is-leaving {
     opacity: 0;
     pointer-events: none;
 }
 
+
 .splash-logo {
     width: min(760px, 82vw);
     height: auto;
 }
+
 
 .loading-bar {
     position: absolute;
@@ -92,6 +93,7 @@ button {
     overflow: hidden;
 }
 
+
 .loading-bar span {
     display: block;
 
@@ -104,6 +106,7 @@ button {
 
     animation: load 1.35s ease-in-out infinite;
 }
+
 
 @keyframes load {
 
@@ -118,9 +121,7 @@ button {
 }
 
 
-/*
-   MAIN PAGE LAYOUT
- */
+/* Main layout */
 
 .app-shell {
     min-height: 100vh;
@@ -128,13 +129,11 @@ button {
     display: grid;
 
     grid-template-columns:
-    250px 1fr;
+        250px 1fr;
 }
 
 
-/*
-   SIDEBAR
-   */
+/* Sidebar */
 
 .sidebar {
     position: sticky;
@@ -158,6 +157,7 @@ button {
             );
 }
 
+
 .brand-block {
     display: flex;
     gap: 12px;
@@ -166,12 +166,9 @@ button {
     padding: 4px 4px 26px;
 
     border-bottom:
-            1px solid rgba(255, 255, 255, .14);
+            1px solid rgba(255, 255, 255, 0.14);
 }
 
-/*
-   WPI SIDEBAR LOGO
-   */
 
 .brand-mark {
     width: 58px;
@@ -190,13 +187,9 @@ button {
     overflow: hidden;
 
     box-shadow:
-            0 6px 18px rgba(0, 0, 0, .18);
+            0 6px 18px rgba(0, 0, 0, 0.18);
 }
 
-
-/*
-  Actual WPI logo image
-*/
 
 .brand-logo {
     width: 100%;
@@ -209,35 +202,43 @@ button {
     border-radius: 50%;
 }
 
+
 .brand-block h1 {
     margin: 0 0 4px;
 
     font-size: 1rem;
 }
 
+
 .brand-block p {
     margin: 0;
 
-    opacity: .75;
+    opacity: 0.75;
 
-    font-size: .77rem;
+    font-size: 0.77rem;
 }
+
+
+/* Navigation */
 
 .nav {
     padding-top: 22px;
+
+    overflow-y: auto;
 }
+
 
 .nav-label {
-    margin:
-            18px 10px 8px;
+    margin: 18px 10px 8px;
 
-    font-size: .68rem;
+    font-size: 0.68rem;
     font-weight: 700;
 
-    letter-spacing: .14em;
+    letter-spacing: 0.14em;
 
-    opacity: .58;
+    opacity: 0.58;
 }
+
 
 .nav-item {
     width: 100%;
@@ -251,46 +252,47 @@ button {
     background: transparent;
 
     color:
-            rgba(255, 255, 255, .84);
+            rgba(255, 255, 255, 0.84);
 
     text-align: left;
 
-    transition: .2s ease;
+    transition:
+            background 0.2s ease,
+            color 0.2s ease,
+            transform 0.2s ease;
 }
+
 
 .nav-item:hover,
 .nav-item.active {
     background:
-            rgba(255, 255, 255, .14);
+            rgba(255, 255, 255, 0.14);
 
     color: white;
 
     transform: translateX(2px);
 }
 
+
 .sidebar-footer {
     margin-top: auto;
 
     padding: 8px;
 
-    font-size: .7rem;
+    font-size: 0.7rem;
 
-    opacity: .48;
+    opacity: 0.48;
 }
 
 
-/*
-   MAIN CONTENT
- */
+/* Main content */
 
 .main-content {
     min-width: 0;
 }
 
 
-/*
-   TOP BAR
-   */
+/* Top bar */
 
 .topbar {
     height: 88px;
@@ -307,24 +309,27 @@ button {
             1px solid var(--line);
 }
 
+
 .topbar h2 {
     margin: 2px 0 0;
 
     font-size: 1.45rem;
 }
 
+
 .eyebrow {
     margin: 0;
 
     color: var(--wpi-red);
 
-    font-size: .68rem;
+    font-size: 0.68rem;
     font-weight: 800;
 
-    letter-spacing: .12em;
+    letter-spacing: 0.12em;
 
     text-transform: uppercase;
 }
+
 
 .menu-button {
     display: none;
@@ -338,12 +343,12 @@ button {
     border-radius: 9px;
 
     background: white;
+
+    color: var(--ink);
 }
 
 
-/*
-   WORKSPACE
- */
+/* Workspace */
 
 .workspace {
     padding: 24px;
@@ -351,8 +356,8 @@ button {
     display: grid;
 
     grid-template-columns:
-    minmax(0, 1.55fr)
-    minmax(320px, .75fr);
+        minmax(0, 1.55fr)
+        minmax(320px, 0.75fr);
 
     gap: 22px;
 
@@ -360,21 +365,15 @@ button {
 }
 
 
-/* =
-   VISUALIZATION PANEL
-   */
+/* Visualization */
 
 .visual-panel {
     position: relative;
 
-    /*
-      IMPORTANT FIX:
+    width: 100%;
 
-      Use a real height instead of only min-height.
-
-      This gives the canvas a definite size on wide screens.
-    */
-    height: calc(100vh - 136px);
+    height:
+            calc(100vh - 136px);
 
     min-height: 620px;
 
@@ -391,22 +390,12 @@ button {
 }
 
 
-/*
-   CANVAS
-    */
-
 #hypercubeCanvas {
     display: block;
 
-    /*
-      Fill the visualization panel completely.
-    */
     width: 100%;
     height: 100%;
 
-    /*
-      The parent now controls the size.
-    */
     min-height: 0;
 
     background:
@@ -419,9 +408,7 @@ button {
 }
 
 
-/*
-   CANVAS BADGE
-   */
+/* Dimension badge */
 
 .canvas-badge {
     position: absolute;
@@ -432,7 +419,7 @@ button {
     padding: 8px 12px;
 
     background:
-            rgba(255, 255, 255, .9);
+            rgba(255, 255, 255, 0.9);
 
     border:
             1px solid var(--line);
@@ -441,10 +428,13 @@ button {
 
     color: var(--muted);
 
-    font-size: .78rem;
+    font-size: 0.78rem;
 
     backdrop-filter: blur(8px);
+
+    pointer-events: none;
 }
+
 
 .canvas-badge span {
     color: var(--wpi-red);
@@ -453,21 +443,19 @@ button {
 }
 
 
-/*
-   RIGHT COLUMN
-  */
+/* Right column */
 
 .control-column {
     display: flex;
     flex-direction: column;
 
     gap: 18px;
+
+    min-width: 0;
 }
 
 
-/*
-   CARDS
-    */
+/* Cards */
 
 .card {
     padding: 20px;
@@ -482,19 +470,22 @@ button {
     box-shadow: var(--shadow);
 }
 
+
 .card h3 {
     margin: 4px 0 10px;
 
     font-size: 1.05rem;
 }
 
+
 .card p {
     color: var(--muted);
 
     line-height: 1.55;
 
-    font-size: .9rem;
+    font-size: 0.9rem;
 }
+
 
 .card-heading {
     display: flex;
@@ -505,11 +496,11 @@ button {
 }
 
 
-/*
-   STATUS
-   */
+/* Status */
 
 .status-pill {
+    flex-shrink: 0;
+
     padding: 6px 9px;
 
     background: #f2f4f7;
@@ -518,9 +509,10 @@ button {
 
     border-radius: 999px;
 
-    font-size: .72rem;
+    font-size: 0.72rem;
     font-weight: 700;
 }
+
 
 .status-pill.playing {
     background: #fce8ec;
@@ -529,9 +521,7 @@ button {
 }
 
 
-/*
-   BUTTONS
-    */
+/* Play and reset */
 
 .button-row {
     margin: 18px 0;
@@ -539,10 +529,11 @@ button {
     display: grid;
 
     grid-template-columns:
-    1fr auto;
+        1fr auto;
 
     gap: 10px;
 }
+
 
 .primary-button,
 .secondary-button {
@@ -551,7 +542,12 @@ button {
     border-radius: 8px;
 
     font-weight: 800;
+
+    transition:
+            background 0.2s ease,
+            transform 0.2s ease;
 }
+
 
 .primary-button {
     border: 0;
@@ -561,9 +557,11 @@ button {
     color: white;
 }
 
+
 .primary-button:hover {
     background: var(--wpi-dark-red);
 }
+
 
 .secondary-button {
     border:
@@ -575,9 +573,12 @@ button {
 }
 
 
-/*
-   SPEED SLIDER
-   */
+.secondary-button:hover {
+    background: #f7f8fa;
+}
+
+
+/* Speed */
 
 .range-label {
     margin-top: 12px;
@@ -587,8 +588,9 @@ button {
 
     color: var(--muted);
 
-    font-size: .82rem;
+    font-size: 0.82rem;
 }
+
 
 input[type="range"] {
     width: 100%;
@@ -601,31 +603,35 @@ input[type="range"] {
 }
 
 
-/*
-   TOGGLES
-    */
+/* Toggles */
 
 .toggle-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
 
+    gap: 15px;
+
     padding: 11px 0;
 
     border-top:
             1px solid #f0f1f3;
 
-    font-size: .86rem;
+    font-size: 0.86rem;
 }
+
 
 .switch {
     position: relative;
 
     display: inline-block;
 
+    flex-shrink: 0;
+
     width: 38px;
     height: 22px;
 }
+
 
 .switch input {
     width: 0;
@@ -633,6 +639,7 @@ input[type="range"] {
 
     opacity: 0;
 }
+
 
 .slider {
     position: absolute;
@@ -642,8 +649,9 @@ input[type="range"] {
 
     border-radius: 999px;
 
-    transition: .2s;
+    transition: 0.2s;
 }
+
 
 .slider:before {
     content: "";
@@ -660,15 +668,17 @@ input[type="range"] {
 
     border-radius: 50%;
 
-    transition: .2s;
+    transition: 0.2s;
 
     box-shadow:
-            0 1px 4px rgba(0, 0, 0, .22);
+            0 1px 4px rgba(0, 0, 0, 0.22);
 }
+
 
 .switch input:checked + .slider {
     background: var(--wpi-red);
 }
+
 
 .switch input:checked + .slider:before {
     transform:
@@ -676,9 +686,7 @@ input[type="range"] {
 }
 
 
-/*
-   STATISTICS
-   */
+/* Statistics */
 
 .stat-grid {
     margin-top: 18px;
@@ -686,10 +694,11 @@ input[type="range"] {
     display: grid;
 
     grid-template-columns:
-    repeat(3, 1fr);
+        repeat(3, 1fr);
 
     gap: 8px;
 }
+
 
 .stat-grid div {
     padding: 12px 8px;
@@ -701,6 +710,7 @@ input[type="range"] {
     text-align: center;
 }
 
+
 .stat-grid strong {
     display: block;
 
@@ -709,6 +719,7 @@ input[type="range"] {
     font-size: 1.1rem;
 }
 
+
 .stat-grid span {
     display: block;
 
@@ -716,24 +727,18 @@ input[type="range"] {
 
     color: var(--muted);
 
-    font-size: .68rem;
+    font-size: 0.68rem;
 }
 
 
-/*
-   DIMENSION TEXT
-    */
-
-/*
-  Keep line breaks from the separate .txt files.
-*/
+/* Text loaded from content files */
 
 #infoText {
     white-space: pre-line;
 }
 
 
-
+/* Custom dimension */
 
 .custom-dimension {
     margin-top: 16px;
@@ -742,8 +747,9 @@ input[type="range"] {
             14px 10px;
 
     border-top:
-            1px solid rgba(255, 255, 255, .14);
+            1px solid rgba(255, 255, 255, 0.14);
 }
+
 
 .custom-dimension label {
     display: block;
@@ -751,17 +757,19 @@ input[type="range"] {
     margin-bottom: 8px;
 
     color:
-            rgba(255, 255, 255, .85);
+            rgba(255, 255, 255, 0.85);
 
-    font-size: .75rem;
+    font-size: 0.75rem;
     font-weight: 700;
 }
+
 
 .custom-dimension-row {
     display: flex;
 
     gap: 8px;
 }
+
 
 .custom-dimension-row input {
     width: 72px;
@@ -777,6 +785,7 @@ input[type="range"] {
     color: var(--ink);
 }
 
+
 .custom-build-button {
     flex: 1;
 
@@ -787,32 +796,32 @@ input[type="range"] {
     border-radius: 7px;
 
     background:
-            rgba(255, 255, 255, .15);
+            rgba(255, 255, 255, 0.15);
 
     color: white;
 
     font-weight: 700;
 }
 
+
 .custom-build-button:hover {
     background:
-            rgba(255, 255, 255, .25);
+            rgba(255, 255, 255, 0.25);
 }
+
 
 .custom-dimension-note {
     margin:
             7px 0 0;
 
     color:
-            rgba(255, 255, 255, .55);
+            rgba(255, 255, 255, 0.55);
 
-    font-size: .67rem;
+    font-size: 0.67rem;
 }
 
 
-/*
-   FULLSCREEN BUTTON
-    */
+/* Fullscreen */
 
 .fullscreen-button {
     position: absolute;
@@ -832,7 +841,7 @@ input[type="range"] {
     border-radius: 9px;
 
     background:
-            rgba(255, 255, 255, .92);
+            rgba(255, 255, 255, 0.92);
 
     color: var(--ink);
 
@@ -842,12 +851,13 @@ input[type="range"] {
     z-index: 10;
 
     box-shadow:
-            0 4px 12px rgba(31, 36, 48, .08);
+            0 4px 12px rgba(31, 36, 48, 0.08);
 
     transition:
-            background .2s ease,
-            transform .2s ease;
+            background 0.2s ease,
+            transform 0.2s ease;
 }
+
 
 .fullscreen-button:hover {
     background: white;
@@ -856,9 +866,7 @@ input[type="range"] {
 }
 
 
-/*
-   FULLSCREEN MODE
-   */
+/* Fullscreen canvas */
 
 .visual-panel:fullscreen {
     width: 100vw;
@@ -872,12 +880,14 @@ input[type="range"] {
     background: white;
 }
 
+
 .visual-panel:fullscreen #hypercubeCanvas {
     width: 100%;
     height: 100%;
 
     min-height: 0;
 }
+
 
 .visual-panel:fullscreen .fullscreen-button {
     top: 22px;
@@ -889,89 +899,14 @@ input[type="range"] {
     font-size: 1.4rem;
 }
 
+
 .visual-panel:fullscreen .canvas-badge {
     left: 24px;
     bottom: 24px;
 }
 
 
-/*
-   TABLET / SMALL LAPTOP
-   */
-
-@media (max-width: 980px) {
-
-    .app-shell {
-        grid-template-columns:
-      1fr;
-    }
-
-    .sidebar {
-        position: fixed;
-
-        left: -270px;
-
-        width: 250px;
-
-        z-index: 50;
-
-        transition:
-                left .25s ease;
-    }
-
-    .sidebar.open {
-        left: 0;
-    }
-
-    .menu-button {
-        display: inline-grid;
-        place-items: center;
-    }
-
-    .workspace {
-        grid-template-columns:
-      1fr;
-    }
-
-    /*
-      Fixed height for smaller screens.
-    */
-    .visual-panel {
-        height: 620px;
-        min-height: 620px;
-    }
-
-}
-
-
-
-@media (max-width: 600px) {
-
-    .topbar {
-        padding:
-                14px 18px;
-    }
-
-    .workspace {
-        padding: 14px;
-    }
-
-    .card {
-        padding: 16px;
-    }
-
-    /*
-      Smaller canvas area on phones.
-    */
-    .visual-panel {
-        height: 520px;
-        min-height: 520px;
-    }
-
-}
-.is-hidden {
-    display: none !important;
-}
+/* Project pages */
 
 .project-page {
     padding: 30px;
@@ -980,17 +915,163 @@ input[type="range"] {
 
 .project-card {
     max-width: 900px;
+
     margin: 0 auto;
 }
+
 
 #aboutProjectText {
     line-height: 1.7;
 }
 
+
 #aboutProjectText p {
     margin: 0 0 18px;
 }
 
+
 #aboutProjectText p:last-child {
     margin-bottom: 0;
+}
+
+
+/* Tablet */
+
+@media (max-width: 980px) {
+
+    .app-shell {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .sidebar {
+        position: fixed;
+
+        top: 0;
+        bottom: 0;
+        left: -270px;
+
+        width: 250px;
+        height: 100vh;
+
+        z-index: 50;
+
+        transition:
+                left 0.25s ease;
+    }
+
+
+    .sidebar.open {
+        left: 0;
+    }
+
+
+    .menu-button {
+        display: inline-grid;
+
+        place-items: center;
+    }
+
+
+    .workspace {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .visual-panel {
+        height: 620px;
+        min-height: 620px;
+    }
+
+}
+
+
+/* Phone */
+
+@media (max-width: 600px) {
+
+    .topbar {
+        height: auto;
+        min-height: 78px;
+
+        padding:
+                14px 18px;
+    }
+
+
+    .topbar h2 {
+        font-size: 1.2rem;
+    }
+
+
+    .workspace {
+        padding: 14px;
+
+        gap: 14px;
+    }
+
+
+    .card {
+        padding: 16px;
+    }
+
+
+    .visual-panel {
+        height: 520px;
+        min-height: 520px;
+    }
+
+
+    .button-row {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+
+    .stat-grid {
+        grid-template-columns:
+            repeat(3, 1fr);
+    }
+
+
+    .project-page {
+        padding: 14px;
+    }
+
+}
+
+
+/* Very small phone */
+
+@media (max-width: 420px) {
+
+    .visual-panel {
+        height: 450px;
+        min-height: 450px;
+    }
+
+
+    .stat-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .button-row {
+        grid-template-columns:
+            1fr;
+    }
+
+}
+.sidebar,
+.nav {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.sidebar::-webkit-scrollbar,
+.nav::-webkit-scrollbar {
+    display: none;
 }
