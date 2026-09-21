@@ -106,12 +106,14 @@
             </p>
 
 
+            <!-- 3D -->
+
             <button
                     class="nav-item"
                     data-option="1"
                     data-dimension="3"
             >
-                3D Cube
+                3-cube-buildup
             </button>
 
 
@@ -120,16 +122,18 @@
                     data-option="101"
                     data-dimension="3"
             >
-                3D Rotate
+                3-cube-rotation
             </button>
 
+
+            <!-- 4D -->
 
             <button
                     class="nav-item active"
                     data-option="2"
                     data-dimension="4"
             >
-                4D Tesseract
+                4-cube-buildup
             </button>
 
 
@@ -138,25 +142,19 @@
                     data-option="102"
                     data-dimension="4"
             >
-                4D Rotate
+                4-cube-rotation
             </button>
 
+
+            <!-- 5D -->
 
             <button
                     class="nav-item"
                     data-option="31"
                     data-dimension="5"
+                    data-build-dimension="5"
             >
-                5D Isometric
-            </button>
-
-
-            <button
-                    class="nav-item"
-                    data-option="32"
-                    data-dimension="5"
-            >
-                5D Tesseract Projection
+                5-cube-buildup
             </button>
 
 
@@ -165,25 +163,19 @@
                     data-option="130"
                     data-dimension="5"
             >
-                5D Rotate
+                5-cube-rotation
             </button>
 
+
+            <!-- 6D -->
 
             <button
                     class="nav-item"
                     data-option="41"
                     data-dimension="6"
+                    data-build-dimension="6"
             >
-                6D Isometric
-            </button>
-
-
-            <button
-                    class="nav-item"
-                    data-option="42"
-                    data-dimension="6"
-            >
-                6D Tesseract Projection
+                6-cube-buildup
             </button>
 
 
@@ -192,9 +184,11 @@
                     data-option="140"
                     data-dimension="6"
             >
-                6D Rotate
+                6-cube-rotation
             </button>
 
+
+            <!-- Project -->
 
             <p class="nav-label">
                 PROJECT
@@ -244,6 +238,7 @@
                 <p class="eyebrow">
                     Interactive Mathematics
                 </p>
+
 
                 <h2 id="pageTitle">
                     4D Tesseract
@@ -346,6 +341,39 @@
                     </div>
 
 
+                    <!--
+                    ONLY VISIBLE FOR
+                    5-CUBE-BUILDUP AND
+                    6-CUBE-BUILDUP
+                    -->
+
+                    <div
+                            id="projectionSelector"
+                            class="build-projection-selector is-hidden"
+                    >
+
+                        <button
+                                id="isometricProjection"
+                                class="build-projection-button active"
+                                type="button"
+                        >
+                            Isometric
+                        </button>
+
+
+                        <button
+                                id="tesseractProjection"
+                                class="build-projection-button"
+                                type="button"
+                        >
+                            Tesseract Projection
+                        </button>
+
+                    </div>
+
+
+
+                    <!-- Play / Reset -->
 
                     <div class="button-row">
 
@@ -370,6 +398,8 @@
 
 
 
+                    <!-- Speed -->
+
                     <label
                             class="range-label"
                             for="speedRange"
@@ -386,7 +416,6 @@
                     </label>
 
 
-
                     <input
                             id="speedRange"
                             type="range"
@@ -397,6 +426,8 @@
                     />
 
 
+
+                    <!-- Vertices -->
 
                     <div class="toggle-row">
 
@@ -422,6 +453,8 @@
                     </div>
 
 
+
+                    <!-- Construction Path -->
 
                     <div class="toggle-row">
 
@@ -490,6 +523,7 @@
 
                         </div>
 
+
                         <div>
 
                             <strong id="vertexCount">
@@ -516,9 +550,6 @@
                         </div>
 
 
-
-
-
                     </div>
 
 
@@ -541,9 +572,11 @@
 
             <section class="card project-card">
 
+
                 <p class="eyebrow">
                     PROJECT
                 </p>
+
 
                 <h3>
                     About the Project
@@ -557,6 +590,7 @@
                     </p>
 
                 </div>
+
 
             </section>
 
@@ -573,9 +607,11 @@
 
             <section class="card project-card">
 
+
                 <p class="eyebrow">
                     GUIDE
                 </p>
+
 
                 <h3>
                     How to Use
@@ -587,6 +623,7 @@
                     Press Play to start the animation and Reset
                     to restart it.
                 </p>
+
 
             </section>
 
@@ -601,12 +638,11 @@
 
 <!-- Hypercube Renderer -->
 
-<script type="module" src="app.js"></script>
+<script
+        type="module"
+        src="app.js"
+></script>
 
 
-</body>
-
-</html>
-<script type="module" src="app.js"></script>
 </body>
 </html>

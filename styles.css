@@ -1194,3 +1194,64 @@ input[type="range"] {
     line-height: 1.45;
     color: #343434;
 }
+
+/* Smaller top header */
+
+.topbar {
+    height: 65px;
+    padding: 10px 20px;
+}
+
+.topbar .eyebrow {
+    font-size: 0.58rem;
+    margin: 0 0 2px;
+    line-height: 1.1;
+}
+
+.topbar h2 {
+    font-size: 1.15rem;
+    margin: 0;
+    line-height: 1.1;
+}
+/* Small projection choices */
+
+.build-projection-selector {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    margin: 6px 0 8px;
+}
+
+.build-projection-selector.is-hidden {
+    display: none;
+}
+
+.build-projection-button {
+    padding: 2px 0;
+
+    border: none;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+
+    background: transparent;
+
+    color: #5f6672;
+
+    font-size: 0.68rem;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.build-projection-button:hover {
+    background: transparent;
+    color: #a6192e;
+}
+
+.build-projection-button.active {
+    background: transparent;
+    color: #a6192e;
+
+    border-bottom-color: #a6192e;
+}
