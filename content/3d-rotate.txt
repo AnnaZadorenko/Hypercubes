@@ -1,5 +1,3 @@
 The 3D Rotate visualization shows a cube rotating in three-dimensional space.
-
 The cube has 8 vertices and 12 edges.
-
 As it rotates, you can see the cube from different angles. The drawing is still displayed on a two-dimensional screen, but the changing view helps show its three-dimensional structure.

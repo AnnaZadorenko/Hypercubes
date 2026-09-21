@@ -1075,3 +1075,122 @@ input[type="range"] {
 .nav::-webkit-scrollbar {
     display: none;
 }
+/* More compact animation controls */
+
+.controls-card {
+    padding: 10px 16px;
+}
+
+.controls-card .eyebrow {
+    font-size: 0.62rem;
+}
+
+.controls-card h3 {
+    font-size: 0.95rem;
+    margin: 2px 0 6px;
+}
+
+.controls-card .status-pill {
+    font-size: 0.65rem;
+    padding: 5px 9px;
+}
+
+/* Play + Reset */
+
+.controls-card .button-row {
+    margin: 12px 0;
+    gap: 8px;
+}
+
+.controls-card .primary-button,
+.controls-card .secondary-button {
+    padding: 9px 14px;
+    font-size: 0.88rem;
+}
+
+/* Animation speed */
+
+.controls-card .range-label {
+    margin-top: 8px;
+    font-size: 0.75rem;
+}
+
+.controls-card input[type="range"] {
+    margin: 6px 0 10px;
+}
+
+/* Show vertices / construction path */
+
+.controls-card .toggle-row {
+    padding: 8px 0;
+    font-size: 0.78rem;
+}
+
+/* Slightly smaller switches */
+
+.controls-card .switch {
+    width: 34px;
+    height: 20px;
+}
+
+.controls-card .slider:before {
+    width: 14px;
+    height: 14px;
+}
+
+.controls-card .switch input:checked + .slider:before {
+    transform: translateX(14px);
+}
+
+/* Make sidebar more compact */
+
+.sidebar {
+    padding: 18px 14px;
+}
+
+.brand-block {
+    padding: 2px 2px 16px;
+    gap: 10px;
+}
+
+.brand-mark {
+    width: 50px;
+    height: 50px;
+}
+
+.brand-block h1 {
+    font-size: 0.9rem;
+    line-height: 1.05;
+}
+
+.brand-block p {
+    font-size: 0.7rem;
+}
+
+.nav {
+    padding-top: 10px;
+}
+
+.nav-label {
+    margin: 12px 8px 5px;
+    font-size: 0.62rem;
+}
+
+.nav-item {
+    margin-bottom: 2px;
+    padding: 7px 10px;
+    font-size: 0.86rem;
+    line-height: 1.2;
+}
+
+.sidebar-footer {
+    padding: 4px;
+    font-size: 0.65rem;
+}
+/* Smaller and darker About description */
+
+.info-card #infoText {
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: #343434;
+}

@@ -1,5 +1,3 @@
 The 6D Rotate visualization shows a rotating projection of a six-dimensional hypercube.
-
 A 6D hypercube has 64 vertices and 192 edges.
-
 The six-dimensional structure is projected into a view that can be displayed on the screen. Rotation provides different views of the projected object and helps show the large number of connected vertices and edges.
