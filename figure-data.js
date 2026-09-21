@@ -14,7 +14,7 @@ export const figures = {
         dimension: 3,
         vertices: 8,
         edges: 12,
-        content: "3d.txt"
+        content: "3d-rotate.txt"
     },
 
     2: {
@@ -32,7 +32,7 @@ export const figures = {
         dimension: 4,
         vertices: 16,
         edges: 32,
-        content: "4d.txt"
+        content: "4d-rotate.txt"
     },
 
     31: {
@@ -59,7 +59,7 @@ export const figures = {
         dimension: 5,
         vertices: 32,
         edges: 80,
-        content: "5d-tesseract.txt"
+        content: "5d-rotate.txt"
     },
 
     41: {
@@ -86,8 +86,9 @@ export const figures = {
         dimension: 6,
         vertices: 64,
         edges: 192,
-        content: "6d-tesseract.txt"
+        content: "6d-rotate.txt"
     }
+
 };
 
 export const sections = {
@@ -98,6 +99,6 @@ export const sections = {
 
     instructions: {
         title: "How to Use",
-        body: "Choose a visualization from the menu. Press Play to watch the hypercube build, use Reset to start again, adjust the animation speed, and use the fullscreen button to enlarge the visualization."
+        contentFile: "how-to-use.txt"
     }
 };

@@ -1,0 +1,17 @@
+Choose a visualization from the menu on the left.
+
+Press Play to start the construction animation.
+
+Press Pause to stop the animation.
+
+Press Reset to return the visualization to the beginning.
+
+Use the Animation speed slider to make the animation slower or faster.
+
+Use Show vertices to show or hide the vertices.
+
+Use Show construction path to show or hide the edges and construction path.
+
+Use the fullscreen button in the upper-right corner of the visualization to open a larger view.
+
+Select a Rotate option to view a rotating projection of the hypercube.
