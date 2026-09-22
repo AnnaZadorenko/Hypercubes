@@ -1,3 +1,1 @@
-The 4D Rotate visualization shows a rotating projection of a four-dimensional hypercube, also called a tesseract.
-A tesseract has 16 vertices and 32 edges.
-Because a four-dimensional object cannot be viewed directly on a two-dimensional screen, the tesseract is projected into a lower-dimensional view. Rotation helps show how its vertices and edges are connected.
+This animation shows how a tesseract rotating about its center and viewed from a point outside it appears when it is projected on to the two-dimensional plane of the computer screen.
