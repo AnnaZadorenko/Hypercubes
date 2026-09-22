@@ -1,1 +1,1 @@
-This animation shows how a cube rotating about its center appears when the motion is projected on to the two-dimensional plane of the computer screen.
+This animation shows how a cube rotating about its center and viewed from a point outside it appears when the three-dimensional motion is projected on to the two-dimensional plane of the computer screen.
