@@ -1,3 +1,1 @@
-The 5D Rotate visualization shows a rotating projection of a five-dimensional hypercube.
-A 5D hypercube has 32 vertices and 80 edges.
-The five-dimensional object is projected onto the screen so its structure can be visualized. As it rotates, the positions of the projected vertices and edges change while their connections remain the same.
+This animation shows how a 5-cube rotating about its center and viewed from a point outside it appears when it is projected on to the two-dimensional plane of the computer screen.
