@@ -61,14 +61,18 @@ function setFigure(option) {
     elements.statusPill.textContent = "Ready";
     elements.statusPill.classList.remove("playing");
 
-    elements.pageTitle.textContent = figure.title;
-    elements.infoTitle.textContent = figure.infoTitle;
+
     elements.dimensionBadge.textContent = `${figure.dimension}D`;
     elements.vertexCount.textContent = figure.vertices.toLocaleString();
     elements.edgeCount.textContent = figure.edges.toLocaleString();
     elements.dimensionCount.textContent = figure.dimension;
 
-    loadFigureText(figure.content, elements.infoText);
+    loadFigureText(
+        figure.content,
+        elements.infoText,
+        elements.pageTitle,
+        elements.infoTitle
+    );
 }
 
 setupFullscreen(renderer, elements);
