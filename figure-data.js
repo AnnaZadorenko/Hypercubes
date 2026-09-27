@@ -87,9 +87,61 @@ export const figures = {
         vertices: 64,
         edges: 192,
         content: "6d-rotate.txt"
+    },
+
+
+    // THE KISS
+
+    201: {
+        title: "The Kiss 8 Dancers",
+        infoTitle: "The Kiss with 8 Dancers",
+        dimension: 3,
+        vertices: 8,
+        edges: 12,
+        content: "kiss-8.txt",
+        kiss: true,
+        kissVersion: "8",
+        dataFile: "CUBE3V.DAT"
+    },
+
+    202: {
+        title: "The Kiss 16 Dancers",
+        infoTitle: "The Kiss with 16 Dancers",
+        dimension: 4,
+        vertices: 16,
+        edges: 32,
+        content: "kiss-16.txt",
+        kiss: true,
+        kissVersion: "16",
+        dataFile: "CUBE4V.DAT"
+    },
+
+    203: {
+        title: "The Kiss 32 Dancers Version 1",
+        infoTitle: "The Kiss with 32 Dancers Version 1",
+        dimension: 5,
+        vertices: 32,
+        edges: 80,
+        content: "kiss-32a.txt",
+        kiss: true,
+        kissVersion: "32a",
+        dataFile: "Cube5av.dat"
+    },
+
+    204: {
+        title: "The Kiss 32 Dancers Version 2",
+        infoTitle: "The Kiss with 32 Dancers Version 2",
+        dimension: 5,
+        vertices: 32,
+        edges: 80,
+        content: "kiss-32b.txt",
+        kiss: true,
+        kissVersion: "32b",
+        dataFile: "Cube5bv.dat"
     }
 
 };
+
 
 export const sections = {
     about: {

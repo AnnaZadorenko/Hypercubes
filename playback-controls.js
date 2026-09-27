@@ -1,40 +1,83 @@
 export function setupPlayback({
-    renderer,
-    elements,
-    getIsPlaying,
-    setPlaying,
-    updateOptions
-}) {
-    elements.playButton.addEventListener("click", () => {
-        setPlaying(!getIsPlaying());
-    });
+                                  elements,
+                                  getIsPlaying,
+                                  setPlaying,
+                                  resetActive,
+                                  setActiveSpeed,
+                                  updateOptions
+                              }) {
 
-    elements.resetButton.addEventListener("click", () => {
-        renderer.reset();
+    // PLAY / PAUSE
 
-        setPlaying(false);
+    elements.playButton.addEventListener(
+        "click",
+        () => {
 
-        elements.playButton.textContent = "▶ Play";
-        elements.statusPill.textContent = "Ready";
-        elements.statusPill.classList.remove("playing");
-    });
+            setPlaying(
+                !getIsPlaying()
+            );
 
-    elements.speedRange.addEventListener("input", () => {
-        const speed = Number(elements.speedRange.value);
+        }
+    );
 
-        elements.speedValue.textContent =
-            `${speed.toFixed(1)}×`;
 
-        renderer.setSpeed(speed);
-    });
+    // RESET
+
+    elements.resetButton.addEventListener(
+        "click",
+        () => {
+
+            resetActive();
+
+            setPlaying(false);
+
+            elements.playButton.textContent =
+                "▶ Play";
+
+            elements.statusPill.textContent =
+                "Ready";
+
+            elements.statusPill.classList.remove(
+                "playing"
+            );
+
+        }
+    );
+
+
+    // SPEED
+
+    elements.speedRange.addEventListener(
+        "input",
+        () => {
+
+            const speed =
+                Number(
+                    elements.speedRange.value
+                );
+
+
+            elements.speedValue.textContent =
+                `${speed.toFixed(1)}×`;
+
+
+            setActiveSpeed(speed);
+
+        }
+    );
+
+
+    // NORMAL HYPERCUBE OPTIONS
 
     elements.verticesToggle.addEventListener(
         "change",
         updateOptions
     );
 
+
     elements.pathToggle.addEventListener(
         "change",
         updateOptions
     );
+
 }

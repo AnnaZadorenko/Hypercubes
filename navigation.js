@@ -65,13 +65,18 @@ export function setupNavigation({
 
 
             if (currentBuildDimension === 5) {
+
                 setFigure(31);
+
                 elements.pageTitle.textContent =
                     "5-cube-buildup";
             }
 
+
             if (currentBuildDimension === 6) {
+
                 setFigure(41);
+
                 elements.pageTitle.textContent =
                     "6-cube-buildup";
             }
@@ -91,13 +96,18 @@ export function setupNavigation({
 
 
             if (currentBuildDimension === 5) {
+
                 setFigure(32);
+
                 elements.pageTitle.textContent =
                     "5-cube-buildup";
             }
 
+
             if (currentBuildDimension === 6) {
+
                 setFigure(42);
+
                 elements.pageTitle.textContent =
                     "6-cube-buildup";
             }
@@ -105,6 +115,9 @@ export function setupNavigation({
         }
     }
 
+
+
+    // NORMAL HYPERCUBE NAVIGATION
 
     document
         .querySelectorAll(".nav-item[data-option]")
@@ -116,8 +129,10 @@ export function setupNavigation({
 
                 button.classList.add("active");
 
+
                 const option =
                     Number(button.dataset.option);
+
 
                 const buildDimension =
                     Number(
@@ -136,6 +151,7 @@ export function setupNavigation({
 
                 }
 
+
                 else if (buildDimension === 6) {
 
                     showProjectionSelector(6);
@@ -147,10 +163,69 @@ export function setupNavigation({
 
                 }
 
+
                 else {
 
                     hideProjectionSelector();
 
+                    setFigure(option);
+
+                }
+
+
+                elements.sidebar.classList.remove(
+                    "open"
+                );
+
+            });
+
+        });
+
+
+
+    // THE KISS NAVIGATION
+
+    document
+        .querySelectorAll(".kiss-nav-item")
+        .forEach(button => {
+
+            button.addEventListener("click", () => {
+
+                clearActiveNavigation();
+
+                hideProjectionSelector();
+
+                button.classList.add("active");
+
+
+                const kissVersion =
+                    button.dataset.kiss;
+
+
+                let option = null;
+
+
+                if (kissVersion === "8") {
+                    option = 201;
+                }
+
+
+                if (kissVersion === "16") {
+                    option = 202;
+                }
+
+
+                if (kissVersion === "32a") {
+                    option = 203;
+                }
+
+
+                if (kissVersion === "32b") {
+                    option = 204;
+                }
+
+
+                if (option !== null) {
                     setFigure(option);
                 }
 
@@ -158,9 +233,14 @@ export function setupNavigation({
                 elements.sidebar.classList.remove(
                     "open"
                 );
+
             });
+
         });
 
+
+
+    // BUILDUP PROJECTION BUTTONS
 
     elements.isometricProjection.addEventListener(
         "click",
@@ -178,6 +258,9 @@ export function setupNavigation({
     );
 
 
+
+    // PROJECT SECTIONS
+
     document
         .querySelectorAll("[data-section]")
         .forEach(button => {
@@ -189,9 +272,11 @@ export function setupNavigation({
                         button.dataset.section
                         ];
 
+
                 if (!section) {
                     return;
                 }
+
 
                 clearActiveNavigation();
 
@@ -199,13 +284,16 @@ export function setupNavigation({
 
                 button.classList.add("active");
 
+
                 loadSectionText(
                     section,
                     elements.infoText
                 );
 
+
                 elements.infoTitle.textContent =
                     section.title;
+
 
                 document
                     .getElementById("infoCard")
@@ -214,12 +302,18 @@ export function setupNavigation({
                         block: "center"
                     });
 
+
                 elements.sidebar.classList.remove(
                     "open"
                 );
+
             });
+
         });
 
+
+
+    // MOBILE MENU
 
     elements.menuButton.addEventListener(
         "click",
@@ -228,6 +322,8 @@ export function setupNavigation({
             elements.sidebar.classList.toggle(
                 "open"
             );
+
         }
     );
+
 }

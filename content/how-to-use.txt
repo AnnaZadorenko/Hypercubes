@@ -1,4 +1,3 @@
-Main heading = How to Use
 Choose a visualization from the menu on the left.
 Press Play to start the construction animation.
 Press Pause to stop the animation.

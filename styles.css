@@ -1255,3 +1255,101 @@ input[type="range"] {
 
     border-bottom-color: #a6192e;
 }
+/* the kiss part */
+
+.kiss-controls {
+    margin-top: 4px;
+}
+
+
+/* Current dance step */
+
+.kiss-step {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding: 8px 0;
+
+    border-top: 1px solid #f0f1f3;
+
+    font-size: 0.78rem;
+}
+
+
+.kiss-step span:first-child {
+    color: #5f6672;
+}
+
+
+#kissStepText {
+    color: #a6192e;
+
+    font-weight: 700;
+}
+
+
+/* Skeleton toggle */
+
+.kiss-controls .toggle-row {
+    padding: 8px 0;
+
+    font-size: 0.78rem;
+}
+
+
+/* Small label for Kiss controls */
+
+.kiss-controls-label {
+    margin: 8px 0 3px;
+
+    color: #6f7684;
+
+    font-size: 0.68rem;
+    font-weight: 700;
+
+    letter-spacing: 0.06em;
+
+    text-transform: uppercase;
+}
+
+
+/* Kiss navigation uses same appearance as normal navigation */
+
+.kiss-nav-item {
+    width: 100%;
+
+    margin-bottom: 2px;
+    padding: 7px 10px;
+
+    border: 0;
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: rgba(255, 255, 255, 0.84);
+
+    text-align: left;
+
+    font-size: 0.86rem;
+    line-height: 1.2;
+
+    cursor: pointer;
+
+    transition:
+            background 0.2s ease,
+            color 0.2s ease,
+            transform 0.2s ease;
+}
+
+
+.kiss-nav-item:hover,
+.kiss-nav-item.active {
+    background: rgba(255, 255, 255, 0.14);
+
+    color: white;
+
+    transform: translateX(2px);
+}

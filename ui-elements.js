@@ -33,5 +33,9 @@ export const elements = {
 
     projectionSelector: document.getElementById("projectionSelector"),
     isometricProjection: document.getElementById("isometricProjection"),
-    tesseractProjection: document.getElementById("tesseractProjection")
+    tesseractProjection: document.getElementById("tesseractProjection"),
+
+    kissControls: document.getElementById("kissControls"),
+    kissStepText: document.getElementById("kissStepText"),
+    kissSkeletonToggle: document.getElementById("kissSkeletonToggle")
 };

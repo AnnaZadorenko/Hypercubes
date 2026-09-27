@@ -1,0 +1,4 @@
+Main heading = The Kiss 32 Dancers Version 2
+About heading = The Kiss with 32 Dancers Version 2
+
+This animation shows The Kiss ballet with 32 dancers using a 5 dimensional hypercube. This version uses a different 5 dimensional projection. The dancers follow the same idea of moving between vertices and meeting other dancers during the ballet.
