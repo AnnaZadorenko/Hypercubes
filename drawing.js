@@ -3,108 +3,72 @@ export const drawingMethods = {
     resize() {
 
         const rect =
-
             this.canvas
                 .getBoundingClientRect();
 
 
         const ratio =
-
             Math.min(
-
                 window.devicePixelRatio || 1,
-
                 2
-
             );
 
 
         this.canvas.width =
-
             Math.max(
-
                 1,
-
                 Math.floor(
                     rect.width *
                     ratio
                 )
-
             );
 
 
         this.canvas.height =
-
             Math.max(
-
                 1,
-
                 Math.floor(
                     rect.height *
                     ratio
                 )
-
             );
 
 
         this.ctx.setTransform(
-
             ratio,
-
             0,
-
             0,
-
             ratio,
-
             0,
-
             0
-
         );
-
     },
+
 
     getBasicColor(number) {
 
-
-
-        switch (
-            number
-            ) {
+        switch (number) {
 
             case 1:
-
                 return "#0000aa";
 
-
             case 3:
-
                 return "#00aaaa";
 
-
             case 4:
-
                 return "#aa0000";
-
 
             case 14:
-
                 return "#ffff55";
 
-
             case 15:
-
                 return "#ffffff";
 
-
             default:
-
                 return "#aa0000";
-
         }
-
     },
+
 
     toCanvas(x, y) {
 
@@ -126,7 +90,6 @@ export const drawingMethods = {
 
 
         const usableWidth =
-
             Math.max(
                 1,
                 width -
@@ -135,7 +98,6 @@ export const drawingMethods = {
 
 
         const usableHeight =
-
             Math.max(
                 1,
                 height -
@@ -144,32 +106,26 @@ export const drawingMethods = {
 
 
         const scale =
-
             Math.min(
-
                 usableWidth /
                 this.logicalWidth,
 
                 usableHeight /
                 this.logicalHeight
-
             );
 
 
         const actualWidth =
-
             this.logicalWidth *
             scale;
 
 
         const actualHeight =
-
             this.logicalHeight *
             scale;
 
 
         const offsetX =
-
             (
                 width -
                 actualWidth
@@ -178,7 +134,6 @@ export const drawingMethods = {
 
 
         const offsetY =
-
             (
                 height -
                 actualHeight
@@ -189,22 +144,18 @@ export const drawingMethods = {
         return {
 
             x:
-
                 offsetX +
                 x *
                 scale,
 
-
             y:
-
                 offsetY +
                 actualHeight -
                 y *
                 scale
-
         };
-
     },
+
 
     drawLine(
         x1,
@@ -213,17 +164,12 @@ export const drawingMethods = {
         y2
     ) {
 
-        if (
-            !this.showPath
-        ) {
-
+        if (!this.showPath) {
             return;
-
         }
 
 
         const p1 =
-
             this.toCanvas(
                 x1,
                 y1
@@ -231,7 +177,6 @@ export const drawingMethods = {
 
 
         const p2 =
-
             this.toCanvas(
                 x2,
                 y2
@@ -246,23 +191,15 @@ export const drawingMethods = {
 
 
         ctx.moveTo(
-
             p1.x,
-
             p1.y
-
         );
 
 
         ctx.lineTo(
-
             p2.x,
-
             p2.y
-
         );
-
-
 
 
         ctx.strokeStyle =
@@ -278,28 +215,151 @@ export const drawingMethods = {
 
 
         ctx.stroke();
-
     },
 
-    drawVertex(index) {
+
+
+    pointsOverlap(
+        pointA,
+        pointB,
+        tolerance = 0.75
+    ) {
+
+        const dx =
+            pointA.x -
+            pointB.x;
+
+
+        const dy =
+            pointA.y -
+            pointB.y;
+
+
+        const distance =
+            Math.sqrt(
+                dx * dx +
+                dy * dy
+            );
+
+
+        return distance <= tolerance;
+    },
+
+
+
+    countVertexOverlap(index) {
+
+        // Only use special overlap display
+        // for 5D and 6D.
 
         if (
-            !this.showVertices
+            this.imax !== 5 &&
+            this.imax !== 6
         ) {
 
-            return;
-
+            return 1;
         }
 
 
         const point =
-
             this.toCanvas(
-
                 this.vx[index],
-
                 this.vy[index]
+            );
 
+
+        let count = 0;
+
+
+        for (
+            let i = 0;
+            i < this.visibleVertexCount;
+            i++
+        ) {
+
+            const otherPoint =
+                this.toCanvas(
+                    this.vx[i],
+                    this.vy[i]
+                );
+
+
+            if (
+                this.pointsOverlap(
+                    point,
+                    otherPoint
+                )
+            ) {
+
+                count++;
+            }
+        }
+
+
+        return count;
+    },
+
+
+
+    overlapAlreadyDrawn(index) {
+
+        if (
+            this.imax !== 5 &&
+            this.imax !== 6
+        ) {
+
+            return false;
+        }
+
+
+        const point =
+            this.toCanvas(
+                this.vx[index],
+                this.vy[index]
+            );
+
+
+        for (
+            let i = 0;
+            i < index;
+            i++
+        ) {
+
+            const previousPoint =
+                this.toCanvas(
+                    this.vx[i],
+                    this.vy[i]
+                );
+
+
+            if (
+                this.pointsOverlap(
+                    point,
+                    previousPoint
+                )
+            ) {
+
+                return true;
+            }
+        }
+
+
+        return false;
+    },
+
+
+
+    drawVertex(index) {
+
+        if (!this.showVertices) {
+            return;
+        }
+
+
+        const point =
+            this.toCanvas(
+                this.vx[index],
+                this.vy[index]
             );
 
 
@@ -307,9 +367,7 @@ export const drawingMethods = {
         BASIC:
 
         IF imax < 5 THEN r0 = 1!
-
         IF imax = 5 THEN r0 = .8
-
         IF imax = 6 THEN r0 = .5
         */
 
@@ -335,7 +393,6 @@ export const drawingMethods = {
         else {
 
             r0 = 0.5;
-
         }
 
 
@@ -343,71 +400,106 @@ export const drawingMethods = {
         Convert logical radius to visible browser pixels.
 
         Keep relative BASIC sizes:
-            1
-            .8
-            .5
+        1
+        .8
+        .5
         */
 
-        const radius =
-
+        const baseRadius =
             Math.max(
-
-                2.2,
-
+                4.5,
                 r0 *
-                4
-
+                5.5
             );
+
+
+
+
+        const overlapCount =
+            this.countVertexOverlap(
+                index
+            );
+
+
+        if (
+            overlapCount > 1 &&
+            this.overlapAlreadyDrawn(index)
+        ) {
+
+            return;
+        }
+
+
+        // --------------------------------------------------
+        // MAKE OVERLAPPING POINTS LARGER
+        //
+        // 1 vertex = base size
+        // 2 vertices = +1.5
+        // 3 vertices = +3
+        // 4 vertices = +4.5
+        // etc.
+        // --------------------------------------------------
+
+        let radius =
+            baseRadius;
+
+
+        if (
+            overlapCount > 1
+        ) {
+
+            radius =
+                baseRadius +
+                (
+                    overlapCount -
+                    1
+                ) *
+                1.5;
+        }
 
 
         const ctx =
             this.ctx;
 
 
-        /*
-        BASIC:
-
-            nb = 15
-
-            CIRCLE (...), r0, nb
-        */
-
         ctx.beginPath();
 
 
         ctx.arc(
-
             point.x,
-
             point.y,
-
             radius,
-
             0,
-
             Math.PI * 2
-
         );
 
 
-        /*
-        BASIC:
 
-            PAINT ..., ncl(j), nb
-        */
 
-        ctx.fillStyle =
+        if (
+            overlapCount > 1
+        ) {
 
-            this.getBasicColor(
-                this.ncl[index]
-            );
+            ctx.fillStyle =
+                "#000000";
+
+        }
+
+        else {
+
+            ctx.fillStyle =
+                this.getBasicColor(
+                    this.ncl[index]
+                );
+        }
 
 
         ctx.fill();
 
 
-        ctx.strokeStyle =
+        // White border around vertex
 
+        ctx.strokeStyle =
             this.getBasicColor(15);
 
 
@@ -416,8 +508,10 @@ export const drawingMethods = {
 
 
         ctx.stroke();
-
     },
+
+
+
 
     drawCompletedLiftEdges() {
 
@@ -427,20 +521,16 @@ export const drawingMethods = {
             ) {
 
             this.drawLine(
-
                 this.vx[a],
-
                 this.vy[a],
-
                 this.vx[b],
-
                 this.vy[b]
-
             );
-
         }
-
     },
+
+
+
 
     drawCompletedCopyEdges() {
 
@@ -450,20 +540,16 @@ export const drawingMethods = {
             ) {
 
             this.drawLine(
-
                 this.vx[a],
-
                 this.vy[a],
-
                 this.vx[b],
-
                 this.vy[b]
-
             );
-
         }
-
     },
+
+
+
 
     drawActiveLift() {
 
@@ -472,7 +558,6 @@ export const drawingMethods = {
         ) {
 
             return;
-
         }
 
 
@@ -484,13 +569,9 @@ export const drawingMethods = {
         SUB 60 draws all n lifting lines simultaneously.
 
         FOR ii = 1 TO nc3
-
             FOR jj = 1 TO n
-
                 draw a tiny piece of every line
-
             NEXT
-
         NEXT
 
         Therefore every lifting line advances together.
@@ -518,49 +599,37 @@ export const drawingMethods = {
 
 
             const currentX =
-
                 xi +
-
                 (
                     xf -
                     xi
                 ) *
-
                 this.liftProgress;
 
 
             const currentY =
-
                 yi +
-
                 (
                     yf -
                     yi
                 ) *
-
                 this.liftProgress;
 
 
             this.drawLine(
-
                 xi,
-
                 yi,
-
                 currentX,
-
                 currentY
-
             );
-
         }
-
     },
+
+
 
     draw() {
 
         const rect =
-
             this.canvas
                 .getBoundingClientRect();
 
@@ -577,45 +646,29 @@ export const drawingMethods = {
             this.ctx;
 
 
-
         // CLEAR
 
-
         ctx.clearRect(
-
             0,
-
             0,
-
             width,
-
             height
-
         );
 
 
-        /*
-        Original SCREEN 12 background was black.
-
-        If want the website's white canvas instead
-        change this to "#ffffff".
-        */
 
         ctx.fillStyle =
             "#ffffff";
 
 
         ctx.fillRect(
-
             0,
-
             0,
-
             width,
-
             height
-
         );
+
+
 
         if (
             this.autoRotate
@@ -624,10 +677,9 @@ export const drawingMethods = {
             this.drawRotationHypercube();
 
             return;
-
         }
 
-        // DRAW LINES ALREADY CREATED BY EARLIER DIMENSIONS
+
 
 
         this.drawCompletedLiftEdges();
@@ -637,20 +689,14 @@ export const drawingMethods = {
 
 
 
-        // DRAW CURRENT SLOW SUB 60 LINES
-
-
         if (
             !this.autoRotate
         ) {
 
             this.drawActiveLift();
-
         }
 
 
-
-        // DRAW VISIBLE VERTICES
 
 
         for (
@@ -660,22 +706,21 @@ export const drawingMethods = {
         ) {
 
             this.drawVertex(i);
-
         }
+
+
         if (
             this.autoRotate &&
             this.playing
         ) {
 
             this.rotationAngle +=
-
                 delta *
                 0.0006 *
                 this.speed;
-
         }
 
-        // FINAL BASIC TEXT
+
 
 
         if (
@@ -699,40 +744,31 @@ export const drawingMethods = {
             BASIC:
 
             LOCATE 28, 20
-
-            PRINT
-            "THE HYPERCUBE, D ="; imax
+            PRINT "THE HYPERCUBE, D ="; imax
             */
 
             ctx.fillText(
-
                 `THE HYPERCUBE, D = ${this.imax}`,
-
                 width / 2,
-
                 height - 20
-
             );
 
 
             ctx.textAlign =
                 "left";
-
         }
-
     },
+
+
+
 
     loop(now) {
 
         const delta =
-
             Math.min(
-
                 50,
-
                 now -
                 this.lastTime
-
             );
 
 
@@ -746,11 +782,9 @@ export const drawingMethods = {
         ) {
 
             this.rotationAngle +=
-
                 delta *
                 0.0005 *
                 this.speed;
-
         }
 
 
@@ -765,7 +799,6 @@ export const drawingMethods = {
         requestAnimationFrame(
             this.loop
         );
-
     }
 
 };
