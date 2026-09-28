@@ -8,6 +8,10 @@ export function setupNavigation({
     let currentBuildDimension = null;
 
 
+    // --------------------------------------------------
+    // ACTIVE NAVIGATION
+    // --------------------------------------------------
+
     function clearActiveNavigation() {
 
         document
@@ -17,6 +21,10 @@ export function setupNavigation({
             });
     }
 
+
+    // --------------------------------------------------
+    // PROJECT PAGES
+    // --------------------------------------------------
 
     function hideAllProjectPages() {
 
@@ -66,6 +74,10 @@ export function setupNavigation({
     }
 
 
+    // --------------------------------------------------
+    // PROJECTION SELECTOR
+    // --------------------------------------------------
+
     function hideProjectionSelector() {
 
         elements.projectionSelector.classList.add(
@@ -93,6 +105,49 @@ export function setupNavigation({
         );
     }
 
+
+    // --------------------------------------------------
+    // KISS VERSION SELECTOR
+    // --------------------------------------------------
+
+    function hideKissVersionSelector() {
+
+        elements.kissVersionSelector.classList.add(
+            "is-hidden"
+        );
+    }
+
+
+    function showKissVersionSelector() {
+
+        elements.kissVersionSelector.classList.remove(
+            "is-hidden"
+        );
+    }
+
+
+    function setActiveKissVersion(version) {
+
+        elements.kissVersionButtons.forEach(button => {
+
+            if (
+                button.dataset.kissVersion === version
+            ) {
+
+                button.classList.add("active");
+
+            } else {
+
+                button.classList.remove("active");
+            }
+
+        });
+    }
+
+
+    // --------------------------------------------------
+    // SELECT PROJECTION
+    // --------------------------------------------------
 
     function selectProjection(type) {
 
@@ -176,6 +231,8 @@ export function setupNavigation({
 
                 showVisualizationPage();
 
+                hideKissVersionSelector();
+
                 button.classList.add(
                     "active"
                 );
@@ -232,7 +289,7 @@ export function setupNavigation({
 
 
     // --------------------------------------------------
-    // THE KISS
+    // THE KISS - DANCES
     // --------------------------------------------------
 
     document
@@ -247,41 +304,18 @@ export function setupNavigation({
 
                 hideProjectionSelector();
 
+                showKissVersionSelector();
+
                 button.classList.add(
                     "active"
                 );
 
 
-                const kissVersion =
-                    button.dataset.kiss;
+                // Default to 8 dancers
 
+                setActiveKissVersion("8");
 
-                let option = null;
-
-
-                if (kissVersion === "8") {
-                    option = 201;
-                }
-
-
-                if (kissVersion === "16") {
-                    option = 202;
-                }
-
-
-                if (kissVersion === "32a") {
-                    option = 203;
-                }
-
-
-                if (kissVersion === "32b") {
-                    option = 204;
-                }
-
-
-                if (option !== null) {
-                    setFigure(option);
-                }
+                setFigure(201);
 
 
                 elements.sidebar.classList.remove(
@@ -290,6 +324,49 @@ export function setupNavigation({
             });
 
         });
+
+
+    // --------------------------------------------------
+    // KISS VERSION BUTTONS
+    // --------------------------------------------------
+
+    elements.kissVersionButtons.forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            const version =
+                button.dataset.kissVersion;
+
+
+            setActiveKissVersion(version);
+
+
+            if (version === "8") {
+
+                setFigure(201);
+            }
+
+
+            else if (version === "16") {
+
+                setFigure(202);
+            }
+
+
+            else if (version === "32a") {
+
+                setFigure(203);
+            }
+
+
+            else if (version === "32b") {
+
+                setFigure(204);
+            }
+
+        });
+
+    });
 
 
     // --------------------------------------------------
@@ -344,6 +421,8 @@ export function setupNavigation({
                 clearActiveNavigation();
 
                 hideProjectionSelector();
+
+                hideKissVersionSelector();
 
                 button.classList.add(
                     "active"

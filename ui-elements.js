@@ -32,6 +32,11 @@ export const elements = {
     sidebar: document.querySelector(".sidebar"),
     menuButton: document.getElementById("menuButton"),
 
+
+    // --------------------------------------------------
+    // 5D / 6D PROJECTION SELECTOR
+    // --------------------------------------------------
+
     projectionSelector:
         document.getElementById("projectionSelector"),
 
@@ -40,6 +45,22 @@ export const elements = {
 
     tesseractProjection:
         document.getElementById("tesseractProjection"),
+
+
+    // --------------------------------------------------
+    // THE KISS VERSION SELECTOR
+    // --------------------------------------------------
+
+    kissVersionSelector:
+        document.getElementById("kissVersionSelector"),
+
+    kissVersionButtons:
+        document.querySelectorAll(".kiss-version-button"),
+
+
+    // --------------------------------------------------
+    // THE KISS CONTROLS
+    // --------------------------------------------------
 
     kissControls:
         document.getElementById("kissControls"),
@@ -51,7 +72,9 @@ export const elements = {
         document.getElementById("kissSkeletonToggle"),
 
 
-    // Pages
+    // --------------------------------------------------
+    // PAGES
+    // --------------------------------------------------
 
     visualizationSection:
         document.getElementById("visualizationSection"),
