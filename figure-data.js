@@ -1,4 +1,5 @@
 export const figures = {
+
     1: {
         title: "3D Cube",
         infoTitle: "Building a 3D Cube",
@@ -90,7 +91,9 @@ export const figures = {
     },
 
 
+    // --------------------------------------------------
     // THE KISS
+    // --------------------------------------------------
 
     201: {
         title: "The Kiss 8 Dancers",
@@ -143,7 +146,12 @@ export const figures = {
 };
 
 
+// --------------------------------------------------
+// PROJECT SECTIONS
+// --------------------------------------------------
+
 export const sections = {
+
     about: {
         title: "About the Project",
         contentFile: "about-project.txt"
@@ -152,5 +160,21 @@ export const sections = {
     instructions: {
         title: "How to Use",
         contentFile: "how-to-use.txt"
+    },
+
+    more: {
+        title: "More About D-Cube",
+        contentFile: "more-about-d-cube.txt"
+    },
+
+    references: {
+        title: "References",
+        contentFile: "references.txt"
+    },
+
+    credits: {
+        title: "Credits",
+        contentFile: "credits.txt"
     }
+
 };

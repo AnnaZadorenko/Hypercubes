@@ -1,4 +1,4 @@
 Main heading = 3D Cube
-About heading = Building a 3D Cube
+About heading =
 This animation shows how a 3-cube (or ordinary three-dimensional cube) can be built up through the chain: point --> line --> square --> cube, if each object in the chain is moved along one of the dimensions perpendicular to it. The animation is shown as it appears when projected from the three-dimensional space in which it occurs to the two-dimensional plane of the computer screen.
 The number of vertices and edges of a cube are shown in the boxes below. 

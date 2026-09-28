@@ -1,3 +1,3 @@
 Main heading = 5D Rotate
-About heading = Rotating 5D Hypercube
+About heading =
 This animation shows how a 5-cube rotating about its center and viewed from a point outside it appears when projected on to the two-dimensional plane of the computer screen.

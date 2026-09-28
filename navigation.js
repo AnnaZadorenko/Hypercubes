@@ -18,6 +18,54 @@ export function setupNavigation({
     }
 
 
+    function hideAllProjectPages() {
+
+        elements.aboutSection.classList.add(
+            "is-hidden"
+        );
+
+        elements.instructionsSection.classList.add(
+            "is-hidden"
+        );
+
+        elements.moreSection.classList.add(
+            "is-hidden"
+        );
+
+        elements.referencesSection.classList.add(
+            "is-hidden"
+        );
+
+        elements.creditsSection.classList.add(
+            "is-hidden"
+        );
+    }
+
+
+    function showVisualizationPage() {
+
+        hideAllProjectPages();
+
+        elements.visualizationSection.classList.remove(
+            "is-hidden"
+        );
+    }
+
+
+    function showProjectPage(page) {
+
+        elements.visualizationSection.classList.add(
+            "is-hidden"
+        );
+
+        hideAllProjectPages();
+
+        page.classList.remove(
+            "is-hidden"
+        );
+    }
+
+
     function hideProjectionSelector() {
 
         elements.projectionSelector.classList.add(
@@ -80,7 +128,6 @@ export function setupNavigation({
                 elements.pageTitle.textContent =
                     "6-cube-buildup";
             }
-
         }
 
 
@@ -111,13 +158,13 @@ export function setupNavigation({
                 elements.pageTitle.textContent =
                     "6-cube-buildup";
             }
-
         }
     }
 
 
-
-    // NORMAL HYPERCUBE NAVIGATION
+    // --------------------------------------------------
+    // NORMAL HYPERCUBES
+    // --------------------------------------------------
 
     document
         .querySelectorAll(".nav-item[data-option]")
@@ -127,11 +174,17 @@ export function setupNavigation({
 
                 clearActiveNavigation();
 
-                button.classList.add("active");
+                showVisualizationPage();
+
+                button.classList.add(
+                    "active"
+                );
 
 
                 const option =
-                    Number(button.dataset.option);
+                    Number(
+                        button.dataset.option
+                    );
 
 
                 const buildDimension =
@@ -148,7 +201,6 @@ export function setupNavigation({
 
                     elements.pageTitle.textContent =
                         "5-cube-buildup";
-
                 }
 
 
@@ -160,7 +212,6 @@ export function setupNavigation({
 
                     elements.pageTitle.textContent =
                         "6-cube-buildup";
-
                 }
 
 
@@ -169,21 +220,20 @@ export function setupNavigation({
                     hideProjectionSelector();
 
                     setFigure(option);
-
                 }
 
 
                 elements.sidebar.classList.remove(
                     "open"
                 );
-
             });
 
         });
 
 
-
-    // THE KISS NAVIGATION
+    // --------------------------------------------------
+    // THE KISS
+    // --------------------------------------------------
 
     document
         .querySelectorAll(".kiss-nav-item")
@@ -193,9 +243,13 @@ export function setupNavigation({
 
                 clearActiveNavigation();
 
+                showVisualizationPage();
+
                 hideProjectionSelector();
 
-                button.classList.add("active");
+                button.classList.add(
+                    "active"
+                );
 
 
                 const kissVersion =
@@ -233,19 +287,22 @@ export function setupNavigation({
                 elements.sidebar.classList.remove(
                     "open"
                 );
-
             });
 
         });
 
 
-
-    // BUILDUP PROJECTION BUTTONS
+    // --------------------------------------------------
+    // PROJECTION BUTTONS
+    // --------------------------------------------------
 
     elements.isometricProjection.addEventListener(
         "click",
         () => {
-            selectProjection("isometric");
+
+            selectProjection(
+                "isometric"
+            );
         }
     );
 
@@ -253,13 +310,17 @@ export function setupNavigation({
     elements.tesseractProjection.addEventListener(
         "click",
         () => {
-            selectProjection("tesseract");
+
+            selectProjection(
+                "tesseract"
+            );
         }
     );
 
 
-
-    // PROJECT SECTIONS
+    // --------------------------------------------------
+    // PROJECT PAGES
+    // --------------------------------------------------
 
     document
         .querySelectorAll("[data-section]")
@@ -267,10 +328,12 @@ export function setupNavigation({
 
             button.addEventListener("click", () => {
 
+                const sectionName =
+                    button.dataset.section;
+
+
                 const section =
-                    sections[
-                        button.dataset.section
-                        ];
+                    sections[sectionName];
 
 
                 if (!section) {
@@ -282,38 +345,152 @@ export function setupNavigation({
 
                 hideProjectionSelector();
 
-                button.classList.add("active");
-
-
-                loadSectionText(
-                    section,
-                    elements.infoText
+                button.classList.add(
+                    "active"
                 );
 
 
-                elements.infoTitle.textContent =
-                    section.title;
+                // ABOUT
+
+                if (sectionName === "about") {
+
+                    showProjectPage(
+                        elements.aboutSection
+                    );
 
 
-                document
-                    .getElementById("infoCard")
-                    .scrollIntoView({
-                        behavior: "smooth",
-                        block: "center"
-                    });
+                    const text =
+                        document.getElementById(
+                            "aboutProjectText"
+                        );
+
+
+                    loadSectionText(
+                        section,
+                        text
+                    );
+
+
+                    elements.pageTitle.textContent =
+                        "About the Project";
+                }
+
+
+                // HOW TO USE
+
+                if (sectionName === "instructions") {
+
+                    showProjectPage(
+                        elements.instructionsSection
+                    );
+
+
+                    const text =
+                        document.getElementById(
+                            "instructionsText"
+                        );
+
+
+                    loadSectionText(
+                        section,
+                        text
+                    );
+
+
+                    elements.pageTitle.textContent =
+                        "How to Use";
+                }
+
+
+                // MORE ABOUT D-CUBE
+
+                if (sectionName === "more") {
+
+                    showProjectPage(
+                        elements.moreSection
+                    );
+
+
+                    const text =
+                        document.getElementById(
+                            "moreText"
+                        );
+
+
+                    loadSectionText(
+                        section,
+                        text
+                    );
+
+
+                    elements.pageTitle.textContent =
+                        "More About D-Cube";
+                }
+
+
+                // REFERENCES
+
+                if (sectionName === "references") {
+
+                    showProjectPage(
+                        elements.referencesSection
+                    );
+
+
+                    const text =
+                        document.getElementById(
+                            "referencesText"
+                        );
+
+
+                    loadSectionText(
+                        section,
+                        text
+                    );
+
+
+                    elements.pageTitle.textContent =
+                        "References";
+                }
+
+
+                // CREDITS
+
+                if (sectionName === "credits") {
+
+                    showProjectPage(
+                        elements.creditsSection
+                    );
+
+
+                    const text =
+                        document.getElementById(
+                            "creditsText"
+                        );
+
+
+                    loadSectionText(
+                        section,
+                        text
+                    );
+
+
+                    elements.pageTitle.textContent =
+                        "Credits";
+                }
 
 
                 elements.sidebar.classList.remove(
                     "open"
                 );
-
             });
 
         });
 
 
-
+    // --------------------------------------------------
     // MOBILE MENU
+    // --------------------------------------------------
 
     elements.menuButton.addEventListener(
         "click",
@@ -322,8 +499,6 @@ export function setupNavigation({
             elements.sidebar.classList.toggle(
                 "open"
             );
-
         }
     );
-
 }

@@ -1,3 +1,3 @@
 Main heading = The Kiss 16 Dancers
-About heading = The Kiss with 16 Dancers
+About heading =
 This animation shows The Kiss ballet with 16 dancers placed at the vertices of a 4 dimensional hypercube. The dancers move between vertices following the paths of the hypercube. During the different steps of the dance, pairs of dancers meet and exchange positions.

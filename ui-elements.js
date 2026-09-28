@@ -1,4 +1,5 @@
 export const elements = {
+
     splash: document.getElementById("splash"),
     app: document.getElementById("app"),
     canvas: document.getElementById("hypercubeCanvas"),
@@ -31,11 +32,42 @@ export const elements = {
     sidebar: document.querySelector(".sidebar"),
     menuButton: document.getElementById("menuButton"),
 
-    projectionSelector: document.getElementById("projectionSelector"),
-    isometricProjection: document.getElementById("isometricProjection"),
-    tesseractProjection: document.getElementById("tesseractProjection"),
+    projectionSelector:
+        document.getElementById("projectionSelector"),
 
-    kissControls: document.getElementById("kissControls"),
-    kissStepText: document.getElementById("kissStepText"),
-    kissSkeletonToggle: document.getElementById("kissSkeletonToggle")
+    isometricProjection:
+        document.getElementById("isometricProjection"),
+
+    tesseractProjection:
+        document.getElementById("tesseractProjection"),
+
+    kissControls:
+        document.getElementById("kissControls"),
+
+    kissStepText:
+        document.getElementById("kissStepText"),
+
+    kissSkeletonToggle:
+        document.getElementById("kissSkeletonToggle"),
+
+
+    // Pages
+
+    visualizationSection:
+        document.getElementById("visualizationSection"),
+
+    aboutSection:
+        document.getElementById("aboutSection"),
+
+    instructionsSection:
+        document.getElementById("instructionsSection"),
+
+    moreSection:
+        document.getElementById("moreSection"),
+
+    referencesSection:
+        document.getElementById("referencesSection"),
+
+    creditsSection:
+        document.getElementById("creditsSection")
 };

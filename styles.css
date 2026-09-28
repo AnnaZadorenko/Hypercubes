@@ -1353,3 +1353,160 @@ input[type="range"] {
 
     transform: translateX(2px);
 }
+#infoTitle {
+    display: none;
+}
+.info-card {
+    padding-top: 20px;
+}
+
+#infoText {
+    margin-top: 0;
+}
+.project-page {
+    width: 100%;
+    padding: 30px;
+}
+
+.project-page .project-card {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 50px 60px;
+    min-height: 600px;
+}
+
+.project-page .project-card h3 {
+    font-size: 32px;
+    margin-bottom: 25px;
+}
+
+.project-page .project-card p,
+#aboutProjectText {
+    font-size: 18px;
+    line-height: 1.7;
+}
+
+.project-page .eyebrow {
+    font-size: 13px;
+}
+.references-text {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+.references-text em {
+    font-style: italic;
+}
+
+.references-text br {
+    line-height: 2;
+}
+.text-page-heading {
+    text-align: center;
+    font-weight: 700;
+    font-size: 22px;
+    margin-bottom: 25px;
+}
+/* -----------------------------------------
+   TEXT PAGE HEADING
+----------------------------------------- */
+
+.text-page-heading {
+    width: 100%;
+    text-align: center;
+    font-weight: 700;
+    font-size: 22px;
+    margin: 0 0 30px 0;
+}
+
+
+/* -----------------------------------------
+   D-CUBE PAGE
+----------------------------------------- */
+
+.dcube-text {
+    font-size: 13px;
+    line-height: 1.45;
+    color: #222;
+}
+
+.dcube-text p {
+    margin: 0 0 24px 0;
+}
+
+
+/* -----------------------------------------
+   D-CUBE TABLE
+----------------------------------------- */
+
+.dcube-table-wrap {
+    width: 100%;
+    margin: 35px 0;
+    overflow-x: auto;
+}
+
+.dcube-table {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.dcube-table th,
+.dcube-table td {
+    border: 1px solid #222;
+    padding: 7px 14px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.dcube-table th {
+    font-weight: 700;
+}
+
+
+/* -----------------------------------------
+   REFERENCES
+----------------------------------------- */
+
+.references-text {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+.references-text p {
+    margin: 0 0 24px 0;
+}
+
+.references-text em {
+    font-style: italic;
+}
+.project-page .project-card .dcube-text p {
+    font-size: 13px;
+    line-height: 1.45;
+    color: #111;
+}
+/* Smaller darker text on ALL project pages */
+
+.project-page .project-card p,
+.project-page .project-card #aboutProjectText,
+.project-page .project-card #instructionsText,
+.project-page .project-card #moreText,
+.project-page .project-card #referencesText,
+.project-page .project-card #creditsText {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #111;
+}
+
+
+/* Keep D-cube table normal size */
+
+.project-page .dcube-table th,
+.project-page .dcube-table td {
+    font-size: 18px;
+}
