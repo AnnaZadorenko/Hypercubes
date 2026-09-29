@@ -447,6 +447,8 @@ async function setFigure(option) {
 
     renderer.setOption(option);
 
+    renderer.currentOption = option;
+
     renderer.pause();
 
 

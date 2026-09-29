@@ -475,13 +475,54 @@ export const drawingMethods = {
 
 
 
-
         if (
+            this.imax === 6 &&
+            !this.autoRotate
+        ) {
+
+            if (
+                overlapCount === 1
+            ) {
+
+                ctx.fillStyle =
+                    "#0000aa";
+
+            }
+
+            else if (
+                overlapCount === 2
+            ) {
+
+                ctx.fillStyle =
+                    "#00aa00";
+
+            }
+
+            else {
+
+                ctx.fillStyle =
+                    "#800080";
+
+            }
+
+        }
+
+        else if (
             overlapCount > 1
         ) {
 
             ctx.fillStyle =
                 "#000000";
+
+        }
+
+        else if (
+            this.imax === 5 &&
+            !this.autoRotate
+        ) {
+
+            ctx.fillStyle =
+                "#0000aa";
 
         }
 
@@ -492,7 +533,6 @@ export const drawingMethods = {
                     this.ncl[index]
                 );
         }
-
 
         ctx.fill();
 
