@@ -18,7 +18,7 @@ d | Figure | V | E | F | C | HC | HHC | HHHC
 [/TABLE]
 
 The rule for obtaining any entry of the table is just this: it is twice the entry above it plus the entry to the left of that entry (with 0 taken for any entry that is a blank or outside the table). Thus, the entry 24 in the fifth row is twice 6 plus 12, while 64 in the last row is twice 32 plus 0. The table can be extended downwards beyond the last row as far as one wishes by repeated use of this rule.
-*space*
+
 What is the reason for the above rule? It is staring you in the face in all the animations you have seen on this site! To see why, let us first restate the rule as follows:
 
 **The number of k-cubes in a d-cube is twice the number of k-cubes in a (d-1)-cube plus the number of (k-1)-cubes in a (d-1)-cube.**
