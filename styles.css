@@ -1578,3 +1578,6 @@ input[type="range"] {
         font-size: 0.78rem;
     }
 }
+.text-space {
+    height: 15px;
+}

@@ -126,7 +126,11 @@ function formatSectionHTML(text) {
         "<strong>$1</strong>"
     );
 
-
+// SPACE
+    text = text.replace(
+        /\*space\*/g,
+        '<div class="text-space"></div>'
+    );
     // --------------------------------------------------
     // ITALIC
     // *text*
