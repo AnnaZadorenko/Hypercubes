@@ -503,7 +503,7 @@ export function setupNavigation({
 
 
                     elements.pageTitle.textContent =
-                        "More About D-Cube";
+                        "More about d-Cube";
                 }
 
 

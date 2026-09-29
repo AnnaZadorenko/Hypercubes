@@ -163,7 +163,7 @@ export const sections = {
     },
 
     more: {
-        title: "More About D-Cube",
+        title: "More about d-Cube",
         contentFile: "more-about-d-cube.txt"
     },
 
