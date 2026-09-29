@@ -1,6 +1,7 @@
 # The elements of a d-cube
 
 A d-dimensional cube, or d-cube, has several smaller dimensional cubes inside it as elements. Thus, a 3-cube has points (or vertices), lines (or edges) and squares (or faces) as its elements, these being 0-cubes, 1-cubes and 2-cubes, respectively. For convenience, we will also regard the 3-cube as an element of itself, so that it is the last member of the sequence 0-cube, 1-cube, … just defined. In the same way, a d-cube has k-cubes, for all 0 ≤ k ≤ d, as its elements. This note will show you an easy way to determine the number of k-cubes contained in a d-cube, for each value of k from 0 to d.
+
 The table below shows each d-cube on a separate line, with the number of k-cubes in it shown for each value of k from 0 to d as one moves from left to right along the line. The symbols V, E, F, C, HC, HHC and HHHC at the top stand for vertex, edge, face, cube, hypercube, hyper-hypercube and hyper-hyper-hypercube, respectively, these being the names often used for 0-,1-,2-,3-,4-,5- and 6-cubes when they occur as elements of larger dimensional cubes. The last entry in each row of the table is a 1, for the reason explained earlier. The entries in the first four rows of the table are obvious, but how can we understand the others?
 
 [TABLE]
