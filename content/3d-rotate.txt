@@ -1,3 +1,3 @@
-Main heading = 3D Rotate
+Main heading = 3-cube-rotation
 About heading =
 This animation shows how a cube rotating about its center and viewed from a point outside it appears when projected on to the two-dimensional plane of the computer screen.

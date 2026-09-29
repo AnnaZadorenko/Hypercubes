@@ -1,3 +1,3 @@
-Main heading = 6D Tesseract Projection
+Main heading = 6-cube-buildup
 About heading =
 This projection represents a 6D hypercube using a tesseract-style view. The object has 64 vertices and 192 edges. Its six dimensional directions are projected onto the screen in a different arrangement from the isometric projection.
