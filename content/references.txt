@@ -1,9 +1,9 @@
 # References
 
-1. *Flatland: A Romance of Many Dimensions by Edwin A. Abbott.* A classic novel by a nineteenth-century Englishman about the attempt by a Square, an inhabitant of Flatland, to visualize a three-dimensional cube.
+1. *Flatland: A Romance of Many Dimensions by Edwin A. Abbott.* A classic novel by a nineteenth-century Englishman about an attempt by a Square, an inhabitant of Flatland, to visualize three-dimensional objects, such as a cube.
 
 2. *Regular Polytopes by H.S.M. Coxeter (Dover).* A classic monograph by a famous geometer that gives a detailed treatment of d-dimensional cubes in one of its chapters.
 
-3. *Surfing through hyperspace by Clifford A. Pickover (Oxford University Press).* An elementary and very readable account of higher dimensions. A chapter in it treats higher dimensional cubes and shows the projections of the 5- and 6-cubes we build up in our animations.
+3. *Surfing through hyperspace by Clifford A. Pickover (Oxford University Press).* An elementary and very readable account of higher dimensions. A chapter of the book discusses higher dimensional generalizations of the cube and shows the Petrie projections of the 5- and 6-cubes we build up in our animations.
 
-4. *The Hypercubical Dance – A Solution to Abbott’s Problem in “Flatland”? by P.K. Aravind, The Math. Gazette, 91, 193-197, 2007.* Gives a more detailed explanation of the hypercubical dance shown in one of the exhibits.
+4. *The Hypercubical Dance – A Solution to Abbott’s Problem in “Flatland”? by P.K. Aravind, The Math. Gazette, 91, 193-197, 2007.* This paper gives a more detailed explanation of the hypercubical dance shown in one of the exhibits.
