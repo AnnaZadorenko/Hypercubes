@@ -1,3 +1,11 @@
 Main heading = 16-dancers
 About heading =
-This animation shows The Kiss ballet with 16 dancers placed at the vertices of a 4 dimensional hypercube. The dancers move between vertices following the paths of the hypercube. During the different steps of the dance, pairs of dancers meet and exchange positions.
+This animation shows a ballet performed on the skeleton of a tesseract or hypercube.
+
+The ballet begins with 16 dancers taking up positions at the vertices of the hypercube. At each step, the dancers either approach each other along the edges of the hypercube to kiss at their midpoints and then return to the vertices they started out from or move along its edges to take up positions at other vertices of the hypercube; the first type of movement will be termed a kiss and the second a shuffle.
+
+By a suitable combination of kisses and shuffles, each dancer will kiss all the others exactly once and then return to his/her starting point at the beginning of the dance.  
+
+As an encore, the dancers walk along the edges of the hypercube to visit all the edges exactly once before returning to their starting point. 
+
+For more details of the ballet, see the article by Aravind given under References.
