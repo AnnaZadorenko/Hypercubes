@@ -24,6 +24,7 @@ export const rotationMethods = {
             const vertex = [];
 
 
+
             for (
                 let d = 0;
                 d < dimension;

@@ -433,6 +433,7 @@ export function setupNavigation({
         });
 
 
+
     elements.menuButton.addEventListener(
         "click",
         () => {

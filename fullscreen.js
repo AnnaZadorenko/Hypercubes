@@ -15,6 +15,7 @@ export function setupFullscreen(renderer, elements) {
         }
     });
 
+
     document.addEventListener("fullscreenchange", () => {
         const isFullscreen =
             document.fullscreenElement === elements.visualPanel;

@@ -131,6 +131,7 @@ function formatSectionHTML(text) {
         /\*space\*/g,
         '<div class="text-space"></div>'
     );
+
     // --------------------------------------------------
     // ITALIC
     // *text*

@@ -1456,6 +1456,7 @@ export class KissRenderer {
     }
 
 
+
     getBuildLiftEdges() {
 
         const oldCount =

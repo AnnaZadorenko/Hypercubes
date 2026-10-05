@@ -68,6 +68,7 @@ export const elements = {
     instructionsSection:
         document.getElementById("instructionsSection"),
 
+
     moreSection:
         document.getElementById("moreSection"),
 

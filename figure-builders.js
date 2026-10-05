@@ -26,6 +26,7 @@ export const figure_buildersMethods = {
         ];
 
 
+
         if (
             !allowed.includes(option)
         ) {

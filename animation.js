@@ -972,6 +972,7 @@ export const animationMethods = {
                 }
 
 
+
                 this.stage =
                     "lift";
 
