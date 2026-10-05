@@ -33,9 +33,7 @@ export const elements = {
     menuButton: document.getElementById("menuButton"),
 
 
-    // --------------------------------------------------
     // 5D / 6D PROJECTION SELECTOR
-    // --------------------------------------------------
 
     projectionSelector:
         document.getElementById("projectionSelector"),
@@ -47,20 +45,7 @@ export const elements = {
         document.getElementById("tesseractProjection"),
 
 
-    // --------------------------------------------------
-    // THE KISS VERSION SELECTOR
-    // --------------------------------------------------
-
-    kissVersionSelector:
-        document.getElementById("kissVersionSelector"),
-
-    kissVersionButtons:
-        document.querySelectorAll(".kiss-version-button"),
-
-
-    // --------------------------------------------------
-    // THE KISS CONTROLS
-    // --------------------------------------------------
+    // HYPERCUBE DANCE CONTROLS
 
     kissControls:
         document.getElementById("kissControls"),
@@ -72,9 +57,7 @@ export const elements = {
         document.getElementById("kissSkeletonToggle"),
 
 
-    // --------------------------------------------------
     // PAGES
-    // --------------------------------------------------
 
     visualizationSection:
         document.getElementById("visualizationSection"),
@@ -93,4 +76,5 @@ export const elements = {
 
     creditsSection:
         document.getElementById("creditsSection")
+
 };

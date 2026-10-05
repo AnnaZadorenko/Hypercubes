@@ -8,10 +8,6 @@ export function setupNavigation({
     let currentBuildDimension = null;
 
 
-    // --------------------------------------------------
-    // ACTIVE NAVIGATION
-    // --------------------------------------------------
-
     function clearActiveNavigation() {
 
         document
@@ -21,10 +17,6 @@ export function setupNavigation({
             });
     }
 
-
-    // --------------------------------------------------
-    // PROJECT PAGES
-    // --------------------------------------------------
 
     function hideAllProjectPages() {
 
@@ -74,10 +66,6 @@ export function setupNavigation({
     }
 
 
-    // --------------------------------------------------
-    // PROJECTION SELECTOR
-    // --------------------------------------------------
-
     function hideProjectionSelector() {
 
         elements.projectionSelector.classList.add(
@@ -105,49 +93,6 @@ export function setupNavigation({
         );
     }
 
-
-    // --------------------------------------------------
-    // KISS VERSION SELECTOR
-    // --------------------------------------------------
-
-    function hideKissVersionSelector() {
-
-        elements.kissVersionSelector.classList.add(
-            "is-hidden"
-        );
-    }
-
-
-    function showKissVersionSelector() {
-
-        elements.kissVersionSelector.classList.remove(
-            "is-hidden"
-        );
-    }
-
-
-    function setActiveKissVersion(version) {
-
-        elements.kissVersionButtons.forEach(button => {
-
-            if (
-                button.dataset.kissVersion === version
-            ) {
-
-                button.classList.add("active");
-
-            } else {
-
-                button.classList.remove("active");
-            }
-
-        });
-    }
-
-
-    // --------------------------------------------------
-    // SELECT PROJECTION
-    // --------------------------------------------------
 
     function selectProjection(type) {
 
@@ -217,10 +162,6 @@ export function setupNavigation({
     }
 
 
-    // --------------------------------------------------
-    // NORMAL HYPERCUBES
-    // --------------------------------------------------
-
     document
         .querySelectorAll(".nav-item[data-option]")
         .forEach(button => {
@@ -230,8 +171,6 @@ export function setupNavigation({
                 clearActiveNavigation();
 
                 showVisualizationPage();
-
-                hideKissVersionSelector();
 
                 button.classList.add(
                     "active"
@@ -288,10 +227,6 @@ export function setupNavigation({
         });
 
 
-    // --------------------------------------------------
-    // THE KISS - DANCES
-    // --------------------------------------------------
-
     document
         .querySelectorAll(".kiss-nav-item")
         .forEach(button => {
@@ -304,18 +239,12 @@ export function setupNavigation({
 
                 hideProjectionSelector();
 
-                showKissVersionSelector();
-
                 button.classList.add(
                     "active"
                 );
 
 
-                // Default to 8 dancers
-
-                setActiveKissVersion("8");
-
-                setFigure(201);
+                setFigure(202);
 
 
                 elements.sidebar.classList.remove(
@@ -325,53 +254,6 @@ export function setupNavigation({
 
         });
 
-
-    // --------------------------------------------------
-    // KISS VERSION BUTTONS
-    // --------------------------------------------------
-
-    elements.kissVersionButtons.forEach(button => {
-
-        button.addEventListener("click", () => {
-
-            const version =
-                button.dataset.kissVersion;
-
-
-            setActiveKissVersion(version);
-
-
-            if (version === "8") {
-
-                setFigure(201);
-            }
-
-
-            else if (version === "16") {
-
-                setFigure(202);
-            }
-
-
-            else if (version === "32a") {
-
-                setFigure(203);
-            }
-
-
-            else if (version === "32b") {
-
-                setFigure(204);
-            }
-
-        });
-
-    });
-
-
-    // --------------------------------------------------
-    // PROJECTION BUTTONS
-    // --------------------------------------------------
 
     elements.isometricProjection.addEventListener(
         "click",
@@ -394,10 +276,6 @@ export function setupNavigation({
         }
     );
 
-
-    // --------------------------------------------------
-    // PROJECT PAGES
-    // --------------------------------------------------
 
     document
         .querySelectorAll("[data-section]")
@@ -422,14 +300,10 @@ export function setupNavigation({
 
                 hideProjectionSelector();
 
-                hideKissVersionSelector();
-
                 button.classList.add(
                     "active"
                 );
 
-
-                // ABOUT
 
                 if (sectionName === "about") {
 
@@ -455,8 +329,6 @@ export function setupNavigation({
                 }
 
 
-                // HOW TO USE
-
                 if (sectionName === "instructions") {
 
                     showProjectPage(
@@ -480,8 +352,6 @@ export function setupNavigation({
                         "How to Use";
                 }
 
-
-                // MORE ABOUT D-CUBE
 
                 if (sectionName === "more") {
 
@@ -507,8 +377,6 @@ export function setupNavigation({
                 }
 
 
-                // REFERENCES
-
                 if (sectionName === "references") {
 
                     showProjectPage(
@@ -532,8 +400,6 @@ export function setupNavigation({
                         "References";
                 }
 
-
-                // CREDITS
 
                 if (sectionName === "credits") {
 
@@ -566,10 +432,6 @@ export function setupNavigation({
 
         });
 
-
-    // --------------------------------------------------
-    // MOBILE MENU
-    // --------------------------------------------------
 
     elements.menuButton.addEventListener(
         "click",

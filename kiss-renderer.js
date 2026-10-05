@@ -25,12 +25,7 @@ export class KissRenderer {
         this.animationFrame = null;
 
         this.danceData = {
-            "8": {
-                dancers: 8,
-                dimension: 3,
-                steps: 10,
-                dataFile: "CUBE3V.DAT"
-            },
+
 
             "16": {
                 dancers: 16,
@@ -39,19 +34,6 @@ export class KissRenderer {
                 dataFile: "CUBE4V.DAT"
             },
 
-            "32a": {
-                dancers: 32,
-                dimension: 5,
-                steps: 56,
-                dataFile: "Cube5av.dat"
-            },
-
-            "32b": {
-                dancers: 32,
-                dimension: 5,
-                steps: 56,
-                dataFile: "Cube5bv.dat"
-            }
         };
 
 
