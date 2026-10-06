@@ -1045,7 +1045,7 @@ export class KissRenderer {
             dancer.startY;
 
 
-        const canvasRadius = 8;
+        const canvasRadius = 7;
 
 
         const startScreen =
@@ -1079,7 +1079,7 @@ export class KissRenderer {
             Math.max(
                 0,
                 0.5 -
-                canvasRadius /
+                6 /
                 screenDistance
             );
 
@@ -1171,20 +1171,20 @@ export class KissRenderer {
 
 
         const avoidDistance =
-            11 * worldPerPixel;
+            3 * worldPerPixel;
 
 
         let curve = 0;
 
 
         if (
-            smooth >= 0.30 &&
-            smooth <= 0.70
+            smooth >= 0.36 &&
+            smooth <= 0.64
         ) {
 
             const local =
-                (smooth - 0.30) /
-                0.40;
+                (smooth - 0.36) /
+                0.28;
 
 
             curve =
@@ -1336,7 +1336,7 @@ export class KissRenderer {
 
 
         const duration =
-            1400 / this.speed;
+            3000 / this.speed;
 
 
         this.stepProgress +=
@@ -2083,15 +2083,22 @@ export class KissRenderer {
                     dancer.y
                 );
 
-            const hue =
-                (
-                    dancer.id *
-                    360 /
-                    Math.max(
-                        this.dancers.length,
-                        1
-                    )
-                );
+            const dancerColors = [
+                "#e53935",
+                "#fb8c00",
+                "#fdd835",
+                "#43a047",
+                "#00acc1",
+                "#1e88e5",
+                "#5e35b1",
+                "#d81b60"
+            ];
+
+            const color =
+                dancerColors[dancer.id % 8];
+
+            const ringDancer =
+                dancer.id >= 8;
 
             ctx.save();
             ctx.beginPath();
@@ -2104,15 +2111,34 @@ export class KissRenderer {
                 Math.PI * 2
             );
 
-            ctx.fillStyle =
-                `hsl(${hue}, 65%, 48%)`;
-
+            ctx.fillStyle = color;
             ctx.fill();
+
+            if (ringDancer) {
+                ctx.beginPath();
+                ctx.arc(
+                    point.x,
+                    point.y,
+                    4,
+                    0,
+                    Math.PI * 2
+                );
+                ctx.fillStyle = "white";
+                ctx.fill();
+            }
 
             ctx.lineWidth = 2;
             ctx.strokeStyle =
                 "rgba(255,255,255,0.95)";
 
+            ctx.beginPath();
+            ctx.arc(
+                point.x,
+                point.y,
+                8,
+                0,
+                Math.PI * 2
+            );
             ctx.stroke();
             ctx.restore();
         }
@@ -2165,3 +2191,4 @@ export class KissRenderer {
     }
 
 }
+
