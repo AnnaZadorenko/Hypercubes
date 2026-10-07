@@ -344,8 +344,9 @@ export class KissRenderer {
                 ]
             },
 
+
             {
-                meet: [
+                exchange: [
                     [1, 5],
                     [2, 6],
                     [3, 7],
@@ -1171,7 +1172,7 @@ export class KissRenderer {
 
 
         const avoidDistance =
-            3 * worldPerPixel;
+            12 * worldPerPixel;
 
 
         let curve = 0;
@@ -2089,9 +2090,9 @@ export class KissRenderer {
                 "#fdd835",
                 "#43a047",
                 "#00acc1",
-                "#1e88e5",
+                "#6d4c41",
                 "#5e35b1",
-                "#d81b60"
+                "#39ff14",
             ];
 
             const color =
