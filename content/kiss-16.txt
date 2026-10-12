@@ -1,6 +1,6 @@
 Main heading = 16-dancers
 About heading =
-This animation shows a ballet performed on the skeleton of a tesseract or hypercube.
+This animation shows a ballet performed on the skeleton of a tesseract (or hypercube).
 
 The ballet begins with 16 dancers taking up positions at the vertices of the hypercube. At each step, the dancers <b>either</b> approach each other along the edges of the hypercube to kiss at their midpoints and then return to the vertices they started out from <b>or</b> move along its edges to take up positions at other vertices of the hypercube; the first type of movement will be termed a kiss and the second a shuffle.
 
