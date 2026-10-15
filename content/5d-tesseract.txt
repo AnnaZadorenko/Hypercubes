@@ -1,4 +1,4 @@
 Main heading = 5-cube-buildup
 
 About heading =
-This projection shows a 5D hypercube using a tesseract-style arrangement. The 5D hypercube has 32 vertices and 80 edges. Its five dimensional directions are projected onto the screen to create a different view of the same 5D structure.
+This animation shows a 5D hypercube being built up from a projection that differs from the Petrie projection chosen earlier. It causes the displaced hypercube to have no vertices in common with the original one, and so all 32 vertices and 80 edges of the 5D hypercube appear as distinct here. 
