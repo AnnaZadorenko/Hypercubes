@@ -399,73 +399,19 @@ export const figure_buildersMethods = {
         n = 8*i + 4*j + 2*k + l + 1
         */
 
-        for (
-            let i = 0;
-            i <= 1;
-            i++
-        ) {
+        for (let i = 0; i <= 1; i++) {
+            for (let j = 0; j <= 1; j++) {
+                for (let k = 0; k <= 1; k++) {
+                    for (let ll = 0; ll <= 1; ll++) {
+                        const n = 8 * i + 4 * j + 2 * k + ll;
 
-            for (
-                let j = 0;
-                j <= 1;
-                j++
-            ) {
+                        this.vx[n] = this.vx[0] + ll * this.dvx[0] +
+                            k * this.dvx[1] + j * this.dvx[2] +
+                            i * this.dvx[3];
 
-                for (
-                    let k = 0;
-                    k <= 1;
-                    k++
-                ) {
-
-                    for (
-                        let ll = 0;
-                        ll <= 1;
-                        ll++
-                    ) {
-
-                        const n =
-
-                            8 * i +
-
-                            4 * j +
-
-                            2 * k +
-
-                            ll;
-
-
-                        this.vx[n] =
-
-                            this.vx[0] +
-
-                            ll *
-                            this.dvx[0] +
-
-                            k *
-                            this.dvx[1] +
-
-                            j *
-                            this.dvx[2] +
-
-                            i *
-                            this.dvx[3];
-
-
-                        this.vy[n] =
-
-                            this.vy[0] +
-
-                            ll *
-                            this.dvy[0] +
-
-                            k *
-                            this.dvy[1] +
-
-                            j *
-                            this.dvy[2] +
-
-                            i *
-                            this.dvy[3];
+                        this.vy[n] = this.vy[0] + ll * this.dvy[0] +
+                            k * this.dvy[1] + j * this.dvy[2] +
+                            i * this.dvy[3];
 
                     }
 
@@ -1109,23 +1055,9 @@ export const figure_buildersMethods = {
         BASIC nested loops exactly.
         */
 
-        for (
-            let i = 0;
-            i <= 1;
-            i++
-        ) {
-
-            for (
-                let j = 0;
-                j <= 1;
-                j++
-            ) {
-
-                for (
-                    let k = 0;
-                    k <= 1;
-                    k++
-                ) {
+        for (let i = 0; i <= 1; i++) {
+            for (let j = 0; j <= 1; j++) {
+                for (let k = 0; k <= 1; k++) {
 
                     for (
                         let l = 0;

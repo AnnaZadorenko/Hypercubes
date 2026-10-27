@@ -1172,20 +1172,20 @@ export class KissRenderer {
 
 
         const avoidDistance =
-            12 * worldPerPixel;
+            10 * worldPerPixel;
 
 
         let curve = 0;
 
 
         if (
-            smooth >= 0.36 &&
-            smooth <= 0.64
+            smooth >= 0.43 &&
+            smooth <= 0.57
         ) {
 
             const local =
-                (smooth - 0.36) /
-                0.28;
+                (smooth - 0.43) /
+                0.14;
 
 
             curve =
