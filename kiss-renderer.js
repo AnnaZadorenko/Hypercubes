@@ -611,7 +611,9 @@ export class KissRenderer {
         if (!this.version) {
             return;
         }
-
+        if (this.currentStep >= 30) {
+            return;
+        }
         if (this.building) {
             return;
         }
@@ -1240,60 +1242,36 @@ export class KissRenderer {
 
     finishStep() {
 
-        this.dancers.forEach(
-            dancer => {
+        this.dancers.forEach(dancer => {
 
-                if (
-                    dancer.movementType ===
-                    "meet"
-                ) {
-
-                    dancer.x =
-                        dancer.startX;
-
-                    dancer.y =
-                        dancer.startY;
-
-                    return;
-                }
-
-
-                dancer.currentVertex =
-                    dancer.targetVertex;
-
-
-                const finalPoint =
-                    this.vertices[
-                        dancer.currentVertex
-                        ];
-
-
-                if (finalPoint) {
-
-                    dancer.x =
-                        finalPoint.x;
-
-                    dancer.y =
-                        finalPoint.y;
-                }
+            if (dancer.movementType === "meet") {
+                dancer.x = dancer.startX;
+                dancer.y = dancer.startY;
+                return;
             }
-        );
 
+            dancer.currentVertex = dancer.targetVertex;
+
+            const finalPoint = this.vertices[dancer.currentVertex];
+
+            if (finalPoint) {
+                dancer.x = finalPoint.x;
+                dancer.y = finalPoint.y;
+            }
+        });
 
         this.currentStep++;
+        this.stepProgress = 0;
 
-
-        if (
-            this.currentStep >=
-            this.danceSteps.length
-        ) {
-
-            this.currentStep = 0;
+        if (this.currentStep >= 30) {
+            this.pause();
+            this.updateStepText();
+            return;
         }
 
-
-        this.stepProgress = 0;
+        this.updateStepText();
     }
+
 
 
     updateStepText() {
@@ -1302,18 +1280,18 @@ export class KissRenderer {
             return;
         }
 
-
         if (!this.version) {
-
-            this.stepElement.textContent =
-                "Ready";
-
+            this.stepElement.textContent = "Ready";
             return;
         }
 
+        if (this.currentStep >= 30) {
+            this.stepElement.textContent = "Step 30 of 30 — Completed";
+            return;
+        }
 
         this.stepElement.textContent =
-            `Step ${this.currentStep + 1} of ${this.danceSteps.length}`;
+            `Step ${this.currentStep + 1} of 30`;
     }
 
 
