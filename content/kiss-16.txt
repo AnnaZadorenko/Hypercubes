@@ -2,7 +2,7 @@ Main heading = 16-dancers
 About heading =
 This animation shows a ballet performed on the skeleton of a tesseract (or hypercube).
 
-The ballet begins with 16 dancers taking up positions at the vertices of the hypercube. At each step, the dancers EITHER approach each other along the edges of the hypercube to kiss at the middle and return to their starting points OR move along the edges of the hypercube to take up positions at other vertices. The first type of movement will be termed a kiss and the second a shuffle.
+The ballet begins with 16 dancers taking up positions at the vertices of the hypercube. At each step, the dancers **either** approach each other along the edges of the hypercube to kiss at the middle and return to their starting points **or** move along the edges of the hypercube to take up positions at other vertices. The first type of movement will be termed a **kiss** and the second a **shuffle**.
 
 By a suitable combination of kisses and shuffles, each dancer kisses all the others just once and returns to his/her starting point at the beginning of the dance.  
 
