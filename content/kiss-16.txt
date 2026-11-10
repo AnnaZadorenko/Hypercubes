@@ -6,6 +6,4 @@ The ballet begins with 16 dancers taking up positions at the vertices of the hyp
 
 By a suitable combination of kisses and shuffles, each dancer kisses all the others just once and returns to his/her starting point at the beginning of the dance.  
 
-As an encore, the dancers walk along the edges of the hypercube to visit all the vertices once before returning to their starting points (in other words, they trace out a Hamiltonian circuit on the hypercube). 
-
 See the article by Aravind under References for more about this ballet.
