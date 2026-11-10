@@ -1,3 +1,4 @@
+
 export const elements = {
 
     splash: document.getElementById("splash"),

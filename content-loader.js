@@ -1,3 +1,4 @@
+
 function formatText(text) {
 
     const superscripts = {
@@ -255,8 +256,8 @@ export async function loadFigureText(
             .trim();
 
 
-        infoText.textContent =
-            formatText(description);
+        infoText.innerHTML =
+            formatSectionHTML(description);
 
     }
 
