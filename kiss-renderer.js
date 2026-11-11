@@ -1539,11 +1539,13 @@ export class KissRenderer {
                 1
             );
 
+        const dpr = window.devicePixelRatio || 1;
+        const isMobile = width / dpr < 600;
         const scale =
             Math.min(
                 (width - padding * 2) / rangeX,
                 (height - padding * 2) / rangeY
-            );
+            ) * (isMobile ? 0.60 : 0.85);
 
         const drawingWidth =
             rangeX * scale;
@@ -1558,19 +1560,18 @@ export class KissRenderer {
             (height - drawingHeight) / 2;
 
         return {
-
             x:
-                offsetX +
-                (x - bounds.minX) * scale
-                - 230,
+                (width - drawingWidth) / 2 +
+                (x - bounds.minX) * scale -
+                (isMobile ? 45 * dpr : 185),
 
             y:
                 height -
                 (
-                    offsetY +
+                    (height - drawingHeight) / 2 +
                     (y - bounds.minY) * scale
-                )
-                - 70
+                ) -
+                (isMobile ? 70 * dpr : 70)
         };
     }
 
@@ -1809,13 +1810,15 @@ export class KissRenderer {
         const tableHeight =
             size * cell;
 
-        const startX =
-            width -
-            tableWidth -
-            190 * dpr;
+        const isMobile = width / dpr < 600;
 
-        const startY =
-            (height - tableHeight) / 2 - 70 * dpr;
+        const startX = isMobile
+            ? (width - tableWidth) / 2
+            : width - tableWidth - 190 * dpr;
+
+        const startY = isMobile
+            ? 55 * dpr
+            : (height - tableHeight) / 2 - 70 * dpr;
 
         const radius =
             Math.max(
