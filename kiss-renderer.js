@@ -1,3 +1,4 @@
+
 export class KissRenderer {
 
     constructor(canvas, stepElement = null) {
@@ -41,6 +42,20 @@ export class KissRenderer {
         this.buildLiftEdges = [];
         this.buildCopyEdges = [];
 
+        this.dancerColors = [
+            "#e53935",
+            "#fb8c00",
+            "#fdd835",
+            "#43a047",
+            "#00acc1",
+            "#6d4c41",
+            "#5e35b1",
+            "#39ff14"
+        ];
+
+        this.kissedPairs = new Set();
+        this.pendingKisses = [];
+
         this.danceData = {
 
             "16": {
@@ -51,7 +66,6 @@ export class KissRenderer {
             }
 
         };
-
 
         this.danceSteps = [
 
@@ -344,7 +358,6 @@ export class KissRenderer {
                 ]
             },
 
-
             {
                 exchange: [
                     [1, 5],
@@ -359,7 +372,6 @@ export class KissRenderer {
             }
 
         ];
-
 
         this.loop = this.loop.bind(this);
 
@@ -379,6 +391,9 @@ export class KissRenderer {
 
         this.version = version;
 
+        this.kissedPairs.clear();
+        this.pendingKisses = [];
+
         const settings =
             this.danceData[version];
 
@@ -391,19 +406,16 @@ export class KissRenderer {
             return;
         }
 
-
         this.currentStep = 0;
         this.stepProgress = 0;
 
         const filename =
             dataFile || settings.dataFile;
 
-
         try {
 
             const response =
                 await fetch(`data/${filename}`);
-
 
             if (!response.ok) {
 
@@ -412,10 +424,8 @@ export class KissRenderer {
                 );
             }
 
-
             const text =
                 await response.text();
-
 
             this.vertices =
                 this.parseCoordinateFile(
@@ -423,19 +433,15 @@ export class KissRenderer {
                     settings.dancers
                 );
 
-
             this.createEdges(
                 settings.dimension
             );
-
 
             this.createDancers(
                 settings.dancers
             );
 
-
             this.prepareBuild();
-
 
         } catch (error) {
 
@@ -458,32 +464,24 @@ export class KissRenderer {
     }
 
 
-    parseCoordinateFile(
-        text,
-        expectedCount
-    ) {
+    parseCoordinateFile(text, expectedCount) {
 
-        const lines =
-            text
-                .split(/\r?\n/)
-                .map(line => line.trim())
-                .filter(Boolean);
-
+        const lines = text
+            .split(/\r?\n/)
+            .map(line => line.trim())
+            .filter(Boolean);
 
         const points = [];
 
-
         for (const line of lines) {
 
-            const numbers =
-                line
-                    .replace(/,/g, " ")
-                    .split(/\s+/)
-                    .map(Number)
-                    .filter(value =>
-                        Number.isFinite(value)
-                    );
-
+            const numbers = line
+                .replace(/,/g, " ")
+                .split(/\s+/)
+                .map(Number)
+                .filter(value =>
+                    Number.isFinite(value)
+                );
 
             if (numbers.length >= 2) {
 
@@ -493,26 +491,17 @@ export class KissRenderer {
                 });
             }
 
-
-            if (
-                points.length >=
-                expectedCount
-            ) {
+            if (points.length >= expectedCount) {
                 break;
             }
         }
 
-
-        if (
-            points.length !==
-            expectedCount
-        ) {
+        if (points.length !== expectedCount) {
 
             console.warn(
                 `Expected ${expectedCount} vertices but found ${points.length}`
             );
         }
-
 
         return points;
     }
@@ -522,28 +511,17 @@ export class KissRenderer {
 
         this.edges = [];
 
-        const count =
-            Math.min(
-                this.vertices.length,
-                2 ** dimension
-            );
+        const count = Math.min(
+            this.vertices.length,
+            2 ** dimension
+        );
 
+        for (let vertex = 0; vertex < count; vertex++) {
 
-        for (
-            let vertex = 0;
-            vertex < count;
-            vertex++
-        ) {
-
-            for (
-                let axis = 0;
-                axis < dimension;
-                axis++
-            ) {
+            for (let axis = 0; axis < dimension; axis++) {
 
                 const neighbor =
                     vertex ^ (1 << axis);
-
 
                 if (
                     neighbor > vertex &&
@@ -564,28 +542,20 @@ export class KissRenderer {
 
         this.dancers = [];
 
-
-        for (
-            let i = 0;
-            i < count;
-            i++
-        ) {
+        for (let i = 0; i < count; i++) {
 
             const vertex =
                 this.vertices[i];
 
-
             if (!vertex) {
                 continue;
             }
-
 
             this.dancers.push({
 
                 id: i,
 
                 currentVertex: i,
-
                 targetVertex: i,
 
                 x: vertex.x,
@@ -600,7 +570,6 @@ export class KissRenderer {
                 movementType: "still",
 
                 curveSide: 0
-
             });
         }
     }
@@ -611,9 +580,11 @@ export class KissRenderer {
         if (!this.version) {
             return;
         }
+
         if (this.currentStep >= 30) {
             return;
         }
+
         if (this.building) {
             return;
         }
@@ -644,6 +615,8 @@ export class KissRenderer {
         this.currentStep = 0;
         this.stepProgress = 0;
 
+        this.kissedPairs.clear();
+        this.pendingKisses = [];
 
         this.dancers.forEach(
             (dancer, index) => {
@@ -651,43 +624,26 @@ export class KissRenderer {
                 const vertex =
                     this.vertices[index];
 
-
                 if (!vertex) {
                     return;
                 }
 
+                dancer.currentVertex = index;
+                dancer.targetVertex = index;
 
-                dancer.currentVertex =
-                    index;
+                dancer.x = vertex.x;
+                dancer.y = vertex.y;
 
-                dancer.targetVertex =
-                    index;
+                dancer.startX = vertex.x;
+                dancer.startY = vertex.y;
 
-                dancer.x =
-                    vertex.x;
+                dancer.targetX = vertex.x;
+                dancer.targetY = vertex.y;
 
-                dancer.y =
-                    vertex.y;
-
-                dancer.startX =
-                    vertex.x;
-
-                dancer.startY =
-                    vertex.y;
-
-                dancer.targetX =
-                    vertex.x;
-
-                dancer.targetY =
-                    vertex.y;
-
-                dancer.movementType =
-                    "still";
-
+                dancer.movementType = "still";
                 dancer.curveSide = 0;
             }
         );
-
 
         this.prepareBuild();
     }
@@ -695,9 +651,7 @@ export class KissRenderer {
 
     setSpeed(speed) {
 
-        const value =
-            Number(speed);
-
+        const value = Number(speed);
 
         if (
             !Number.isFinite(value) ||
@@ -705,7 +659,6 @@ export class KissRenderer {
         ) {
             return;
         }
-
 
         this.speed = value;
     }
@@ -727,317 +680,214 @@ export class KissRenderer {
 
         return this.dancers.find(
             dancer =>
-                dancer.currentVertex ===
-                vertexIndex
+                dancer.currentVertex === vertexIndex
         );
     }
-
 
     prepareStep() {
 
         const step =
-            this.danceSteps[
-                this.currentStep
-                ];
-
+            this.danceSteps[this.currentStep];
 
         if (!step) {
             return;
         }
 
+        this.pendingKisses = [];
 
-        this.dancers.forEach(
-            dancer => {
+        this.dancers.forEach(dancer => {
 
-                const point =
-                    this.vertices[
-                        dancer.currentVertex
-                        ];
+            const point =
+                this.vertices[dancer.currentVertex];
 
-
-                if (!point) {
-                    return;
-                }
-
-
-                dancer.startX = point.x;
-                dancer.startY = point.y;
-
-                dancer.targetX = point.x;
-                dancer.targetY = point.y;
-
-                dancer.targetVertex =
-                    dancer.currentVertex;
-
-                dancer.movementType =
-                    "still";
-
-                dancer.curveSide = 0;
+            if (!point) {
+                return;
             }
-        );
 
+            dancer.startX = point.x;
+            dancer.startY = point.y;
+
+            dancer.targetX = point.x;
+            dancer.targetY = point.y;
+
+            dancer.targetVertex =
+                dancer.currentVertex;
+
+            dancer.movementType = "still";
+            dancer.curveSide = 0;
+        });
 
         if (step.meet) {
 
-            step.meet.forEach(
-                pair => {
+            step.meet.forEach(pair => {
 
-                    const first =
-                        this.getDancerAtVertex(
-                            pair[0]
-                        );
+                const first =
+                    this.getDancerAtVertex(pair[0]);
 
-                    const second =
-                        this.getDancerAtVertex(
-                            pair[1]
-                        );
+                const second =
+                    this.getDancerAtVertex(pair[1]);
 
-
-                    if (
-                        !first ||
-                        !second
-                    ) {
-                        return;
-                    }
-
-
-                    const pointA =
-                        this.vertices[
-                        pair[0] - 1
-                            ];
-
-                    const pointB =
-                        this.vertices[
-                        pair[1] - 1
-                            ];
-
-
-                    if (
-                        !pointA ||
-                        !pointB
-                    ) {
-                        return;
-                    }
-
-
-                    first.startX =
-                        pointA.x;
-
-                    first.startY =
-                        pointA.y;
-
-                    first.targetX =
-                        pointB.x;
-
-                    first.targetY =
-                        pointB.y;
-
-                    first.movementType =
-                        "meet";
-
-
-                    second.startX =
-                        pointB.x;
-
-                    second.startY =
-                        pointB.y;
-
-                    second.targetX =
-                        pointA.x;
-
-                    second.targetY =
-                        pointA.y;
-
-                    second.movementType =
-                        "meet";
+                if (!first || !second) {
+                    return;
                 }
-            );
-        }
 
+                const pointA =
+                    this.vertices[pair[0] - 1];
+
+                const pointB =
+                    this.vertices[pair[1] - 1];
+
+                if (!pointA || !pointB) {
+                    return;
+                }
+
+                const a =
+                    Math.min(first.id, second.id);
+
+                const b =
+                    Math.max(first.id, second.id);
+
+                this.pendingKisses.push(
+                    `${a}-${b}`
+                );
+
+                first.startX = pointA.x;
+                first.startY = pointA.y;
+
+                first.targetX = pointB.x;
+                first.targetY = pointB.y;
+
+                first.movementType = "meet";
+
+                second.startX = pointB.x;
+                second.startY = pointB.y;
+
+                second.targetX = pointA.x;
+                second.targetY = pointA.y;
+
+                second.movementType = "meet";
+            });
+        }
 
         if (step.exchange) {
 
-            step.exchange.forEach(
-                pair => {
+            step.exchange.forEach(pair => {
 
-                    const first =
-                        this.getDancerAtVertex(
-                            pair[0]
-                        );
+                const first =
+                    this.getDancerAtVertex(pair[0]);
 
-                    const second =
-                        this.getDancerAtVertex(
-                            pair[1]
-                        );
+                const second =
+                    this.getDancerAtVertex(pair[1]);
 
-
-                    if (
-                        !first ||
-                        !second
-                    ) {
-                        return;
-                    }
-
-
-                    const pointA =
-                        this.vertices[
-                        pair[0] - 1
-                            ];
-
-                    const pointB =
-                        this.vertices[
-                        pair[1] - 1
-                            ];
-
-
-                    first.startX =
-                        pointA.x;
-
-                    first.startY =
-                        pointA.y;
-
-                    first.targetX =
-                        pointB.x;
-
-                    first.targetY =
-                        pointB.y;
-
-                    first.targetVertex =
-                        pair[1] - 1;
-
-                    first.movementType =
-                        "exchange";
-
-                    first.curveSide = 1;
-
-
-                    second.startX =
-                        pointB.x;
-
-                    second.startY =
-                        pointB.y;
-
-                    second.targetX =
-                        pointA.x;
-
-                    second.targetY =
-                        pointA.y;
-
-                    second.targetVertex =
-                        pair[0] - 1;
-
-                    second.movementType =
-                        "exchange";
-
-                    second.curveSide = 1;
+                if (!first || !second) {
+                    return;
                 }
-            );
-        }
 
+                const pointA =
+                    this.vertices[pair[0] - 1];
+
+                const pointB =
+                    this.vertices[pair[1] - 1];
+
+                first.startX = pointA.x;
+                first.startY = pointA.y;
+
+                first.targetX = pointB.x;
+                first.targetY = pointB.y;
+
+                first.targetVertex =
+                    pair[1] - 1;
+
+                first.movementType = "exchange";
+                first.curveSide = 1;
+
+                second.startX = pointB.x;
+                second.startY = pointB.y;
+
+                second.targetX = pointA.x;
+                second.targetY = pointA.y;
+
+                second.targetVertex =
+                    pair[0] - 1;
+
+                second.movementType = "exchange";
+                second.curveSide = 1;
+            });
+        }
 
         if (step.cycles) {
 
-            step.cycles.forEach(
-                cycle => {
+            step.cycles.forEach(cycle => {
 
-                    for (
-                        let i = 0;
-                        i < cycle.length;
-                        i++
-                    ) {
+                for (
+                    let i = 0;
+                    i < cycle.length;
+                    i++
+                ) {
 
-                        const from =
-                            cycle[i];
+                    const from = cycle[i];
 
-                        const to =
-                            cycle[
-                            (i + 1) %
-                            cycle.length
-                                ];
+                    const to =
+                        cycle[(i + 1) % cycle.length];
 
+                    const dancer =
+                        this.getDancerAtVertex(from);
 
-                        const dancer =
-                            this.getDancerAtVertex(
-                                from
-                            );
-
-
-                        if (!dancer) {
-                            continue;
-                        }
-
-
-                        const startPoint =
-                            this.vertices[
-                            from - 1
-                                ];
-
-                        const targetPoint =
-                            this.vertices[
-                            to - 1
-                                ];
-
-
-                        if (
-                            !startPoint ||
-                            !targetPoint
-                        ) {
-                            continue;
-                        }
-
-
-                        dancer.startX =
-                            startPoint.x;
-
-                        dancer.startY =
-                            startPoint.y;
-
-                        dancer.targetX =
-                            targetPoint.x;
-
-                        dancer.targetY =
-                            targetPoint.y;
-
-                        dancer.targetVertex =
-                            to - 1;
-
-                        dancer.movementType =
-                            "cycle";
+                    if (!dancer) {
+                        continue;
                     }
-                }
-            );
-        }
 
+                    const startPoint =
+                        this.vertices[from - 1];
+
+                    const targetPoint =
+                        this.vertices[to - 1];
+
+                    if (!startPoint || !targetPoint) {
+                        continue;
+                    }
+
+                    dancer.startX =
+                        startPoint.x;
+
+                    dancer.startY =
+                        startPoint.y;
+
+                    dancer.targetX =
+                        targetPoint.x;
+
+                    dancer.targetY =
+                        targetPoint.y;
+
+                    dancer.targetVertex =
+                        to - 1;
+
+                    dancer.movementType = "cycle";
+                }
+            });
+        }
 
         this.updateStepText();
     }
 
 
-    updateMeetMovement(
-        dancer,
-        t
-    ) {
+    updateMeetMovement(dancer, t) {
 
         let movement;
 
-
         if (t <= 0.5) {
 
-            movement =
-                t * 2;
+            movement = t * 2;
 
         } else {
 
-            movement =
-                (1 - t) * 2;
+            movement = (1 - t) * 2;
         }
-
 
         const smooth =
             movement *
             movement *
             (3 - 2 * movement);
-
 
         const dx =
             dancer.targetX -
@@ -1047,23 +897,17 @@ export class KissRenderer {
             dancer.targetY -
             dancer.startY;
 
-
-        const canvasRadius = 7;
-
-
         const startScreen =
             this.projectPoint(
                 dancer.startX,
                 dancer.startY
             );
 
-
         const targetScreen =
             this.projectPoint(
                 dancer.targetX,
                 dancer.targetY
             );
-
 
         const screenDistance =
             Math.sqrt(
@@ -1077,39 +921,26 @@ export class KissRenderer {
                 ) ** 2
             ) || 1;
 
-
         const touchingFraction =
             Math.max(
                 0,
-                0.5 -
-                6 /
-                screenDistance
+                0.5 - 6 / screenDistance
             );
-
 
         dancer.x =
             dancer.startX +
-            dx *
-            touchingFraction *
-            smooth;
-
+            dx * touchingFraction * smooth;
 
         dancer.y =
             dancer.startY +
-            dy *
-            touchingFraction *
-            smooth;
+            dy * touchingFraction * smooth;
     }
 
 
-    updateExchangeMovement(
-        dancer,
-        t
-    ) {
+    updateExchangeMovement(dancer, t) {
 
         const smooth =
             t * t * (3 - 2 * t);
-
 
         const dx =
             dancer.targetX -
@@ -1119,13 +950,11 @@ export class KissRenderer {
             dancer.targetY -
             dancer.startY;
 
-
         const length =
             Math.sqrt(
                 dx * dx +
                 dy * dy
             ) || 1;
-
 
         const baseX =
             dancer.startX +
@@ -1135,13 +964,11 @@ export class KissRenderer {
             dancer.startY +
             dy * smooth;
 
-
         const perpendicularX =
             -dy / length;
 
         const perpendicularY =
             dx / length;
-
 
         const startScreen =
             this.projectPoint(
@@ -1155,7 +982,6 @@ export class KissRenderer {
                 dancer.targetY
             );
 
-
         const screenDistance =
             Math.sqrt(
                 (
@@ -1168,17 +994,13 @@ export class KissRenderer {
                 ) ** 2
             ) || 1;
 
-
         const worldPerPixel =
             length / screenDistance;
-
 
         const avoidDistance =
             10 * worldPerPixel;
 
-
         let curve = 0;
-
 
         if (
             smooth >= 0.43 &&
@@ -1186,16 +1008,11 @@ export class KissRenderer {
         ) {
 
             const local =
-                (smooth - 0.43) /
-                0.14;
-
+                (smooth - 0.43) / 0.14;
 
             curve =
-                Math.sin(
-                    Math.PI * local
-                );
+                Math.sin(Math.PI * local);
         }
-
 
         dancer.x =
             baseX +
@@ -1203,7 +1020,6 @@ export class KissRenderer {
             avoidDistance *
             curve *
             dancer.curveSide;
-
 
         dancer.y =
             baseY +
@@ -1214,14 +1030,10 @@ export class KissRenderer {
     }
 
 
-    updateStraightMovement(
-        dancer,
-        t
-    ) {
+    updateStraightMovement(dancer, t) {
 
         const smooth =
             t * t * (3 - 2 * t);
-
 
         dancer.x =
             dancer.startX +
@@ -1229,7 +1041,6 @@ export class KissRenderer {
                 dancer.targetX -
                 dancer.startX
             ) * smooth;
-
 
         dancer.y =
             dancer.startY +
@@ -1242,19 +1053,36 @@ export class KissRenderer {
 
     finishStep() {
 
+        const step =
+            this.danceSteps[this.currentStep];
+
+        if (step && step.meet) {
+
+            for (const key of this.pendingKisses) {
+                this.kissedPairs.add(key);
+            }
+        }
+
+        this.pendingKisses = [];
+
         this.dancers.forEach(dancer => {
 
             if (dancer.movementType === "meet") {
+
                 dancer.x = dancer.startX;
                 dancer.y = dancer.startY;
+
                 return;
             }
 
-            dancer.currentVertex = dancer.targetVertex;
+            dancer.currentVertex =
+                dancer.targetVertex;
 
-            const finalPoint = this.vertices[dancer.currentVertex];
+            const finalPoint =
+                this.vertices[dancer.currentVertex];
 
             if (finalPoint) {
+
                 dancer.x = finalPoint.x;
                 dancer.y = finalPoint.y;
             }
@@ -1264,14 +1092,15 @@ export class KissRenderer {
         this.stepProgress = 0;
 
         if (this.currentStep >= 30) {
+
             this.pause();
             this.updateStepText();
+
             return;
         }
 
         this.updateStepText();
     }
-
 
 
     updateStepText() {
@@ -1281,12 +1110,18 @@ export class KissRenderer {
         }
 
         if (!this.version) {
-            this.stepElement.textContent = "Ready";
+
+            this.stepElement.textContent =
+                "Ready";
+
             return;
         }
 
         if (this.currentStep >= 30) {
-            this.stepElement.textContent = "Step 30 of 30 — Completed";
+
+            this.stepElement.textContent =
+                "Step 30 of 30 — Completed";
+
             return;
         }
 
@@ -1305,79 +1140,51 @@ export class KissRenderer {
             return;
         }
 
-
-        if (
-            this.stepProgress === 0
-        ) {
-
+        if (this.stepProgress === 0) {
             this.prepareStep();
         }
-
 
         const duration =
             3000 / this.speed;
 
-
         this.stepProgress +=
             deltaTime / duration;
 
-
         const t =
-            Math.min(
-                this.stepProgress,
-                1
-            );
+            Math.min(this.stepProgress, 1);
 
+        this.dancers.forEach(dancer => {
 
-        this.dancers.forEach(
-            dancer => {
+            if (dancer.movementType === "meet") {
 
-                if (
-                    dancer.movementType ===
-                    "meet"
-                ) {
+                this.updateMeetMovement(
+                    dancer,
+                    t
+                );
 
-                    this.updateMeetMovement(
-                        dancer,
-                        t
-                    );
-
-                    return;
-                }
-
-
-                if (
-                    dancer.movementType ===
-                    "exchange"
-                ) {
-
-                    this.updateExchangeMovement(
-                        dancer,
-                        t
-                    );
-
-                    return;
-                }
-
-
-                if (
-                    dancer.movementType ===
-                    "cycle"
-                ) {
-
-                    this.updateStraightMovement(
-                        dancer,
-                        t
-                    );
-                }
+                return;
             }
-        );
 
+            if (dancer.movementType === "exchange") {
 
-        if (
-            this.stepProgress >= 1
-        ) {
+                this.updateExchangeMovement(
+                    dancer,
+                    t
+                );
 
+                return;
+            }
+
+            if (dancer.movementType === "cycle") {
+
+                this.updateStraightMovement(
+                    dancer,
+                    t
+                );
+            }
+        });
+
+        if (this.stepProgress >= 1) {
             this.finishStep();
         }
     }
@@ -1401,6 +1208,7 @@ export class KissRenderer {
         this.buildCopyEdges = [];
 
         if (this.stepElement) {
+
             this.stepElement.textContent =
                 "Ready to Build";
         }
@@ -1424,16 +1232,17 @@ export class KissRenderer {
         this.buildLiftEdges = [];
         this.buildCopyEdges = [];
 
-        this.lastTime = performance.now();
+        this.lastTime =
+            performance.now();
 
         if (this.stepElement) {
+
             this.stepElement.textContent =
                 "Building Stage";
         }
 
         this.draw();
     }
-
 
 
     getBuildLiftEdges() {
@@ -1448,6 +1257,7 @@ export class KissRenderer {
             i < oldCount;
             i++
         ) {
+
             result.push([
                 i,
                 i + oldCount
@@ -1519,6 +1329,7 @@ export class KissRenderer {
                         );
 
                     if (!exists) {
+
                         this.buildCopyEdges.push([
                             vertex,
                             other
@@ -1623,9 +1434,7 @@ export class KissRenderer {
 
                 this.buildDimension++;
 
-                if (
-                    this.buildDimension > 4
-                ) {
+                if (this.buildDimension > 4) {
 
                     this.building = false;
 
@@ -1635,9 +1444,12 @@ export class KissRenderer {
                     this.updateStepText();
 
                     if (this.autoPlayAfterBuild) {
+
                         this.autoPlayAfterBuild = false;
                         this.playing = true;
-                        this.lastTime = performance.now();
+
+                        this.lastTime =
+                            performance.now();
                     }
 
                     return;
@@ -1659,27 +1471,18 @@ export class KissRenderer {
                 100
             );
 
-
-        this.lastTime =
-            time;
-
+        this.lastTime = time;
 
         if (this.building) {
 
-            this.updateBuild(
-                deltaTime
-            );
+            this.updateBuild(deltaTime);
 
         } else {
 
-            this.update(
-                deltaTime
-            );
+            this.update(deltaTime);
         }
 
-
         this.draw();
-
 
         this.animationFrame =
             requestAnimationFrame(
@@ -1687,12 +1490,9 @@ export class KissRenderer {
             );
     }
 
-
     getBounds() {
 
-        if (
-            this.vertices.length === 0
-        ) {
+        if (this.vertices.length === 0) {
 
             return {
                 minX: 0,
@@ -1702,82 +1502,48 @@ export class KissRenderer {
             };
         }
 
-
         const xs =
-            this.vertices.map(
-                point => point.x
-            );
-
+            this.vertices.map(point => point.x);
 
         const ys =
-            this.vertices.map(
-                point => point.y
-            );
-
+            this.vertices.map(point => point.y);
 
         return {
-
             minX: Math.min(...xs),
             maxX: Math.max(...xs),
-
             minY: Math.min(...ys),
             maxY: Math.max(...ys)
-
         };
     }
 
 
     projectPoint(x, y) {
 
-        const bounds =
-            this.getBounds();
+        const bounds = this.getBounds();
 
-
-        const width =
-            this.canvas.width;
-
-        const height =
-            this.canvas.height;
-
+        const width = this.canvas.width;
+        const height = this.canvas.height;
 
         const padding =
-            Math.min(
-                width,
-                height
-            ) * 0.22;
-
+            Math.min(width, height) * 0.22;
 
         const rangeX =
             Math.max(
-                bounds.maxX -
-                bounds.minX,
+                bounds.maxX - bounds.minX,
                 1
             );
-
 
         const rangeY =
             Math.max(
-                bounds.maxY -
-                bounds.minY,
+                bounds.maxY - bounds.minY,
                 1
             );
 
-
         const scale =
             Math.min(
-
-                (
-                    width -
-                    padding * 2
-                ) / rangeX,
-
-                (
-                    height -
-                    padding * 2
-                ) / rangeY
-
+                (width - padding * 2) / rangeX,
+                (height - padding * 2) / rangeY
             );
-
 
         const drawingWidth =
             rangeX * scale;
@@ -1785,113 +1551,150 @@ export class KissRenderer {
         const drawingHeight =
             rangeY * scale;
 
-
         const offsetX =
-            (
-                width -
-                drawingWidth
-            ) / 2;
-
+            (width - drawingWidth) / 2;
 
         const offsetY =
-            (
-                height -
-                drawingHeight
-            ) / 2;
-
+            (height - drawingHeight) / 2;
 
         return {
 
             x:
                 offsetX +
-                (
-                    x -
-                    bounds.minX
-                ) * scale
-                - 80,
+                (x - bounds.minX) * scale
+                - 230,
 
             y:
                 height -
                 (
                     offsetY +
-                    (
-                        y -
-                        bounds.minY
-                    ) * scale
+                    (y - bounds.minY) * scale
                 )
                 - 70
-
         };
+    }
+
+
+    drawDancerCircle(id, x, y, radius = 8) {
+
+        const ctx = this.ctx;
+
+        const color =
+            this.dancerColors[id % 8];
+
+        const ringDancer =
+            id >= 8;
+
+        ctx.save();
+
+        ctx.beginPath();
+
+        ctx.arc(
+            x,
+            y,
+            radius,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fillStyle = color;
+        ctx.fill();
+
+        if (ringDancer) {
+
+            ctx.beginPath();
+
+            ctx.arc(
+                x,
+                y,
+                radius * 0.5,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fillStyle = "white";
+            ctx.fill();
+        }
+
+        ctx.lineWidth =
+            Math.max(0.7, radius * 0.25);
+
+        ctx.strokeStyle =
+            "rgba(255,255,255,0.95)";
+
+        ctx.beginPath();
+
+        ctx.arc(
+            x,
+            y,
+            radius,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.stroke();
+
+        ctx.restore();
     }
 
 
     drawBuild() {
 
-        const ctx =
-            this.ctx;
+        const ctx = this.ctx;
 
         ctx.save();
 
         ctx.lineWidth = 1.5;
+
         ctx.strokeStyle =
             "rgba(80, 80, 80, 0.35)";
 
-        const drawFullEdge =
-            (a, b) => {
+        const drawFullEdge = (a, b) => {
 
-                const pointA =
-                    this.vertices[a];
+            const pointA =
+                this.vertices[a];
 
-                const pointB =
-                    this.vertices[b];
+            const pointB =
+                this.vertices[b];
 
-                if (!pointA || !pointB) {
-                    return;
-                }
+            if (!pointA || !pointB) {
+                return;
+            }
 
-                const p1 =
-                    this.projectPoint(
-                        pointA.x,
-                        pointA.y
-                    );
+            const p1 =
+                this.projectPoint(
+                    pointA.x,
+                    pointA.y
+                );
 
-                const p2 =
-                    this.projectPoint(
-                        pointB.x,
-                        pointB.y
-                    );
+            const p2 =
+                this.projectPoint(
+                    pointB.x,
+                    pointB.y
+                );
 
-                ctx.beginPath();
-                ctx.moveTo(p1.x, p1.y);
-                ctx.lineTo(p2.x, p2.y);
-                ctx.stroke();
-            };
+            ctx.beginPath();
 
-        for (
-            const [a, b]
-            of this.buildLiftEdges
-            ) {
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+
+            ctx.stroke();
+        };
+
+        for (const [a, b] of this.buildLiftEdges) {
             drawFullEdge(a, b);
         }
 
-        for (
-            const [a, b]
-            of this.buildCopyEdges
-            ) {
+        for (const [a, b] of this.buildCopyEdges) {
             drawFullEdge(a, b);
         }
 
-        if (
-            this.buildStage === "lift"
-        ) {
+        if (this.buildStage === "lift") {
 
             const currentEdges =
                 this.getBuildLiftEdges();
 
-            for (
-                const [a, b]
-                of currentEdges
-                ) {
+            for (const [a, b] of currentEdges) {
 
                 const pointA =
                     this.vertices[a];
@@ -1926,8 +1729,10 @@ export class KissRenderer {
                     this.buildLiftProgress;
 
                 ctx.beginPath();
+
                 ctx.moveTo(p1.x, p1.y);
                 ctx.lineTo(x, y);
+
                 ctx.stroke();
             }
         }
@@ -1959,29 +1764,187 @@ export class KissRenderer {
                     vertex.y
                 );
 
-            ctx.save();
-            ctx.beginPath();
-            ctx.arc(
+            this.drawDancerCircle(
+                i,
                 point.x,
                 point.y,
-                5,
-                0,
-                Math.PI * 2
+                8
+            );
+        }
+    }
+
+
+    drawKissTable() {
+
+        if (
+            !this.version ||
+            this.dancers.length !== 16
+        ) {
+            return;
+        }
+
+        const ctx = this.ctx;
+
+        const dpr =
+            window.devicePixelRatio || 1;
+
+        const width =
+            this.canvas.width;
+
+        const height =
+            this.canvas.height;
+
+        const size = 16;
+
+        const cell =
+            Math.min(
+                10 * dpr,
+                (width * 0.20) / 16,
+                (height * 0.45) / 16
             );
 
-            ctx.fillStyle =
-                "rgba(80,80,80,0.75)";
+        const tableWidth =
+            size * cell;
 
-            ctx.fill();
-            ctx.restore();
+        const tableHeight =
+            size * cell;
+
+        const startX =
+            width -
+            tableWidth -
+            190 * dpr;
+
+        const startY =
+            (height - tableHeight) / 2 - 70 * dpr;
+
+        const radius =
+            Math.max(
+                2,
+                cell * 0.28
+            );
+
+        ctx.save();
+
+        ctx.fillStyle = "#333";
+
+        ctx.font =
+            `bold ${12 * dpr}px Arial`;
+
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+
+        ctx.font =
+            `${10 * dpr}px Arial`;
+
+        ctx.fillStyle = "#666";
+
+        ctx.fillText(
+            `${this.kissedPairs.size} / 120 pairs`,
+            startX + tableWidth / 2,
+            startY - 23 * dpr
+        );
+
+        for (
+            let col = 0;
+            col < 16;
+            col++
+        ) {
+
+            const x =
+                startX +
+                col * cell +
+                cell / 2;
+
+            const y =
+                startY +
+                cell / 2;
+
+            this.drawDancerCircle(
+                col,
+                x,
+                y,
+                radius
+            );
         }
+
+        for (
+            let row = 0;
+            row < 15;
+            row++
+        ) {
+
+            const x =
+                startX +
+                cell / 2;
+
+            const y =
+                startY +
+                (row + 1) * cell +
+                cell / 2;
+
+            this.drawDancerCircle(
+                row,
+                x,
+                y,
+                radius
+            );
+        }
+        for (let row = 0; row < 15; row++) {
+
+            for (let col = 1; col < 16; col++) {
+
+                const x =
+                    startX +
+                    col * cell;
+
+                const y =
+                    startY +
+                    (row + 1) * cell;
+
+                ctx.strokeStyle =
+                    "rgba(120,120,120,0.35)";
+
+                ctx.lineWidth =
+                    Math.max(0.5, dpr * 0.5);
+
+                ctx.strokeRect(
+                    x,
+                    y,
+                    cell,
+                    cell
+                );
+
+                const first = Math.min(row, col);
+                const second = Math.max(row, col);
+
+                const key = `${first}-${second}`;
+
+                if (row < col && this.kissedPairs.has(key)) {
+                    ctx.fillStyle = "#111";
+
+                    ctx.font =
+                        `bold ${cell * 0.8}px Arial`;
+
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "middle";
+
+                    ctx.fillText(
+                        "×",
+                        x + cell / 2,
+                        y + cell / 2
+                    );
+                }
+            }
+        }
+
+        ctx.restore();
     }
 
 
     draw() {
 
-        const ctx =
-            this.ctx;
+        const ctx = this.ctx;
 
         const width =
             this.canvas.width;
@@ -1996,14 +1959,16 @@ export class KissRenderer {
             height
         );
 
-        if (
-            this.vertices.length === 0
-        ) {
+        if (this.vertices.length === 0) {
             return;
         }
 
         if (this.building || this.buildReady) {
+
             this.drawBuild();
+
+            this.drawKissTable();
+
             return;
         }
 
@@ -2012,13 +1977,11 @@ export class KissRenderer {
             ctx.save();
 
             ctx.lineWidth = 1.5;
+
             ctx.strokeStyle =
                 "rgba(80, 80, 80, 0.35)";
 
-            for (
-                const [a, b]
-                of this.edges
-                ) {
+            for (const [a, b] of this.edges) {
 
                 const pointA =
                     this.vertices[a];
@@ -2043,18 +2006,17 @@ export class KissRenderer {
                     );
 
                 ctx.beginPath();
+
                 ctx.moveTo(p1.x, p1.y);
                 ctx.lineTo(p2.x, p2.y);
+
                 ctx.stroke();
             }
 
             ctx.restore();
         }
 
-        for (
-            const dancer
-            of this.dancers
-            ) {
+        for (const dancer of this.dancers) {
 
             const point =
                 this.projectPoint(
@@ -2062,112 +2024,48 @@ export class KissRenderer {
                     dancer.y
                 );
 
-            const dancerColors = [
-                "#e53935",
-                "#fb8c00",
-                "#fdd835",
-                "#43a047",
-                "#00acc1",
-                "#6d4c41",
-                "#5e35b1",
-                "#39ff14",
-            ];
-
-            const color =
-                dancerColors[dancer.id % 8];
-
-            const ringDancer =
-                dancer.id >= 8;
-
-            ctx.save();
-            ctx.beginPath();
-
-            ctx.arc(
+            this.drawDancerCircle(
+                dancer.id,
                 point.x,
                 point.y,
-                8,
-                0,
-                Math.PI * 2
+                8
             );
-
-            ctx.fillStyle = color;
-            ctx.fill();
-
-            if (ringDancer) {
-                ctx.beginPath();
-                ctx.arc(
-                    point.x,
-                    point.y,
-                    4,
-                    0,
-                    Math.PI * 2
-                );
-                ctx.fillStyle = "white";
-                ctx.fill();
-            }
-
-            ctx.lineWidth = 2;
-            ctx.strokeStyle =
-                "rgba(255,255,255,0.95)";
-
-            ctx.beginPath();
-            ctx.arc(
-                point.x,
-                point.y,
-                8,
-                0,
-                Math.PI * 2
-            );
-            ctx.stroke();
-            ctx.restore();
         }
+
+        this.drawKissTable();
     }
 
 
     resize() {
 
         const rect =
-            this.canvas
-                .getBoundingClientRect();
-
+            this.canvas.getBoundingClientRect();
 
         const dpr =
             window.devicePixelRatio || 1;
 
-
         const width =
             Math.max(
-                Math.floor(
-                    rect.width * dpr
-                ),
+                Math.floor(rect.width * dpr),
                 1
             );
-
 
         const height =
             Math.max(
-                Math.floor(
-                    rect.height * dpr
-                ),
+                Math.floor(rect.height * dpr),
                 1
             );
-
 
         if (
             this.canvas.width !== width ||
             this.canvas.height !== height
         ) {
 
-            this.canvas.width =
-                width;
-
-            this.canvas.height =
-                height;
+            this.canvas.width = width;
+            this.canvas.height = height;
         }
-
 
         this.draw();
     }
 
 }
-

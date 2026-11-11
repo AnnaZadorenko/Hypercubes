@@ -1,3 +1,4 @@
+
 import "./HypercubeRenderer.js";
 
 import { elements } from "./ui-elements.js";
@@ -342,7 +343,7 @@ async function setFigure(option) {
 
         isKissMode = true;
 
-
+        elements.fullscreenButton.style.display = "none";
         // Stop normal cube animation
 
         renderer.pause();
@@ -415,7 +416,7 @@ async function setFigure(option) {
     // ==================================================
 
     isKissMode = false;
-
+    elements.fullscreenButton.style.display = "";
 
     // IMPORTANT:
     // Stop Kiss before normal renderer draws.
