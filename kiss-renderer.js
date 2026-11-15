@@ -1563,7 +1563,7 @@ export class KissRenderer {
             x:
                 (width - drawingWidth) / 2 +
                 (x - bounds.minX) * scale -
-                (isMobile ? 45 * dpr : 185),
+                (isMobile ? 45 * dpr : 200),
 
             y:
                 height -
@@ -1571,7 +1571,7 @@ export class KissRenderer {
                     (height - drawingHeight) / 2 +
                     (y - bounds.minY) * scale
                 ) -
-                (isMobile ? 70 * dpr : 70)
+                (isMobile ? 70 * dpr : -1)
         };
     }
 
@@ -1818,7 +1818,7 @@ export class KissRenderer {
 
         const startY = isMobile
             ? 55 * dpr
-            : (height - tableHeight) / 2 - 70 * dpr;
+            : (height - tableHeight) / 2 - 160 * dpr;
 
         const radius =
             Math.max(
