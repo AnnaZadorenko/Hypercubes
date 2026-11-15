@@ -648,22 +648,27 @@ export class HamiltonRenderer {
             bounds.maxY - bounds.minY
         );
 
+
+
+        const isMobile = width / dpr < 600;
+
         const scale = Math.max(
             0.01,
             Math.min(
                 (width - padding * 2) / rangeX,
                 (height - padding * 2) / rangeY
-            ) * 0.60
+            ) * (isMobile ? 0.85 : 0.60)
         );
 
         const drawingWidth = rangeX * scale;
         const drawingHeight = rangeY * scale;
 
+
         return {
             x:
                 (width - drawingWidth) / 2 +
                 (point.x - bounds.minX) * scale -
-                80 * dpr,
+                (isMobile ? 0 : 80 * dpr),
 
             y:
                 height -
@@ -671,8 +676,9 @@ export class HamiltonRenderer {
                     (height - drawingHeight) / 2 +
                     (point.y - bounds.minY) * scale
                 ) -
-                80 * dpr
+                (isMobile ? 0 : 80 * dpr)
         };
+
     }
 
 
@@ -708,8 +714,9 @@ export class HamiltonRenderer {
         const dpr =
             window.devicePixelRatio || 1;
 
-        const radius = 5 * dpr;
+        const isMobile = this.canvas.width / dpr < 600;
 
+        const radius = (isMobile ? 3 : 5) * dpr;
         const color =
             this.dancerColors[id];
 
@@ -734,7 +741,7 @@ export class HamiltonRenderer {
             ctx.fill();
 
             ctx.strokeStyle = color;
-            ctx.lineWidth = 3 * dpr;
+            ctx.lineWidth = (isMobile ? 1.5 : 3) * dpr;
             ctx.stroke();
 
         } else {
