@@ -1,0 +1,4 @@
+Main heading = Hamiltonian Circuit
+About heading =
+A **Hamiltonian circuit** is a closed path that visits every vertex of a graph exactly once before returning to the starting vertex.
+
