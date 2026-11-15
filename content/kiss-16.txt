@@ -6,6 +6,6 @@ The ballet begins with 16 dancers taking up positions at the vertices of the hyp
 
 By a suitable combination of kisses and shuffles, each dancer kisses all the others just once and returns to his/her starting point at the beginning of the dance.  
 
-The table at the top right allows you to see the number of pairs of dancers that have kissed as the dance progresses.
+The table at the top right shows the number of pairs of dancers that have kissed as the dance progresses.
 
 See the article by Aravind under References for more about this ballet.
