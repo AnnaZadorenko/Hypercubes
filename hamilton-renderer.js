@@ -29,20 +29,20 @@ export class HamiltonRenderer {
         this.dancerColors = [
             "#e53935",
             "#fb8c00",
-            "#d81b60",
-            "#1e88e5",
-            "#8e24aa",
-            "#00acc1",
-            "#43a047",
-            "#fdd835",
             "#fdd835",
             "#43a047",
             "#00acc1",
-            "#8e24aa",
-            "#1e88e5",
-            "#d81b60",
+            "#6d4c41",
+            "#5e35b1",
+            "#39ff14",
+            "#e53935",
             "#fb8c00",
-            "#e53935"
+            "#fdd835",
+            "#43a047",
+            "#00acc1",
+            "#6d4c41",
+            "#5e35b1",
+            "#39ff14"
         ];
 
         this.speed = 1;
@@ -260,6 +260,13 @@ export class HamiltonRenderer {
         this.buildCopyEdges = [];
 
         this.setStepText("Ready to Build");
+
+        this.ctx.clearRect(
+            0,
+            0,
+            this.canvas.width,
+            this.canvas.height
+        );
 
         this.draw();
     }
@@ -656,7 +663,7 @@ export class HamiltonRenderer {
             x:
                 (width - drawingWidth) / 2 +
                 (point.x - bounds.minX) * scale -
-                120 * dpr,
+                80 * dpr,
 
             y:
                 height -

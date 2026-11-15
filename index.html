@@ -18,6 +18,7 @@
     <title>WPI Hypercube Explorer</title>
 
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles-collapsible.css">
 </head>
 
 <body>
@@ -41,7 +42,11 @@
 
 <div id="app" class="app-shell is-hidden">
 
-    <aside class="sidebar">
+    <aside class="sidebar" id="mainSidebar">
+
+        <button id="sidebarCollapseButton" class="sidebar-collapse-button" type="button" aria-label="Collapse sidebar" aria-expanded="true" title="Collapse sidebar">
+            <span aria-hidden="true">‹</span>
+        </button>
 
         <div class="brand-block">
 
@@ -580,6 +585,8 @@
 </div>
 
 
+<script src="sidebar-collapse.js" defer></script>
+
 <script
         type="module"
         src="app.js"
@@ -587,3 +594,4 @@
 
 </body>
 </html>
+

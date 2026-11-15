@@ -1,3 +1,4 @@
+
 :root {
     --wpi-red: #a6192e;
     --wpi-dark-red: #741223;
@@ -1581,4 +1582,21 @@ input[type="range"] {
 }
 .text-space {
     height: 10px;
+}
+#hamiltonStepText {
+    color: #a6192e;
+    font-weight: 700;
+}
+.sidebar-nav-icon {
+    display: none;
+}
+
+.sidebar-collapsed .sidebar-nav-icon {
+    display: inline-block;
+    font-size: 20px;
+    line-height: 1;
+}
+
+.sidebar-collapsed .sidebar-nav-text {
+    display: none;
 }
