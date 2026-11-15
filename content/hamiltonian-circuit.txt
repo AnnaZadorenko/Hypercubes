@@ -1,4 +1,5 @@
 Main heading = Hamiltonian Circuit
 About heading =
-A **Hamiltonian circuit** is a closed path that visits every vertex of a graph exactly once before returning to the starting vertex.
+A **Hamiltonian circuit** is a closed path that visits every vertex of a graph exactly once before returning to the starting vertex. This animation shows 16 dancers (represented by the colored dots) each tracing out a Hamiltonian circuit over the 
+hypercube an rturnig the vertices they started out from.
 
