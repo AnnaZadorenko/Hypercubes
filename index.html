@@ -1,112 +1,71 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
 
     <meta
             name="viewport"
             content="width=device-width, initial-scale=1.0"
-    />
+    >
 
     <meta
             name="description"
             content="Interactive hypercube animations."
-    />
+    >
 
     <title>WPI Hypercube Explorer</title>
 
-    <link
-            rel="stylesheet"
-            href="styles.css"
-    />
+    <link rel="stylesheet" href="styles.css">
 </head>
 
-
 <body>
-
-
-<!-- Splash Screen -->
 
 <div
         id="splash"
         class="splash"
         aria-label="WPI loading screen"
 >
-
     <img
             src="assets/wpi-logo.jpeg"
             alt="WPI logo"
             class="splash-logo"
-    />
-
-    <div
-            class="loading-bar"
-            aria-hidden="true"
     >
+
+    <div class="loading-bar" aria-hidden="true">
         <span></span>
     </div>
-
 </div>
 
 
-<!-- Main Application -->
-
-<div
-        id="app"
-        class="app-shell is-hidden"
->
-
-
-    <!-- Sidebar -->
+<div id="app" class="app-shell is-hidden">
 
     <aside class="sidebar">
 
-
         <div class="brand-block">
 
-
             <div class="brand-mark">
-
                 <img
                         src="assets/wpi-round-logo.png"
                         alt="WPI logo"
                         class="brand-logo"
-                />
-
+                >
             </div>
-
 
             <div>
-
-                <h1>
-                    Hypercube Explorer
-                </h1>
-
-                <p>
-                    Interactive visualization
-                </p>
-
+                <h1>Hypercube Explorer</h1>
+                <p>Interactive visualization</p>
             </div>
-
 
         </div>
 
 
-        <!-- Navigation -->
-
-        <nav
-                class="nav"
-                aria-label="Main navigation"
-        >
-
+        <nav class="nav" aria-label="Main navigation">
 
             <p class="nav-label">
                 VISUALIZATIONS
             </p>
-
-
-            <!-- 3D -->
 
             <button
                     class="nav-item"
@@ -116,7 +75,6 @@
                 3-cube-buildup
             </button>
 
-
             <button
                     class="nav-item"
                     data-option="101"
@@ -124,9 +82,6 @@
             >
                 3-cube-rotation
             </button>
-
-
-            <!-- 4D -->
 
             <button
                     class="nav-item active"
@@ -136,7 +91,6 @@
                 4-cube-buildup
             </button>
 
-
             <button
                     class="nav-item"
                     data-option="102"
@@ -144,9 +98,6 @@
             >
                 4-cube-rotation
             </button>
-
-
-            <!-- 5D -->
 
             <button
                     class="nav-item"
@@ -157,7 +108,6 @@
                 5-cube-buildup
             </button>
 
-
             <button
                     class="nav-item"
                     data-option="130"
@@ -165,9 +115,6 @@
             >
                 5-cube-rotation
             </button>
-
-
-            <!-- 6D -->
 
             <button
                     class="nav-item"
@@ -178,7 +125,6 @@
                 6-cube-buildup
             </button>
 
-
             <button
                     class="nav-item"
                     data-option="140"
@@ -187,9 +133,6 @@
                 6-cube-rotation
             </button>
 
-
-            <!-- Hypercube Dance -->
-
             <button
                     class="nav-item kiss-nav-item"
                     data-kiss="dances"
@@ -197,13 +140,18 @@
                 Hypercube Dance
             </button>
 
+            <button
+                    class="nav-item"
+                    data-option="203"
+                    data-dimension="4"
+            >
+                Hamiltonian Circuit
+            </button>
 
-            <!-- Project -->
 
             <p class="nav-label">
                 PROJECT
             </p>
-
 
             <button
                     class="nav-item"
@@ -212,14 +160,12 @@
                 About the Project
             </button>
 
-
             <button
                     class="nav-item"
                     data-section="instructions"
             >
                 How to Use
             </button>
-
 
             <button
                     class="nav-item"
@@ -228,14 +174,12 @@
                 More about the d-Cube
             </button>
 
-
             <button
                     class="nav-item"
                     data-section="references"
             >
                 References
             </button>
-
 
             <button
                     class="nav-item"
@@ -244,42 +188,28 @@
                 Credits
             </button>
 
-
         </nav>
-
 
         <p class="sidebar-footer">
             Worcester Polytechnic Institute
         </p>
 
-
     </aside>
 
 
-
-    <!-- Main Content -->
-
     <main class="main-content">
-
-
-        <!-- Top Bar -->
 
         <header class="topbar">
 
-
             <div>
-
                 <p class="eyebrow">
                     Interactive Mathematics
                 </p>
 
-
                 <h2 id="pageTitle">
                     4D Tesseract
                 </h2>
-
             </div>
-
 
             <button
                     id="menuButton"
@@ -289,23 +219,15 @@
                 ☰
             </button>
 
-
         </header>
 
-
-
-        <!-- Visualization Workspace -->
 
         <section
                 id="visualizationSection"
                 class="workspace"
         >
 
-
-            <!-- Canvas -->
-
             <div class="visual-panel">
-
 
                 <button
                         id="fullscreenButton"
@@ -316,7 +238,6 @@
                     ⛶
                 </button>
 
-
                 <canvas
                         id="hypercubeCanvas"
                         width="900"
@@ -324,35 +245,23 @@
                         aria-label="Animated hypercube visualization"
                 ></canvas>
 
-
                 <div class="canvas-badge">
-
                     <span id="dimensionBadge">
                         4D
                     </span>
-
                     projection
-
                 </div>
-
 
             </div>
 
 
-
-            <!-- Controls -->
-
             <div class="control-column">
-
 
                 <section class="card controls-card">
 
-
                     <div class="card-heading">
 
-
                         <div>
-
                             <p class="eyebrow">
                                 PLAYBACK
                             </p>
@@ -360,9 +269,7 @@
                             <h3>
                                 Animation Controls
                             </h3>
-
                         </div>
-
 
                         <span
                                 id="statusPill"
@@ -371,12 +278,8 @@
                             Ready
                         </span>
 
-
                     </div>
 
-
-
-                    <!-- 5D / 6D Projection Selector -->
 
                     <div
                             id="projectionSelector"
@@ -391,7 +294,6 @@
                             Petrie projection
                         </button>
 
-
                         <button
                                 id="tesseractProjection"
                                 class="build-projection-button"
@@ -403,11 +305,7 @@
                     </div>
 
 
-
-                    <!-- Play / Reset -->
-
                     <div class="button-row">
-
 
                         <button
                                 id="playButton"
@@ -416,7 +314,6 @@
                             ▶ Play
                         </button>
 
-
                         <button
                                 id="resetButton"
                                 class="secondary-button"
@@ -424,18 +321,13 @@
                             ↻ Reset
                         </button>
 
-
                     </div>
 
-
-
-                    <!-- Speed -->
 
                     <label
                             class="range-label"
                             for="speedRange"
                     >
-
                         <span>
                             Animation speed
                         </span>
@@ -443,9 +335,7 @@
                         <span id="speedValue">
                             1.0×
                         </span>
-
                     </label>
-
 
                     <input
                             id="speedRange"
@@ -454,11 +344,8 @@
                             max="2.5"
                             step="0.1"
                             value="1"
-                    />
+                    >
 
-
-
-                    <!-- Vertices -->
 
                     <div class="toggle-row">
 
@@ -466,24 +353,17 @@
                             Show vertices
                         </span>
 
-
                         <label class="switch">
-
                             <input
                                     id="verticesToggle"
                                     type="checkbox"
                                     checked
-                            />
-
+                            >
                             <span class="slider"></span>
-
                         </label>
 
                     </div>
 
-
-
-                    <!-- Construction Path -->
 
                     <div class="toggle-row">
 
@@ -491,30 +371,22 @@
                             Show construction path
                         </span>
 
-
                         <label class="switch">
-
                             <input
                                     id="pathToggle"
                                     type="checkbox"
                                     checked
-                            />
-
+                            >
                             <span class="slider"></span>
-
                         </label>
 
                     </div>
 
 
-
-                    <!-- Hypercube Dance Controls -->
-
                     <div
                             id="kissControls"
                             class="kiss-controls is-hidden"
                     >
-
 
                         <div class="toggle-row">
 
@@ -522,21 +394,16 @@
                                 Show hypercube skeleton
                             </span>
 
-
                             <label class="switch">
-
                                 <input
                                         id="kissSkeletonToggle"
                                         type="checkbox"
                                         checked
-                                />
-
+                                >
                                 <span class="slider"></span>
-
                             </label>
 
                         </div>
-
 
                         <div
                                 id="kissStepText"
@@ -545,42 +412,62 @@
                             Ready
                         </div>
 
-
                     </div>
 
 
+                    <div
+                            id="hamiltonControls"
+                            class="kiss-controls is-hidden"
+                    >
+
+                        <div class="toggle-row">
+
+                            <span>
+                                Show hypercube skeleton
+                            </span>
+
+                            <label class="switch">
+                                <input
+                                        id="hamiltonSkeletonToggle"
+                                        type="checkbox"
+                                        checked
+                                >
+                                <span class="slider"></span>
+                            </label>
+
+                        </div>
+
+                        <div
+                                id="hamiltonStepText"
+                                class="kiss-step-text"
+                        >
+                            Ready
+                        </div>
+
+                    </div>
+
                 </section>
 
-
-
-                <!-- Dimension Information -->
 
                 <section
                         id="infoCard"
                         class="card info-card"
                 >
 
-
-                    <p class="eyebrow">
-                    </p>
-
+                    <p class="eyebrow"></p>
 
                     <h3 id="infoTitle">
                         Building a 4D Hypercube
                     </h3>
-
 
                     <p id="infoText">
                         Loading dimension information...
                     </p>
 
 
-
                     <div class="stat-grid">
 
-
                         <div>
-
                             <strong id="dimensionCount">
                                 4
                             </strong>
@@ -588,12 +475,9 @@
                             <span>
                                 Dimensions
                             </span>
-
                         </div>
 
-
                         <div>
-
                             <strong id="vertexCount">
                                 16
                             </strong>
@@ -601,12 +485,9 @@
                             <span>
                                 Vertices
                             </span>
-
                         </div>
 
-
                         <div>
-
                             <strong id="edgeCount">
                                 32
                             </strong>
@@ -614,133 +495,89 @@
                             <span>
                                 Edges
                             </span>
-
                         </div>
-
 
                     </div>
 
-
                 </section>
-
 
             </div>
 
-
         </section>
 
-
-
-        <!-- About Project -->
 
         <section
                 id="aboutSection"
                 class="project-page is-hidden"
         >
-
             <section class="card project-card">
-
                 <div id="aboutProjectText">
                     <p>
                         Loading project information...
                     </p>
                 </div>
-
             </section>
-
         </section>
 
-
-
-        <!-- How To Use -->
 
         <section
                 id="instructionsSection"
                 class="project-page is-hidden"
         >
-
             <section class="card project-card">
-
                 <div id="instructionsText">
                     <p>
                         Loading instructions...
                     </p>
                 </div>
-
             </section>
-
         </section>
 
-
-
-        <!-- More About D-Cube -->
 
         <section
                 id="moreSection"
                 class="project-page is-hidden"
         >
-
             <section class="card project-card">
-
                 <div id="moreText">
                     <p>
                         Loading information...
                     </p>
                 </div>
-
             </section>
-
         </section>
 
-
-
-        <!-- References -->
 
         <section
                 id="referencesSection"
                 class="project-page is-hidden"
         >
-
             <section class="card project-card">
-
                 <div id="referencesText">
                     <p>
                         Loading references...
                     </p>
                 </div>
-
             </section>
-
         </section>
 
-
-
-        <!-- Credits -->
 
         <section
                 id="creditsSection"
                 class="project-page is-hidden"
         >
-
             <section class="card project-card">
-
                 <div id="creditsText">
                     <p>
                         Loading credits...
                     </p>
                 </div>
-
             </section>
-
         </section>
-
 
     </main>
 
-
-
 </div>
-
 
 
 <script
@@ -748,7 +585,5 @@
         src="app.js"
 ></script>
 
-
 </body>
-
 </html>

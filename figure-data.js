@@ -1,3 +1,4 @@
+
 export const figures = {
 
     1: {
@@ -100,6 +101,17 @@ export const figures = {
         kiss: true,
         kissVersion: "16",
         dataFile: "CUBE4V.DAT"
+    },
+
+    203: {
+        title: "Hamiltonian Circuit",
+        infoTitle: "Hamiltonian Circuit around the Hypercube",
+        dimension: 4,
+        vertices: 16,
+        edges: 32,
+        content: "hamiltonian-circuit.txt",
+        hamilton: true,
+        dataFile: "CUBE4V.DAT"
     }
 
 };
@@ -121,7 +133,6 @@ export const sections = {
         title: "More about d-Cube",
         contentFile: "more-about-d-cube.txt"
     },
-
 
     references: {
         title: "References",

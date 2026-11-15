@@ -7,7 +7,7 @@ import { setupFullscreen } from "./fullscreen.js";
 import { setupPlayback } from "./playback-controls.js";
 import { setupNavigation } from "./navigation.js";
 import { KissRenderer } from "./kiss-renderer.js";
-
+import { HamiltonRenderer } from "./hamilton-renderer.js";
 
 import {
     loadFigureText,
@@ -15,27 +15,26 @@ import {
 } from "./content-loader.js";
 
 
-// NORMAL HYPERCUBE RENDERER
-
 const renderer =
     new window.HypercubeRenderer(elements.canvas);
 
-
-// THE KISS RENDERER
-// Do NOT create it at startup.
-// It will be created only when a Kiss display is selected.
-
 let kissRenderer = null;
-
+let hamiltonRenderer = null;
 
 let isPlaying = false;
 let currentOption = 2;
 let isKissMode = false;
+let isHamiltonMode = false;
 
+const hamiltonControls =
+    document.getElementById("hamiltonControls");
 
-// --------------------------------------------------
-// OPTIONS
-// --------------------------------------------------
+const hamiltonSkeletonToggle =
+    document.getElementById("hamiltonSkeletonToggle");
+
+const hamiltonStepText =
+    document.getElementById("hamiltonStepText");
+
 
 function updateOptions() {
 
@@ -45,7 +44,6 @@ function updateOptions() {
             kissRenderer &&
             elements.kissSkeletonToggle
         ) {
-
             kissRenderer.setShowSkeleton(
                 elements.kissSkeletonToggle.checked
             );
@@ -54,6 +52,19 @@ function updateOptions() {
         return;
     }
 
+    if (isHamiltonMode) {
+
+        if (
+            hamiltonRenderer &&
+            hamiltonSkeletonToggle
+        ) {
+            hamiltonRenderer.setShowSkeleton(
+                hamiltonSkeletonToggle.checked
+            );
+        }
+
+        return;
+    }
 
     renderer.setOptions({
         showVertices: elements.verticesToggle.checked,
@@ -62,16 +73,9 @@ function updateOptions() {
 }
 
 
-// --------------------------------------------------
-// PLAY / PAUSE
-// --------------------------------------------------
-
 function setPlaying(next) {
 
     isPlaying = next;
-
-
-    // THE KISS
 
     if (isKissMode) {
 
@@ -79,54 +83,37 @@ function setPlaying(next) {
             return;
         }
 
-
         if (next) {
-
             kissRenderer.play();
-
-            elements.playButton.textContent =
-                "❚❚ Pause";
-
-            elements.statusPill.textContent =
-                "Playing";
-
-            elements.statusPill.classList.add(
-                "playing"
-            );
-
         } else {
-
             kissRenderer.pause();
-
-            elements.playButton.textContent =
-                "▶ Play";
-
-            if (
-                elements.statusPill.textContent !==
-                "Ready"
-            ) {
-
-                elements.statusPill.textContent =
-                    "Paused";
-            }
-
-            elements.statusPill.classList.remove(
-                "playing"
-            );
         }
 
-        return;
+    } else if (isHamiltonMode) {
+
+        if (!hamiltonRenderer) {
+            return;
+        }
+
+        if (next) {
+            hamiltonRenderer.play();
+        } else {
+            hamiltonRenderer.pause();
+        }
+
+    } else {
+
+        if (next) {
+            renderer.play();
+        } else {
+            renderer.pause();
+        }
     }
 
-
-    // NORMAL HYPERCUBE
+    elements.playButton.textContent =
+        next ? "❚❚ Pause" : "▶ Play";
 
     if (next) {
-
-        renderer.play();
-
-        elements.playButton.textContent =
-            "❚❚ Pause";
 
         elements.statusPill.textContent =
             "Playing";
@@ -137,16 +124,10 @@ function setPlaying(next) {
 
     } else {
 
-        renderer.pause();
-
-        elements.playButton.textContent =
-            "▶ Play";
-
         if (
             elements.statusPill.textContent !==
             "Ready"
         ) {
-
             elements.statusPill.textContent =
                 "Paused";
         }
@@ -157,10 +138,6 @@ function setPlaying(next) {
     }
 }
 
-
-// --------------------------------------------------
-// RESET
-// --------------------------------------------------
 
 function resetActive() {
 
@@ -173,14 +150,18 @@ function resetActive() {
         return;
     }
 
+    if (isHamiltonMode) {
+
+        if (hamiltonRenderer) {
+            hamiltonRenderer.reset();
+        }
+
+        return;
+    }
 
     renderer.reset();
 }
 
-
-// --------------------------------------------------
-// SPEED
-// --------------------------------------------------
 
 function setActiveSpeed(speed) {
 
@@ -193,98 +174,82 @@ function setActiveSpeed(speed) {
         return;
     }
 
+    if (isHamiltonMode) {
+
+        if (hamiltonRenderer) {
+            hamiltonRenderer.setSpeed(speed);
+        }
+
+        return;
+    }
 
     renderer.setSpeed(speed);
 }
 
 
-// --------------------------------------------------
-// NORMAL CONTROLS
-// --------------------------------------------------
+function setControlVisibility(mode) {
+
+    if (elements.kissControls) {
+
+        elements.kissControls.classList.toggle(
+            "is-hidden",
+            mode !== "kiss"
+        );
+    }
+
+    if (hamiltonControls) {
+
+        hamiltonControls.classList.toggle(
+            "is-hidden",
+            mode !== "hamilton"
+        );
+    }
+
+    const verticesRow =
+        elements.verticesToggle.closest(
+            ".toggle-row"
+        );
+
+    const pathRow =
+        elements.pathToggle.closest(
+            ".toggle-row"
+        );
+
+    if (verticesRow) {
+
+        verticesRow.classList.toggle(
+            "is-hidden",
+            mode !== "normal"
+        );
+    }
+
+    if (pathRow) {
+
+        pathRow.classList.toggle(
+            "is-hidden",
+            mode !== "normal"
+        );
+    }
+}
+
 
 function showNormalControls() {
 
-    if (elements.kissControls) {
-
-        elements.kissControls.classList.add(
-            "is-hidden"
-        );
-    }
-
-
-    const verticesRow =
-        elements.verticesToggle.closest(
-            ".toggle-row"
-        );
-
-    const pathRow =
-        elements.pathToggle.closest(
-            ".toggle-row"
-        );
-
-
-    if (verticesRow) {
-
-        verticesRow.classList.remove(
-            "is-hidden"
-        );
-    }
-
-
-    if (pathRow) {
-
-        pathRow.classList.remove(
-            "is-hidden"
-        );
-    }
+    setControlVisibility("normal");
 }
 
-
-// --------------------------------------------------
-// KISS CONTROLS
-// --------------------------------------------------
 
 function showKissControls() {
 
-    if (elements.kissControls) {
-
-        elements.kissControls.classList.remove(
-            "is-hidden"
-        );
-    }
-
-
-    const verticesRow =
-        elements.verticesToggle.closest(
-            ".toggle-row"
-        );
-
-    const pathRow =
-        elements.pathToggle.closest(
-            ".toggle-row"
-        );
-
-
-    if (verticesRow) {
-
-        verticesRow.classList.add(
-            "is-hidden"
-        );
-    }
-
-
-    if (pathRow) {
-
-        pathRow.classList.add(
-            "is-hidden"
-        );
-    }
+    setControlVisibility("kiss");
 }
 
 
-// --------------------------------------------------
-// CREATE KISS RENDERER ONLY WHEN NEEDED
-// --------------------------------------------------
+function showHamiltonControls() {
+
+    setControlVisibility("hamilton");
+}
+
 
 function getKissRenderer() {
 
@@ -297,162 +262,68 @@ function getKissRenderer() {
             );
     }
 
-
     return kissRenderer;
 }
 
 
-// --------------------------------------------------
-// SET FIGURE
-// --------------------------------------------------
+function getHamiltonRenderer() {
 
-async function setFigure(option) {
+    if (!hamiltonRenderer) {
 
-    option = Number(option);
+        hamiltonRenderer =
+            new HamiltonRenderer(
+                elements.canvas,
+                hamiltonStepText
+            );
+    }
+
+    return hamiltonRenderer;
+}
 
 
-    const figure =
-        figures[option];
+function stopKissRenderer() {
 
-
-    if (!figure) {
+    if (!kissRenderer) {
         return;
     }
 
+    kissRenderer.pause();
 
-    currentOption = option;
-    isPlaying = false;
+    if (kissRenderer.animationFrame) {
 
-
-    elements.playButton.textContent =
-        "▶ Play";
-
-    elements.statusPill.textContent =
-        "Ready";
-
-    elements.statusPill.classList.remove(
-        "playing"
-    );
-
-
-    // ==================================================
-    // THE KISS
-    // ==================================================
-
-    if (figure.kiss) {
-
-        isKissMode = true;
-
-        elements.fullscreenButton.style.display = "none";
-        // Stop normal cube animation
-
-        renderer.pause();
-
-
-        showKissControls();
-
-
-        elements.dimensionBadge.textContent =
-            `${figure.dimension}D`;
-
-        elements.vertexCount.textContent =
-            figure.vertices.toLocaleString();
-
-        elements.edgeCount.textContent =
-            figure.edges.toLocaleString();
-
-        elements.dimensionCount.textContent =
-            figure.dimension;
-
-
-        loadFigureText(
-            figure.content,
-            elements.infoText,
-            elements.pageTitle,
-            elements.infoTitle
+        cancelAnimationFrame(
+            kissRenderer.animationFrame
         );
 
+        kissRenderer.animationFrame = null;
+    }
 
-        if (elements.kissStepText) {
-
-            elements.kissStepText.textContent =
-                "Ready";
-        }
-
-
-        const kiss =
-            getKissRenderer();
+    kissRenderer = null;
+}
 
 
-        await kiss.setDance({
-            version: figure.kissVersion,
-            dataFile: figure.dataFile
-        });
+function stopHamiltonRenderer() {
 
-
-        if (elements.kissSkeletonToggle) {
-
-            kiss.setShowSkeleton(
-                elements.kissSkeletonToggle.checked
-            );
-        }
-
-
-        kiss.setSpeed(
-            Number(
-                elements.speedRange.value
-            )
-        );
-
-
-        kiss.resize();
-
+    if (!hamiltonRenderer) {
         return;
     }
 
+    hamiltonRenderer.pause();
 
-    // ==================================================
-    // NORMAL HYPERCUBE
-    // ==================================================
+    if (hamiltonRenderer.animationFrame) {
 
-    isKissMode = false;
-    elements.fullscreenButton.style.display = "";
+        cancelAnimationFrame(
+            hamiltonRenderer.animationFrame
+        );
 
-    // IMPORTANT:
-    // Stop Kiss before normal renderer draws.
-
-    if (kissRenderer) {
-
-        kissRenderer.pause();
-
-        /*
-         * Stop its requestAnimationFrame loop so it
-         * cannot keep clearing the normal cube canvas.
-         */
-
-        if (kissRenderer.animationFrame) {
-
-            cancelAnimationFrame(
-                kissRenderer.animationFrame
-            );
-
-            kissRenderer.animationFrame = null;
-        }
-
-
-        kissRenderer = null;
+        hamiltonRenderer.animationFrame = null;
     }
 
+    hamiltonRenderer = null;
+}
 
-    showNormalControls();
 
-
-    renderer.setOption(option);
-
-    renderer.currentOption = option;
-
-    renderer.pause();
-
+function updateFigureInformation(figure) {
 
     elements.dimensionBadge.textContent =
         `${figure.dimension}D`;
@@ -466,38 +337,164 @@ async function setFigure(option) {
     elements.dimensionCount.textContent =
         figure.dimension;
 
-
     loadFigureText(
         figure.content,
         elements.infoText,
         elements.pageTitle,
         elements.infoTitle
     );
+}
 
 
-    // Redraw normal cube after Kiss has stopped
+async function setFigure(option) {
+
+    option = Number(option);
+
+    const figure = figures[option];
+
+    if (!figure) {
+        return;
+    }
+
+    currentOption = option;
+    isPlaying = false;
+
+    elements.playButton.textContent =
+        "▶ Play";
+
+    elements.statusPill.textContent =
+        "Ready";
+
+    elements.statusPill.classList.remove(
+        "playing"
+    );
+
+
+    if (figure.kiss) {
+
+        isKissMode = true;
+        isHamiltonMode = false;
+
+        elements.fullscreenButton.style.display =
+            "none";
+
+        renderer.pause();
+
+        stopHamiltonRenderer();
+
+        showKissControls();
+
+        updateFigureInformation(figure);
+
+        if (elements.kissStepText) {
+
+            elements.kissStepText.textContent =
+                "Ready";
+        }
+
+        const kiss = getKissRenderer();
+
+        await kiss.setDance({
+            version: figure.kissVersion,
+            dataFile: figure.dataFile
+        });
+
+        if (elements.kissSkeletonToggle) {
+
+            kiss.setShowSkeleton(
+                elements.kissSkeletonToggle.checked
+            );
+        }
+
+        kiss.setSpeed(
+            Number(elements.speedRange.value)
+        );
+
+        kiss.resize();
+
+        return;
+    }
+
+
+    if (figure.hamilton) {
+
+        isKissMode = false;
+        isHamiltonMode = true;
+
+        elements.fullscreenButton.style.display =
+            "";
+
+        renderer.pause();
+
+        stopKissRenderer();
+
+        showHamiltonControls();
+
+        updateFigureInformation(figure);
+
+        if (hamiltonStepText) {
+
+            hamiltonStepText.textContent =
+                "Ready";
+        }
+
+        const hamilton = getHamiltonRenderer();
+
+        if (typeof hamilton.setCircuit === "function") {
+
+            await hamilton.setCircuit({
+                dataFile: figure.dataFile
+            });
+        }
+
+        if (hamiltonSkeletonToggle) {
+
+            hamilton.setShowSkeleton(
+                hamiltonSkeletonToggle.checked
+            );
+        }
+
+        hamilton.setSpeed(
+            Number(elements.speedRange.value)
+        );
+
+        hamilton.resize();
+
+        return;
+    }
+
+
+    isKissMode = false;
+    isHamiltonMode = false;
+
+    elements.fullscreenButton.style.display =
+        "";
+
+    stopKissRenderer();
+    stopHamiltonRenderer();
+
+    showNormalControls();
+
+    renderer.setOption(option);
+
+    renderer.currentOption = option;
+
+    renderer.pause();
+
+    updateFigureInformation(figure);
 
     requestAnimationFrame(() => {
 
         renderer.resize();
-
     });
 }
 
-
-// --------------------------------------------------
-// FULLSCREEN
-// --------------------------------------------------
 
 setupFullscreen(
     renderer,
     elements
 );
 
-
-// --------------------------------------------------
-// PLAYBACK
-// --------------------------------------------------
 
 setupPlayback({
 
@@ -517,10 +514,6 @@ setupPlayback({
 });
 
 
-// --------------------------------------------------
-// KISS SKELETON
-// --------------------------------------------------
-
 if (elements.kissSkeletonToggle) {
 
     elements.kissSkeletonToggle.addEventListener(
@@ -536,15 +529,30 @@ if (elements.kissSkeletonToggle) {
                     elements.kissSkeletonToggle.checked
                 );
             }
-
         }
     );
 }
 
 
-// --------------------------------------------------
-// NAVIGATION
-// --------------------------------------------------
+if (hamiltonSkeletonToggle) {
+
+    hamiltonSkeletonToggle.addEventListener(
+        "change",
+        () => {
+
+            if (
+                isHamiltonMode &&
+                hamiltonRenderer
+            ) {
+
+                hamiltonRenderer.setShowSkeleton(
+                    hamiltonSkeletonToggle.checked
+                );
+            }
+        }
+    );
+}
+
 
 setupNavigation({
 
@@ -559,10 +567,6 @@ setupNavigation({
 });
 
 
-// --------------------------------------------------
-// RESIZE
-// --------------------------------------------------
-
 window.addEventListener(
     "resize",
     () => {
@@ -576,27 +580,27 @@ window.addEventListener(
 
                 kissRenderer.resize();
 
+            } else if (
+                isHamiltonMode &&
+                hamiltonRenderer
+            ) {
+
+                hamiltonRenderer.resize();
+
             } else {
 
                 renderer.resize();
             }
-
         });
-
     }
 );
 
-
-// --------------------------------------------------
-// START APPLICATION
-// --------------------------------------------------
 
 setTimeout(() => {
 
     elements.splash.classList.add(
         "is-leaving"
     );
-
 
     setTimeout(() => {
 
@@ -605,7 +609,6 @@ setTimeout(() => {
         elements.app.classList.remove(
             "is-hidden"
         );
-
 
         requestAnimationFrame(() => {
 
@@ -618,13 +621,9 @@ setTimeout(() => {
                 updateOptions();
 
                 renderer.setSpeed(
-                    Number(
-                        elements.speedRange.value
-                    )
+                    Number(elements.speedRange.value)
                 );
-
             });
-
         });
 
     }, 450);
