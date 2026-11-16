@@ -1575,8 +1575,8 @@ export class KissRenderer {
         let centerY;
 
         if (isMobile) {
-            centerX = width * 0.50;
-            centerY = height * 0.67;
+            centerX = width * 0.40;
+            centerY = height * 0.50;
 
         } else if (isCompact) {
             centerX = width * 0.25;
