@@ -1973,7 +1973,7 @@ export class KissRenderer {
                     !this.building &&
                     !this.buildReady &&
                     Boolean(step?.meet) &&
-                    secondsUntilKiss <= this.kissPreviewSeconds;
+                    this.stepProgress >= 0.5;
 
 
                 const showCross =
