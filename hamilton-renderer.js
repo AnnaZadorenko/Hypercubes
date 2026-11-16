@@ -1,9 +1,7 @@
 
-
 export class HamiltonRenderer {
 
     constructor(canvas, stepText = null) {
-
         this.canvas = canvas;
         this.ctx = canvas.getContext("2d");
         this.stepText = stepText;
@@ -27,22 +25,14 @@ export class HamiltonRenderer {
         ];
 
         this.dancerColors = [
-            "#e53935",
-            "#fb8c00",
-            "#fdd835",
-            "#43a047",
-            "#00acc1",
-            "#6d4c41",
-            "#5e35b1",
-            "#39ff14",
-            "#e53935",
-            "#fb8c00",
-            "#fdd835",
-            "#43a047",
-            "#00acc1",
-            "#6d4c41",
-            "#5e35b1",
-            "#39ff14"
+            "#e53935", "#fb8c00",
+            "#fdd835", "#43a047",
+            "#00acc1", "#6d4c41",
+            "#5e35b1", "#39ff14",
+            "#e53935", "#fb8c00",
+            "#fdd835", "#43a047",
+            "#00acc1", "#6d4c41",
+            "#5e35b1", "#39ff14"
         ];
 
         this.speed = 1;
@@ -59,7 +49,7 @@ export class HamiltonRenderer {
         this.loaded = false;
 
         this.building = false;
-        this.buildReady = false;
+        this.buildReady = true;
         this.autoPlayAfterBuild = false;
 
         this.buildDimension = 1;
@@ -70,7 +60,7 @@ export class HamiltonRenderer {
         this.buildLiftDuration = 1200;
         this.buildPauseDuration = 400;
 
-        this.buildVisibleVertexCount = 1;
+        this.buildVisibleVertexCount = 0;
         this.buildLiftEdges = [];
         this.buildCopyEdges = [];
 
@@ -78,11 +68,27 @@ export class HamiltonRenderer {
         this.lastTime = null;
 
         this.loop = this.loop.bind(this);
+
+        this.clearCanvas();
     }
 
+    clearCanvas() {
+        const ctx = this.ctx;
+
+        ctx.save();
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+        ctx.clearRect(
+            0,
+            0,
+            this.canvas.width,
+            this.canvas.height
+        );
+
+        ctx.restore();
+    }
 
     async setCircuit(options = {}) {
-
         this.pause();
 
         if (this.animationFrame !== null) {
@@ -91,12 +97,14 @@ export class HamiltonRenderer {
         }
 
         this.loaded = false;
+        this.building = false;
+        this.buildReady = true;
+        this.clearCanvas();
 
         const fileName =
             options.dataFile || "CUBE4V.DAT";
 
         try {
-
             const response = await fetch(
                 `data/${fileName}`
             );
@@ -113,25 +121,24 @@ export class HamiltonRenderer {
                 this.parseCoordinateFile(text);
 
             if (this.vertices.length !== 16) {
-                throw new Error(
-                    "Expected 16 vertices"
-                );
+                throw new Error("Expected 16 vertices");
             }
 
             this.createEdges();
             this.createDancers();
 
             this.loaded = true;
-
             this.prepareBuild();
 
         } catch (error) {
-
             console.error(error);
 
+            this.loaded = false;
             this.vertices = [];
             this.edges = [];
             this.dancers = [];
+
+            this.clearCanvas();
 
             this.setStepText(
                 "Unable to load Hamiltonian Circuit"
@@ -139,9 +146,7 @@ export class HamiltonRenderer {
         }
     }
 
-
     parseCoordinateFile(text) {
-
         const lines = text
             .split(/\r?\n/)
             .map(line => line.trim())
@@ -150,7 +155,6 @@ export class HamiltonRenderer {
         const points = [];
 
         for (const line of lines) {
-
             const numbers = line
                 .replace(/,/g, " ")
                 .split(/\s+/)
@@ -158,7 +162,6 @@ export class HamiltonRenderer {
                 .filter(Number.isFinite);
 
             if (numbers.length >= 2) {
-
                 points.push({
                     x: numbers[0],
                     y: numbers[1]
@@ -173,20 +176,15 @@ export class HamiltonRenderer {
         return points;
     }
 
-
     createEdges() {
-
         this.edges = [];
 
         for (let vertex = 0; vertex < 16; vertex++) {
-
             for (let axis = 0; axis < 4; axis++) {
-
                 const neighbor =
                     vertex ^ (1 << axis);
 
                 if (neighbor > vertex) {
-
                     this.edges.push([
                         vertex,
                         neighbor
@@ -196,13 +194,10 @@ export class HamiltonRenderer {
         }
     }
 
-
     createDancers() {
-
         this.dancers = [];
 
         for (let i = 0; i < 16; i++) {
-
             this.dancers.push({
                 id: i,
                 position: i
@@ -210,23 +205,17 @@ export class HamiltonRenderer {
         }
     }
 
-
     setStepText(text) {
-
         if (this.stepText) {
             this.stepText.textContent = text;
         }
     }
 
-
     updateStepText() {
-
         if (this.currentStep >= 16) {
-
             this.setStepText(
                 "Step 16 of 16 — Completed"
             );
-
             return;
         }
 
@@ -235,10 +224,13 @@ export class HamiltonRenderer {
         );
     }
 
-
     prepareBuild() {
-
         this.pause();
+
+        if (this.animationFrame !== null) {
+            cancelAnimationFrame(this.animationFrame);
+            this.animationFrame = null;
+        }
 
         this.currentStep = 0;
         this.stepProgress = 0;
@@ -255,25 +247,17 @@ export class HamiltonRenderer {
         this.buildStageTime = 0;
         this.buildLiftProgress = 0;
 
-        this.buildVisibleVertexCount = 1;
+        this.buildVisibleVertexCount = 0;
         this.buildLiftEdges = [];
         this.buildCopyEdges = [];
 
+        this.lastTime = null;
+
         this.setStepText("Ready to Build");
-
-        this.ctx.clearRect(
-            0,
-            0,
-            this.canvas.width,
-            this.canvas.height
-        );
-
-        this.draw();
+        this.clearCanvas();
     }
 
-
     startBuild() {
-
         this.building = true;
         this.buildReady = false;
 
@@ -282,27 +266,27 @@ export class HamiltonRenderer {
         this.buildStageTime = 0;
         this.buildLiftProgress = 0;
 
+        // Original construction starts with one dancer
         this.buildVisibleVertexCount = 1;
+
         this.buildLiftEdges = [];
         this.buildCopyEdges = [];
 
         this.lastTime = null;
 
+        this.clearCanvas();
         this.setStepText("Building Stage");
 
         this.startLoop();
     }
 
-
     getBuildLiftEdges() {
-
         const count =
             2 ** (this.buildDimension - 1);
 
         const result = [];
 
         for (let i = 0; i < count; i++) {
-
             result.push([
                 i,
                 i + count
@@ -312,18 +296,13 @@ export class HamiltonRenderer {
         return result;
     }
 
-
     finishBuildLift() {
-
         for (const edge of this.getBuildLiftEdges()) {
-
             this.buildLiftEdges.push(edge);
         }
     }
 
-
     addBuildCopyEdges() {
-
         const start =
             2 ** (this.buildDimension - 1);
 
@@ -331,13 +310,11 @@ export class HamiltonRenderer {
             2 ** this.buildDimension;
 
         for (let vertex = start; vertex < end; vertex++) {
-
             for (
                 let axis = 0;
                 axis < this.buildDimension - 1;
                 axis++
             ) {
-
                 const neighbor =
                     vertex ^ (1 << axis);
 
@@ -346,7 +323,6 @@ export class HamiltonRenderer {
                     neighbor < end &&
                     vertex < neighbor
                 ) {
-
                     this.buildCopyEdges.push([
                         vertex,
                         neighbor
@@ -356,9 +332,7 @@ export class HamiltonRenderer {
         }
     }
 
-
     updateBuild(deltaTime) {
-
         if (!this.building) {
             return;
         }
@@ -367,7 +341,6 @@ export class HamiltonRenderer {
             deltaTime * this.speed;
 
         if (this.buildStage === "lift") {
-
             this.buildLiftProgress = Math.min(
                 this.buildStageTime /
                 this.buildLiftDuration,
@@ -378,7 +351,6 @@ export class HamiltonRenderer {
                 this.buildStageTime >=
                 this.buildLiftDuration
             ) {
-
                 this.buildLiftProgress = 1;
 
                 this.finishBuildLift();
@@ -391,12 +363,10 @@ export class HamiltonRenderer {
         }
 
         if (this.buildStage === "pauseAfterLift") {
-
             if (
                 this.buildStageTime >=
                 this.buildPauseDuration
             ) {
-
                 this.buildVisibleVertexCount =
                     Math.min(
                         2 ** this.buildDimension,
@@ -416,12 +386,10 @@ export class HamiltonRenderer {
             this.buildStage ===
             "pauseAfterVertices"
         ) {
-
             if (
                 this.buildStageTime >=
                 this.buildPauseDuration
             ) {
-
                 this.addBuildCopyEdges();
 
                 this.buildStage =
@@ -434,23 +402,19 @@ export class HamiltonRenderer {
         }
 
         if (this.buildStage === "pauseAfterEdges") {
-
             if (
                 this.buildStageTime >=
                 this.buildPauseDuration
             ) {
-
                 this.buildDimension++;
 
                 if (this.buildDimension > 4) {
-
                     this.building = false;
                     this.buildVisibleVertexCount = 16;
 
                     this.updateStepText();
 
                     if (this.autoPlayAfterBuild) {
-
                         this.autoPlayAfterBuild = false;
                         this.playing = true;
                         this.lastTime = null;
@@ -466,9 +430,7 @@ export class HamiltonRenderer {
         }
     }
 
-
     play() {
-
         if (!this.loaded) {
             return;
         }
@@ -479,15 +441,12 @@ export class HamiltonRenderer {
         }
 
         if (this.buildReady) {
-
             this.autoPlayAfterBuild = true;
             this.startBuild();
-
             return;
         }
 
         if (this.currentStep >= 16) {
-
             this.currentStep = 0;
             this.stepProgress = 0;
             this.pauseProgress = 0;
@@ -499,30 +458,24 @@ export class HamiltonRenderer {
         this.lastTime = null;
 
         this.updateStepText();
-
         this.startLoop();
     }
 
-
     pause() {
-
         this.playing = false;
         this.lastTime = null;
     }
 
-
     reset() {
-
         if (!this.loaded) {
+            this.clearCanvas();
             return;
         }
 
         this.prepareBuild();
     }
 
-
     setSpeed(speed) {
-
         const value = Number(speed);
 
         if (
@@ -533,28 +486,22 @@ export class HamiltonRenderer {
         }
     }
 
-
     setShowSkeleton(show) {
-
         this.showSkeleton = Boolean(show);
         this.draw();
     }
 
-
     update(deltaTime) {
-
         if (!this.playing) {
             return;
         }
 
         if (this.currentStep >= 16) {
-
             this.pause();
             return;
         }
 
         if (this.pauseProgress > 0) {
-
             this.pauseProgress -=
                 deltaTime * this.speed;
 
@@ -570,11 +517,9 @@ export class HamiltonRenderer {
             this.moveDuration;
 
         if (this.stepProgress >= 1) {
-
             this.stepProgress = 0;
 
             for (const dancer of this.dancers) {
-
                 dancer.position =
                     (dancer.position + 1) % 16;
             }
@@ -582,7 +527,6 @@ export class HamiltonRenderer {
             this.currentStep++;
 
             if (this.currentStep >= 16) {
-
                 this.currentStep = 16;
 
                 this.pause();
@@ -598,11 +542,8 @@ export class HamiltonRenderer {
         }
     }
 
-
     getBounds() {
-
         if (this.vertices.length === 0) {
-
             return {
                 minX: 0,
                 maxX: 1,
@@ -625,9 +566,7 @@ export class HamiltonRenderer {
         };
     }
 
-
     projectPoint(point) {
-
         const bounds = this.getBounds();
 
         const width = this.canvas.width;
@@ -648,8 +587,6 @@ export class HamiltonRenderer {
             bounds.maxY - bounds.minY
         );
 
-
-
         const isMobile = width / dpr < 600;
 
         const scale = Math.max(
@@ -668,7 +605,7 @@ export class HamiltonRenderer {
             x:
                 (width - drawingWidth) / 2 +
                 (point.x - bounds.minX) * scale -
-                (isMobile ? 0 : 80 * dpr),
+                (isMobile ? 0 : 40 * dpr),
 
             y:
                 height -
@@ -676,14 +613,12 @@ export class HamiltonRenderer {
                     (height - drawingHeight) / 2 +
                     (point.y - bounds.minY) * scale
                 ) -
-                (isMobile ? 0 : 80 * dpr)
+                (isMobile ? 0 : -20 * dpr)
         };
 
     }
 
-
     drawEdge(a, b, progress = 1) {
-
         const from = this.vertices[a];
         const to = this.vertices[b];
 
@@ -706,25 +641,22 @@ export class HamiltonRenderer {
         this.ctx.stroke();
     }
 
-
     drawDancerCircle(id, x, y) {
-
         const ctx = this.ctx;
 
         const dpr =
             window.devicePixelRatio || 1;
 
-        const isMobile = this.canvas.width / dpr < 600;
+        const isMobile =
+            this.canvas.width / dpr < 600;
 
-        const radius = (isMobile ? 3 : 5) * dpr;
-        const color =
-            this.dancerColors[id];
+        const radius =
+            (isMobile ? 3 : 5) * dpr;
 
-        const hollow =
-            id >= 8;
+        const color = this.dancerColors[id];
+        const hollow = id >= 8;
 
         ctx.save();
-
         ctx.beginPath();
 
         ctx.arc(
@@ -736,16 +668,15 @@ export class HamiltonRenderer {
         );
 
         if (hollow) {
-
             ctx.fillStyle = "#ffffff";
             ctx.fill();
 
             ctx.strokeStyle = color;
-            ctx.lineWidth = (isMobile ? 1.5 : 3) * dpr;
+            ctx.lineWidth =
+                (isMobile ? 1.5 : 3) * dpr;
+
             ctx.stroke();
-
         } else {
-
             ctx.fillStyle = color;
             ctx.fill();
         }
@@ -753,10 +684,13 @@ export class HamiltonRenderer {
         ctx.restore();
     }
 
-
     drawBuild() {
+        if (!this.building) {
+            return;
+        }
 
         const ctx = this.ctx;
+
         const dpr =
             window.devicePixelRatio || 1;
 
@@ -774,12 +708,10 @@ export class HamiltonRenderer {
         }
 
         if (this.buildStage === "lift") {
-
             for (
                 const [a, b] of
                 this.getBuildLiftEdges()
                 ) {
-
                 this.drawEdge(
                     a,
                     b,
@@ -795,14 +727,14 @@ export class HamiltonRenderer {
             i < this.buildVisibleVertexCount;
             i++
         ) {
-
             const vertex = this.vertices[i];
 
             if (!vertex) {
                 continue;
             }
 
-            const point = this.projectPoint(vertex);
+            const point =
+                this.projectPoint(vertex);
 
             const dancerIndex =
                 this.circuit.indexOf(i);
@@ -815,14 +747,13 @@ export class HamiltonRenderer {
         }
     }
 
-
     drawSkeleton() {
-
         if (!this.showSkeleton) {
             return;
         }
 
         const ctx = this.ctx;
+
         const dpr =
             window.devicePixelRatio || 1;
 
@@ -838,10 +769,9 @@ export class HamiltonRenderer {
         ctx.restore();
     }
 
-
     drawCircuit() {
-
         const ctx = this.ctx;
+
         const dpr =
             window.devicePixelRatio || 1;
 
@@ -852,7 +782,6 @@ export class HamiltonRenderer {
         ctx.globalAlpha = 0.7;
 
         for (let i = 0; i < 16; i++) {
-
             const a = this.circuit[i];
 
             const b = this.circuit[
@@ -865,11 +794,8 @@ export class HamiltonRenderer {
         ctx.restore();
     }
 
-
     drawDancers() {
-
         for (const dancer of this.dancers) {
-
             const fromIndex =
                 this.circuit[dancer.position];
 
@@ -894,7 +820,6 @@ export class HamiltonRenderer {
                 this.playing &&
                 this.pauseProgress === 0
             ) {
-
                 const progress = Math.min(
                     this.stepProgress,
                     1
@@ -926,24 +851,14 @@ export class HamiltonRenderer {
         }
     }
 
-
     draw() {
+        this.clearCanvas();
 
-        const ctx = this.ctx;
-
-        ctx.clearRect(
-            0,
-            0,
-            this.canvas.width,
-            this.canvas.height
-        );
-
-        if (!this.loaded) {
+        if (!this.loaded || this.buildReady) {
             return;
         }
 
-        if (this.building || this.buildReady) {
-
+        if (this.building) {
             this.drawBuild();
             return;
         }
@@ -953,9 +868,7 @@ export class HamiltonRenderer {
         this.drawDancers();
     }
 
-
     startLoop() {
-
         if (this.animationFrame !== null) {
             return;
         }
@@ -964,9 +877,7 @@ export class HamiltonRenderer {
             requestAnimationFrame(this.loop);
     }
 
-
     loop(timestamp) {
-
         this.animationFrame = null;
 
         if (!this.building && !this.playing) {
@@ -986,26 +897,20 @@ export class HamiltonRenderer {
         this.lastTime = timestamp;
 
         if (this.building) {
-
             this.updateBuild(deltaTime);
-
         } else {
-
             this.update(deltaTime);
         }
 
         this.draw();
 
         if (this.building || this.playing) {
-
             this.animationFrame =
                 requestAnimationFrame(this.loop);
         }
     }
 
-
     resize() {
-
         const rect =
             this.canvas.getBoundingClientRect();
 
@@ -1026,7 +931,6 @@ export class HamiltonRenderer {
             this.canvas.width !== width ||
             this.canvas.height !== height
         ) {
-
             this.canvas.width = width;
             this.canvas.height = height;
         }

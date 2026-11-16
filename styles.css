@@ -1600,3 +1600,7 @@ input[type="range"] {
 .sidebar-collapsed .sidebar-nav-text {
     display: none;
 }
+
+body.kiss-mode .canvas-badge {
+    display: none !important;
+}

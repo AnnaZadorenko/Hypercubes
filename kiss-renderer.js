@@ -55,6 +55,7 @@ export class KissRenderer {
 
         this.kissedPairs = new Set();
         this.pendingKisses = [];
+        this.kissPreviewSeconds = 1;
 
         this.danceData = {
 
@@ -376,6 +377,16 @@ export class KissRenderer {
         this.loop = this.loop.bind(this);
 
         this.resize();
+
+        this.resizeObserver = new ResizeObserver(() => {
+            this.resize();
+        });
+
+        this.resizeObserver.observe(this.canvas);
+
+        window.addEventListener("resize", () => {
+            this.resize();
+        });
 
         this.animationFrame =
             requestAnimationFrame(this.loop);
@@ -1517,64 +1528,76 @@ export class KissRenderer {
     }
 
 
-    projectPoint(x, y) {
 
+
+    projectPoint(x, y) {
         const bounds = this.getBounds();
 
         const width = this.canvas.width;
         const height = this.canvas.height;
 
-        const padding =
-            Math.min(width, height) * 0.22;
-
-        const rangeX =
-            Math.max(
-                bounds.maxX - bounds.minX,
-                1
-            );
-
-        const rangeY =
-            Math.max(
-                bounds.maxY - bounds.minY,
-                1
-            );
-
         const dpr = window.devicePixelRatio || 1;
-        const isMobile = width / dpr < 600;
-        const scale =
-            Math.min(
-                (width - padding * 2) / rangeX,
-                (height - padding * 2) / rangeY
-            ) * (isMobile ? 0.60 : 0.85);
+        const screenWidth = width / dpr;
 
-        const drawingWidth =
-            rangeX * scale;
+        const isMobile = screenWidth < 600;
+        const isCompact = screenWidth < 1000;
 
-        const drawingHeight =
-            rangeY * scale;
+        const rangeX = Math.max(bounds.maxX - bounds.minX, 1);
+        const rangeY = Math.max(bounds.maxY - bounds.minY, 1);
 
-        const offsetX =
-            (width - drawingWidth) / 2;
+        const padding = Math.min(width, height) * 0.22;
 
-        const offsetY =
-            (height - drawingHeight) / 2;
+        let scale = Math.min(
+            (width - padding * 2) / rangeX,
+            (height - padding * 2) / rangeY
+        ) * (isMobile ? 0.70 : 1.05);
+
+        if (isCompact) {
+            const availableWidth = isMobile
+                ? width * 0.82
+                : width * 0.49;
+
+            const availableHeight = isMobile
+                ? height * 0.48
+                : height * 0.60;
+
+            scale = Math.min(
+                scale,
+                availableWidth / rangeX,
+                availableHeight / rangeY
+            );
+        }
+
+        const drawingWidth = rangeX * scale;
+        const drawingHeight = rangeY * scale;
+
+        let centerX;
+        let centerY;
+
+        if (isMobile) {
+            centerX = width * 0.50;
+            centerY = height * 0.67;
+
+        } else if (isCompact) {
+            centerX = width * 0.25;
+            centerY = height * 0.47;
+
+        } else {
+            // Keep your original large-screen layout.
+            centerX = width / 2 - 230;
+            centerY = height * 0.50;
+        }
 
         return {
-            x:
-                (width - drawingWidth) / 2 +
-                (x - bounds.minX) * scale -
-                (isMobile ? 45 * dpr : 180),
+            x: centerX - drawingWidth / 2 +
+                (x - bounds.minX) * scale,
 
-            y:
-                height -
-                (
-                    (height - drawingHeight) / 2 +
-                    (y - bounds.minY) * scale
-                ) +
-                (isMobile ? 40 * dpr : -10)
+            y: centerY + drawingHeight / 2 -
+                (y - bounds.minY) * scale
         };
-
     }
+
+
 
 
     drawDancerCircle(id, x, y, radius = 8) {
@@ -1798,12 +1821,14 @@ export class KissRenderer {
 
         const size = 16;
 
+
         const cell =
             Math.min(
-                10 * dpr,
-                (width * 0.20) / 16,
-                (height * 0.45) / 16
+                13 * dpr,
+                (width * 0.26) / 16,
+                (height * 0.55) / 16
             );
+
 
         const tableWidth =
             size * cell;
@@ -1813,13 +1838,19 @@ export class KissRenderer {
 
         const isMobile = width / dpr < 600;
 
+
+
         const startX = isMobile
             ? (width - tableWidth) / 2
-            : width - tableWidth - 220 * dpr;
+            : Math.min(
+                width - tableWidth - 20 * dpr,
+                width - tableWidth - 193 * dpr
+            );
+
 
         const startY = isMobile
             ? 15 * dpr
-            : (height - tableHeight) / 2 - 190 * dpr;
+            : (height - tableHeight) / 2 - 193 * dpr;
 
 
         const radius =
@@ -1847,7 +1878,7 @@ export class KissRenderer {
         ctx.fillText(
             `${this.kissedPairs.size} / 120 pairs`,
             startX + tableWidth / 2,
-            startY - 23 * dpr
+            startY - 5 * dpr
         );
 
         for (
@@ -1925,7 +1956,35 @@ export class KissRenderer {
 
                 const key = `${first}-${second}`;
 
-                if (row < col && this.kissedPairs.has(key)) {
+
+                const step = this.danceSteps[this.currentStep];
+
+                const duration = 3000 / this.speed;
+
+                const secondsRemaining =
+                    (1 - this.stepProgress) * duration / 1000;
+
+
+                const secondsUntilKiss =
+                    (0.5 - this.stepProgress) * duration / 1000;
+
+                const previewActive =
+                    this.playing &&
+                    !this.building &&
+                    !this.buildReady &&
+                    Boolean(step?.meet) &&
+                    secondsUntilKiss <= this.kissPreviewSeconds;
+
+
+                const showCross =
+                    this.kissedPairs.has(key) ||
+                    (
+                        previewActive &&
+                        this.pendingKisses.includes(key)
+                    );
+
+                if (row < col && showCross) {
+
                     ctx.fillStyle = "#111";
 
                     ctx.font =
@@ -2033,7 +2092,7 @@ export class KissRenderer {
                 dancer.id,
                 point.x,
                 point.y,
-                8
+                10
             );
         }
 
@@ -2043,29 +2102,24 @@ export class KissRenderer {
 
     resize() {
 
-        const rect =
-            this.canvas.getBoundingClientRect();
+        const rect = this.canvas.getBoundingClientRect();
 
-        const dpr =
-            window.devicePixelRatio || 1;
+        const dpr = window.devicePixelRatio || 1;
 
-        const width =
-            Math.max(
-                Math.floor(rect.width * dpr),
-                1
-            );
+        const width = Math.max(
+            Math.floor(rect.width * dpr),
+            1
+        );
 
-        const height =
-            Math.max(
-                Math.floor(rect.height * dpr),
-                1
-            );
+        const height = Math.max(
+            Math.floor(rect.height * dpr),
+            1
+        );
 
         if (
             this.canvas.width !== width ||
             this.canvas.height !== height
         ) {
-
             this.canvas.width = width;
             this.canvas.height = height;
         }

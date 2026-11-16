@@ -36,10 +36,66 @@ const hamiltonStepText =
     document.getElementById("hamiltonStepText");
 
 
+// Separate canvas for Hamiltonian Circuit.
+
+const originalCanvas = elements.canvas;
+
+const hamiltonCanvas =
+    document.createElement("canvas");
+
+hamiltonCanvas.id = "hamiltonSeparateCanvas";
+
+hamiltonCanvas.style.cssText = `
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    z-index: 2;
+`;
+
+const canvasParent = originalCanvas.parentElement;
+
+if (
+    window.getComputedStyle(canvasParent).position === "static"
+) {
+    canvasParent.style.position = "relative";
+}
+
+canvasParent.appendChild(hamiltonCanvas);
+
+
+function showHamiltonCanvas() {
+    originalCanvas.style.visibility = "hidden";
+    hamiltonCanvas.style.display = "block";
+}
+
+
+function showOriginalCanvas() {
+    hamiltonCanvas.style.display = "none";
+    originalCanvas.style.visibility = "visible";
+}
+
+
+function clearHamiltonCanvas() {
+    const ctx = hamiltonCanvas.getContext("2d");
+
+    ctx.save();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+    ctx.clearRect(
+        0,
+        0,
+        hamiltonCanvas.width,
+        hamiltonCanvas.height
+    );
+
+    ctx.restore();
+}
+
+
 function updateOptions() {
-
     if (isKissMode) {
-
         if (
             kissRenderer &&
             elements.kissSkeletonToggle
@@ -53,7 +109,6 @@ function updateOptions() {
     }
 
     if (isHamiltonMode) {
-
         if (
             hamiltonRenderer &&
             hamiltonSkeletonToggle
@@ -74,14 +129,10 @@ function updateOptions() {
 
 
 function setPlaying(next) {
-
     isPlaying = next;
 
     if (isKissMode) {
-
-        if (!kissRenderer) {
-            return;
-        }
+        if (!kissRenderer) return;
 
         if (next) {
             kissRenderer.play();
@@ -90,10 +141,7 @@ function setPlaying(next) {
         }
 
     } else if (isHamiltonMode) {
-
-        if (!hamiltonRenderer) {
-            return;
-        }
+        if (!hamiltonRenderer) return;
 
         if (next) {
             hamiltonRenderer.play();
@@ -102,7 +150,6 @@ function setPlaying(next) {
         }
 
     } else {
-
         if (next) {
             renderer.play();
         } else {
@@ -114,22 +161,17 @@ function setPlaying(next) {
         next ? "❚❚ Pause" : "▶ Play";
 
     if (next) {
-
-        elements.statusPill.textContent =
-            "Playing";
+        elements.statusPill.textContent = "Playing";
 
         elements.statusPill.classList.add(
             "playing"
         );
 
     } else {
-
         if (
-            elements.statusPill.textContent !==
-            "Ready"
+            elements.statusPill.textContent !== "Ready"
         ) {
-            elements.statusPill.textContent =
-                "Paused";
+            elements.statusPill.textContent = "Paused";
         }
 
         elements.statusPill.classList.remove(
@@ -140,9 +182,7 @@ function setPlaying(next) {
 
 
 function resetActive() {
-
     if (isKissMode) {
-
         if (kissRenderer) {
             kissRenderer.reset();
         }
@@ -151,11 +191,11 @@ function resetActive() {
     }
 
     if (isHamiltonMode) {
-
         if (hamiltonRenderer) {
             hamiltonRenderer.reset();
         }
 
+        clearHamiltonCanvas();
         return;
     }
 
@@ -164,9 +204,7 @@ function resetActive() {
 
 
 function setActiveSpeed(speed) {
-
     if (isKissMode) {
-
         if (kissRenderer) {
             kissRenderer.setSpeed(speed);
         }
@@ -175,7 +213,6 @@ function setActiveSpeed(speed) {
     }
 
     if (isHamiltonMode) {
-
         if (hamiltonRenderer) {
             hamiltonRenderer.setSpeed(speed);
         }
@@ -188,9 +225,7 @@ function setActiveSpeed(speed) {
 
 
 function setControlVisibility(mode) {
-
     if (elements.kissControls) {
-
         elements.kissControls.classList.toggle(
             "is-hidden",
             mode !== "kiss"
@@ -198,7 +233,6 @@ function setControlVisibility(mode) {
     }
 
     if (hamiltonControls) {
-
         hamiltonControls.classList.toggle(
             "is-hidden",
             mode !== "hamilton"
@@ -216,7 +250,6 @@ function setControlVisibility(mode) {
         );
 
     if (verticesRow) {
-
         verticesRow.classList.toggle(
             "is-hidden",
             mode !== "normal"
@@ -224,7 +257,6 @@ function setControlVisibility(mode) {
     }
 
     if (pathRow) {
-
         pathRow.classList.toggle(
             "is-hidden",
             mode !== "normal"
@@ -234,32 +266,26 @@ function setControlVisibility(mode) {
 
 
 function showNormalControls() {
-
     setControlVisibility("normal");
 }
 
 
 function showKissControls() {
-
     setControlVisibility("kiss");
 }
 
 
 function showHamiltonControls() {
-
     setControlVisibility("hamilton");
 }
 
 
 function getKissRenderer() {
-
     if (!kissRenderer) {
-
-        kissRenderer =
-            new KissRenderer(
-                elements.canvas,
-                elements.kissStepText
-            );
+        kissRenderer = new KissRenderer(
+            elements.canvas,
+            elements.kissStepText
+        );
     }
 
     return kissRenderer;
@@ -267,14 +293,11 @@ function getKissRenderer() {
 
 
 function getHamiltonRenderer() {
-
     if (!hamiltonRenderer) {
-
-        hamiltonRenderer =
-            new HamiltonRenderer(
-                elements.canvas,
-                hamiltonStepText
-            );
+        hamiltonRenderer = new HamiltonRenderer(
+            hamiltonCanvas,
+            hamiltonStepText
+        );
     }
 
     return hamiltonRenderer;
@@ -282,15 +305,11 @@ function getHamiltonRenderer() {
 
 
 function stopKissRenderer() {
-
-    if (!kissRenderer) {
-        return;
-    }
+    if (!kissRenderer) return;
 
     kissRenderer.pause();
 
-    if (kissRenderer.animationFrame) {
-
+    if (kissRenderer.animationFrame != null) {
         cancelAnimationFrame(
             kissRenderer.animationFrame
         );
@@ -298,20 +317,23 @@ function stopKissRenderer() {
         kissRenderer.animationFrame = null;
     }
 
+    if (kissRenderer.resizeObserver) {
+        kissRenderer.resizeObserver.disconnect();
+    }
+
     kissRenderer = null;
 }
 
 
 function stopHamiltonRenderer() {
-
-    if (!hamiltonRenderer) {
-        return;
-    }
+    if (!hamiltonRenderer) return;
 
     hamiltonRenderer.pause();
 
-    if (hamiltonRenderer.animationFrame) {
+    hamiltonRenderer.building = false;
+    hamiltonRenderer.autoPlayAfterBuild = false;
 
+    if (hamiltonRenderer.animationFrame != null) {
         cancelAnimationFrame(
             hamiltonRenderer.animationFrame
         );
@@ -320,11 +342,12 @@ function stopHamiltonRenderer() {
     }
 
     hamiltonRenderer = null;
+
+    clearHamiltonCanvas();
 }
 
 
 function updateFigureInformation(figure) {
-
     elements.dimensionBadge.textContent =
         `${figure.dimension}D`;
 
@@ -347,49 +370,50 @@ function updateFigureInformation(figure) {
 
 
 async function setFigure(option) {
-
     option = Number(option);
 
     const figure = figures[option];
 
-    if (!figure) {
-        return;
-    }
+    if (!figure) return;
+
+    document.body.classList.toggle(
+        "kiss-mode",
+        Boolean(figure.kiss)
+    );
 
     currentOption = option;
     isPlaying = false;
 
-    elements.playButton.textContent =
-        "▶ Play";
-
-    elements.statusPill.textContent =
-        "Ready";
+    elements.playButton.textContent = "▶ Play";
+    elements.statusPill.textContent = "Ready";
 
     elements.statusPill.classList.remove(
         "playing"
     );
 
 
-    if (figure.kiss) {
+    // Hypercube Dance
 
+    if (figure.kiss) {
         isKissMode = true;
         isHamiltonMode = false;
 
-        elements.fullscreenButton.style.display =
-            "none";
+        document.body.classList.add("kiss-mode");
+
+        showOriginalCanvas();
+
+        // Fullscreen is disabled only for Kiss.
+        elements.fullscreenButton.style.display = "none";
 
         renderer.pause();
 
         stopHamiltonRenderer();
 
         showKissControls();
-
         updateFigureInformation(figure);
 
         if (elements.kissStepText) {
-
-            elements.kissStepText.textContent =
-                "Ready";
+            elements.kissStepText.textContent = "Ready";
         }
 
         const kiss = getKissRenderer();
@@ -400,7 +424,6 @@ async function setFigure(option) {
         });
 
         if (elements.kissSkeletonToggle) {
-
             kiss.setShowSkeleton(
                 elements.kissSkeletonToggle.checked
             );
@@ -416,39 +439,37 @@ async function setFigure(option) {
     }
 
 
-    if (figure.hamilton) {
+    // Hamiltonian Circuit
 
+    if (figure.hamilton) {
         isKissMode = false;
         isHamiltonMode = true;
 
-        elements.fullscreenButton.style.display =
-            "";
+        // Fullscreen remains available.
+        elements.fullscreenButton.style.display = "";
 
         renderer.pause();
 
         stopKissRenderer();
 
-        showHamiltonControls();
+        showHamiltonCanvas();
 
+        showHamiltonControls();
         updateFigureInformation(figure);
 
         if (hamiltonStepText) {
-
-            hamiltonStepText.textContent =
-                "Ready";
+            hamiltonStepText.textContent = "Ready";
         }
 
         const hamilton = getHamiltonRenderer();
 
         if (typeof hamilton.setCircuit === "function") {
-
             await hamilton.setCircuit({
                 dataFile: figure.dataFile
             });
         }
 
         if (hamiltonSkeletonToggle) {
-
             hamilton.setShowSkeleton(
                 hamiltonSkeletonToggle.checked
             );
@@ -460,15 +481,21 @@ async function setFigure(option) {
 
         hamilton.resize();
 
+        clearHamiltonCanvas();
+
         return;
     }
 
 
+    // Normal Hypercube Animations
+
     isKissMode = false;
     isHamiltonMode = false;
 
-    elements.fullscreenButton.style.display =
-        "";
+    showOriginalCanvas();
+
+    // Fullscreen remains available.
+    elements.fullscreenButton.style.display = "";
 
     stopKissRenderer();
     stopHamiltonRenderer();
@@ -476,7 +503,6 @@ async function setFigure(option) {
     showNormalControls();
 
     renderer.setOption(option);
-
     renderer.currentOption = option;
 
     renderer.pause();
@@ -484,8 +510,9 @@ async function setFigure(option) {
     updateFigureInformation(figure);
 
     requestAnimationFrame(() => {
-
-        renderer.resize();
+        if (!isKissMode && !isHamiltonMode) {
+            renderer.resize();
+        }
     });
 }
 
@@ -497,34 +524,25 @@ setupFullscreen(
 
 
 setupPlayback({
-
     elements,
 
-    getIsPlaying: () =>
-        isPlaying,
+    getIsPlaying: () => isPlaying,
 
     setPlaying,
-
     resetActive,
-
     setActiveSpeed,
-
     updateOptions
-
 });
 
 
 if (elements.kissSkeletonToggle) {
-
     elements.kissSkeletonToggle.addEventListener(
         "change",
         () => {
-
             if (
                 isKissMode &&
                 kissRenderer
             ) {
-
                 kissRenderer.setShowSkeleton(
                     elements.kissSkeletonToggle.checked
                 );
@@ -535,16 +553,13 @@ if (elements.kissSkeletonToggle) {
 
 
 if (hamiltonSkeletonToggle) {
-
     hamiltonSkeletonToggle.addEventListener(
         "change",
         () => {
-
             if (
                 isHamiltonMode &&
                 hamiltonRenderer
             ) {
-
                 hamiltonRenderer.setShowSkeleton(
                     hamiltonSkeletonToggle.checked
                 );
@@ -555,40 +570,30 @@ if (hamiltonSkeletonToggle) {
 
 
 setupNavigation({
-
     elements,
-
     sections,
-
     setFigure,
-
     loadSectionText
-
 });
 
 
 window.addEventListener(
     "resize",
     () => {
-
         requestAnimationFrame(() => {
-
             if (
                 isKissMode &&
                 kissRenderer
             ) {
-
                 kissRenderer.resize();
 
             } else if (
                 isHamiltonMode &&
                 hamiltonRenderer
             ) {
-
                 hamiltonRenderer.resize();
 
             } else {
-
                 renderer.resize();
             }
         });
@@ -596,14 +601,14 @@ window.addEventListener(
 );
 
 
-setTimeout(() => {
+// Startup
 
+setTimeout(() => {
     elements.splash.classList.add(
         "is-leaving"
     );
 
     setTimeout(() => {
-
         elements.splash.remove();
 
         elements.app.classList.remove(
@@ -611,11 +616,7 @@ setTimeout(() => {
         );
 
         requestAnimationFrame(() => {
-
             requestAnimationFrame(() => {
-
-                renderer.resize();
-
                 setFigure(2);
 
                 updateOptions();
