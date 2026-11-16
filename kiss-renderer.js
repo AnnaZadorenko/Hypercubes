@@ -1580,7 +1580,7 @@ export class KissRenderer {
 
         } else if (isCompact) {
             centerX = width * 0.25;
-            centerY = height * 0.47;
+            centerY = height * 0.49;
 
         } else {
             // Keep your original large-screen layout.
